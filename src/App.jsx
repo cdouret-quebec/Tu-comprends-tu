@@ -2785,6 +2785,7 @@ export default function App() {
               <span style={{ color: D.blanc, fontSize: 21, fontWeight: 500 }}> comprends-</span>
               <span style={{ color: D.rouge, fontSize: 21, fontWeight: 500 }}>tu</span>
               <span style={{ color: D.blanc, fontSize: 21, fontWeight: 500 }}> ? </span>
+              <span style={{ color: D.gris3, fontSize: 10, fontWeight: 400, verticalAlign: "super" }}>™</span>
               <span style={{ fontSize: 18 }}>🐿️</span>
             </h1>
             {secteur ? (
