@@ -402,7 +402,7 @@ function Tooltip({ terme, definition, children }) {
           transform: "translateX(-50%)", zIndex: 9999,
           background: "#1A1F5E", color: "white",
           borderRadius: 8, padding: "8px 12px",
-          fontSize: 12, lineHeight: 1.5,
+          fontSize: 14, lineHeight: 1.5,
           width: 220, boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
           pointerEvents: "none", textAlign: "left"
         }}>
@@ -467,7 +467,7 @@ function SimulationQCM({ data }) {
   const [termine, setTermine] = useState(false);
   const ann = data.annotations || [];
 
-  if (!data?.scenarios?.length) return <p style={{ color: "#888", fontSize: 13 }}>Contenu en cours de préparation.</p>;
+  if (!data?.scenarios?.length) return <p style={{ color: "#888", fontSize: 15 }}>Contenu en cours de préparation.</p>;
 
   const sc = data.scenarios;
   const tour = sc[etape];
@@ -499,15 +499,15 @@ function SimulationQCM({ data }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20, textAlign: "left" }}>
             {sc.map((s, i) => choix[i] !== s.bonne_reponse && (
               <div key={i} style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "10px 12px" }}>
-                <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 600, color: "#92400E" }}>Martin : « {s.ce_que_dit_martin} »</p>
-                <p style={{ margin: "0 0 3px", fontSize: 12, color: "#065F46" }}>✅ {s.choix.find(c => c.lettre === s.bonne_reponse)?.texte}</p>
-                <p style={{ margin: 0, fontSize: 11, color: "#78350F" }}>{s.explication}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>Martin : « {s.ce_que_dit_martin} »</p>
+                <p style={{ margin: "0 0 3px", fontSize: 14, color: "#065F46" }}>✅ {s.choix.find(c => c.lettre === s.bonne_reponse)?.texte}</p>
+                <p style={{ margin: 0, fontSize: 13, color: "#78350F" }}>{s.explication}</p>
               </div>
             ))}
           </div>
         )}
         <button onClick={() => { setEtape(0); setChoix({}); setTermine(false); }}
-          style={{ background: ST_COLOR, color: "white", border: "none", borderRadius: 20, padding: "10px 24px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+          style={{ background: ST_COLOR, color: "white", border: "none", borderRadius: 20, padding: "10px 24px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>
           🔄 Recommencer
         </button>
       </div>
@@ -521,7 +521,7 @@ function SimulationQCM({ data }) {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <h3 style={{ margin: 0, fontSize: 16, color: ST_COLOR }}>{data.titre}</h3>
-        <span style={{ fontSize: 11, color: "#888", background: "#F3F4F6", borderRadius: 10, padding: "2px 10px" }}>{etape + 1}/{total}</span>
+        <span style={{ fontSize: 13, color: "#888", background: "#F3F4F6", borderRadius: 10, padding: "2px 10px" }}>{etape + 1}/{total}</span>
       </div>
 
       {/* Barre de progression */}
@@ -534,12 +534,12 @@ function SimulationQCM({ data }) {
         <div style={{ width: 36, height: 36, borderRadius: "50%", background: ST_COLOR, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, flexShrink: 0 }}>M</div>
         <div style={{ background: "#F8F6FF", borderRadius: "4px 14px 14px 14px", padding: "10px 13px", fontSize: 14, lineHeight: 1.6, flex: 1 }}>
           <AnnotatedText text={tour.ce_que_dit_martin} annotations={ann} />
-          {tour.contexte && <p style={{ margin: "6px 0 0", fontSize: 11, color: "#888", fontStyle: "italic" }}>📍 {tour.contexte}</p>}
+          {tour.contexte && <p style={{ margin: "6px 0 0", fontSize: 13, color: "#888", fontStyle: "italic" }}>📍 {tour.contexte}</p>}
         </div>
       </div>
 
       {/* Choix de réponse */}
-      <p style={{ fontSize: 12, color: "#888", margin: "0 0 8px" }}>Comment tu réponds ?</p>
+      <p style={{ fontSize: 14, color: "#888", margin: "0 0 8px" }}>Comment tu réponds ?</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
         {tour.choix.map(c => {
           const isChosen = choix[etape] === c.lettre;
@@ -554,8 +554,8 @@ function SimulationQCM({ data }) {
           }
           return (
             <button key={c.lettre} onClick={() => handleChoix(c.lettre)} disabled={repondu}
-              style={{ background: bg, border, borderRadius: 8, padding: "10px 12px", cursor: repondu ? "default" : "pointer", textAlign: "left", fontSize: 13, display: "flex", gap: 8, alignItems: "flex-start", transition: "all 0.15s", color, width: "100%" }}>
-              <span style={{ minWidth: 20, height: 20, borderRadius: "50%", background: isChosen && !repondu ? ST_COLOR : repondu && isCorrect ? "#065F46" : repondu && isChosen ? "#DC2626" : "#E5E7EB", color: (isChosen || (repondu && isCorrect)) ? "white" : "#6B7280", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0 }}>{c.lettre}</span>
+              style={{ background: bg, border, borderRadius: 8, padding: "10px 12px", cursor: repondu ? "default" : "pointer", textAlign: "left", fontSize: 15, display: "flex", gap: 8, alignItems: "flex-start", transition: "all 0.15s", color, width: "100%" }}>
+              <span style={{ minWidth: 20, height: 20, borderRadius: "50%", background: isChosen && !repondu ? ST_COLOR : repondu && isCorrect ? "#065F46" : repondu && isChosen ? "#DC2626" : "#E5E7EB", color: (isChosen || (repondu && isCorrect)) ? "white" : "#6B7280", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{c.lettre}</span>
               <span style={{ lineHeight: 1.4 }}>{c.texte}</span>
               {repondu && isCorrect && <span style={{ marginLeft: "auto" }}>✅</span>}
               {repondu && isChosen && !isCorrect && <span style={{ marginLeft: "auto" }}>❌</span>}
@@ -567,16 +567,16 @@ function SimulationQCM({ data }) {
       {/* Feedback après réponse */}
       {repondu && (
         <div style={{ background: choix[etape] === bonneReponse ? "#ECFDF5" : "#FFF7ED", border: `1px solid ${choix[etape] === bonneReponse ? "#A7F3D0" : "#FED7AA"}`, borderRadius: 8, padding: "10px 12px", marginBottom: 14 }}>
-          <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 600, color: choix[etape] === bonneReponse ? "#065F46" : "#92400E" }}>
+          <p style={{ margin: "0 0 3px", fontSize: 15, fontWeight: 600, color: choix[etape] === bonneReponse ? "#065F46" : "#92400E" }}>
             {choix[etape] === bonneReponse ? "✅ Parfait !" : `✅ Réponse idéale : ${bonneReponse}`}
           </p>
-          <p style={{ margin: 0, fontSize: 12, color: "#555", lineHeight: 1.5 }}>{tour.explication}</p>
+          <p style={{ margin: 0, fontSize: 14, color: "#555", lineHeight: 1.5 }}>{tour.explication}</p>
         </div>
       )}
 
       {repondu && (
         <button onClick={suivant}
-          style={{ width: "100%", padding: "11px", borderRadius: 10, border: "none", background: ST_COLOR, color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+          style={{ width: "100%", padding: "11px", borderRadius: 10, border: "none", background: ST_COLOR, color: "white", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>
           {etape < total - 1 ? "Tour suivant →" : "Voir mon score →"}
         </button>
       )}
@@ -589,7 +589,7 @@ function STReferencesCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 16 }}>{data.intro}</p>
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 16 }}>{data.intro}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.references.map((r, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -599,20 +599,20 @@ function STReferencesCard({ data }) {
                 <span style={{ fontSize: 20 }}>{r.emoji}</span>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 14, color: "#1F2937" }}>{r.sujet}</div>
-                  <div style={{ fontSize: 11, color: "#888" }}>{r.sous_titre}</div>
+                  <div style={{ fontSize: 13, color: "#888" }}>{r.sous_titre}</div>
                 </div>
               </div>
               <span style={{ color: ST_COLOR, fontSize: 16 }}>{open[i] ? "▲" : "▼"}</span>
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 13, color: "#374151", margin: "10px 0 8px", lineHeight: 1.6 }}>{r.ce_quil_faut_savoir}</p>
+                <p style={{ fontSize: 15, color: "#374151", margin: "10px 0 8px", lineHeight: 1.6 }}>{r.ce_quil_faut_savoir}</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   {r.phrases_utiles.map((p, j) => (
-                    <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "7px 10px", fontSize: 13, color: ST_COLOR, fontStyle: "italic" }}>« {p} »</div>
+                    <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "7px 10px", fontSize: 15, color: ST_COLOR, fontStyle: "italic" }}>« {p} »</div>
                   ))}
                 </div>
-                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 12, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "4px 8px" }}>⚠️ {r.piege}</p>}
+                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 14, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "4px 8px" }}>⚠️ {r.piege}</p>}
               </div>
             )}
           </div>
@@ -626,10 +626,10 @@ function STEntreeSortieCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 16 }}>{data.intro}</p>
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 16 }}>{data.intro}</p>
       {["entrees", "sorties"].map(type => (
         <div key={type} style={{ marginBottom: 20 }}>
-          <h4 style={{ color: ST_COLOR, fontSize: 13, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 }}>
+          <h4 style={{ color: ST_COLOR, fontSize: 15, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 }}>
             {type === "entrees" ? "🚪 Pour entrer dans une conversation" : "👋 Pour sortir naturellement"}
           </h4>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -638,9 +638,9 @@ function STEntreeSortieCard({ data }) {
                 <div style={{ background: ST_BG, borderRadius: 8, padding: "7px 12px", marginBottom: 8, fontSize: 14, color: ST_COLOR, fontWeight: 600, fontStyle: "italic" }}>
                   « {e.formule} »
                 </div>
-                <p style={{ margin: "0 0 4px", fontSize: 13, color: "#555" }}>📍 {e.quand}</p>
-                <p style={{ margin: "0 0 4px", fontSize: 13, color: "#333" }}>🎯 {e.effet}</p>
-                {e.variante && <p style={{ margin: 0, fontSize: 12, color: "#888", fontStyle: "italic" }}>Variante : « {e.variante} »</p>}
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#555" }}>📍 {e.quand}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333" }}>🎯 {e.effet}</p>
+                {e.variante && <p style={{ margin: 0, fontSize: 14, color: "#888", fontStyle: "italic" }}>Variante : « {e.variante} »</p>}
               </div>
             ))}
           </div>
@@ -648,7 +648,7 @@ function STEntreeSortieCard({ data }) {
       ))}
       {data.conseil_cle && (
         <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 10, padding: 12 }}>
-          <p style={{ margin: 0, fontSize: 13 }}>💡 <strong>À retenir :</strong> {data.conseil_cle}</p>
+          <p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_cle}</p>
         </div>
       )}
     </div>
@@ -659,12 +659,12 @@ function STRythmeCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 16 }}>{data.intro}</p>
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 16 }}>{data.intro}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {data.situations.map((s, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
             <div style={{ background: ST_BG, padding: "10px 14px", borderBottom: `1px solid ${ST_COLOR}15` }}>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#1F2937" }}>
+              <p style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "#1F2937" }}>
                 <span style={{ color: ST_COLOR }}>Martin dit : </span>« {s.ce_que_dit_martin} »
               </p>
             </div>
@@ -672,18 +672,18 @@ function STRythmeCard({ data }) {
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
                 {s.reactions.map((r, j) => (
                   <div key={j} style={{
-                    padding: "8px 12px", borderRadius: 8, fontSize: 13,
+                    padding: "8px 12px", borderRadius: 8, fontSize: 15,
                     background: r.type === "ideal" ? "#ECFDF5" : r.type === "correct" ? "#F0F9FF" : "#FEF2F2",
                     border: `1px solid ${r.type === "ideal" ? "#A7F3D0" : r.type === "correct" ? "#BAE6FD" : "#FECACA"}`,
                     color: r.type === "ideal" ? "#065F46" : r.type === "correct" ? "#0369A1" : "#991B1B"
                   }}>
                     <span style={{ fontWeight: 700, marginRight: 6 }}>{r.type === "ideal" ? "✅ Idéal" : r.type === "correct" ? "🆗 Correct" : "❌ À éviter"} :</span>
                     <em>« {r.reponse} »</em>
-                    {r.pourquoi && <span style={{ display: "block", fontSize: 11, marginTop: 3, opacity: 0.85 }}>{r.pourquoi}</span>}
+                    {r.pourquoi && <span style={{ display: "block", fontSize: 13, marginTop: 3, opacity: 0.85 }}>{r.pourquoi}</span>}
                   </div>
                 ))}
               </div>
-              <p style={{ margin: 0, fontSize: 12, color: "#6B7280", fontStyle: "italic" }}>💡 {s.lecon}</p>
+              <p style={{ margin: 0, fontSize: 14, color: "#6B7280", fontStyle: "italic" }}>💡 {s.lecon}</p>
             </div>
           </div>
         ))}
@@ -702,17 +702,17 @@ function STValeursCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
-      {ann.length > 0 && <p style={{ fontSize: 11, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
+      {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {data.scenarios.map((s, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
             <button onClick={() => setOpen(o => ({ ...o, [i]: !o[i] }))}
               style={{ width: "100%", padding: "13px 14px", background: "none", border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", textAlign: "left", gap: 10 }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: 13, color: "#1F2937", marginBottom: 2 }}>{s.situation}</div>
+                <div style={{ fontWeight: 700, fontSize: 15, color: "#1F2937", marginBottom: 2 }}>{s.situation}</div>
                 {s.valeur_en_jeu && (
-                  <span style={{ fontSize: 10, background: ST_BG, color: ST_COLOR, borderRadius: 10, padding: "1px 8px", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.3 }}>
+                  <span style={{ fontSize: 12, background: ST_BG, color: ST_COLOR, borderRadius: 10, padding: "1px 8px", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.3 }}>
                     {s.valeur_en_jeu}
                   </span>
                 )}
@@ -722,26 +722,26 @@ function STValeursCard({ data }) {
             {open[i] && (
               <div style={{ borderTop: `1px solid ${ST_COLOR}10` }}>
                 <div style={{ padding: "12px 14px", background: "#FEF2F2", borderBottom: "1px solid #FECACA" }}>
-                  <p style={{ margin: "0 0 3px", fontSize: 11, fontWeight: 700, color: "#DC2626", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que fait l'immigrant</p>
-                  <p style={{ margin: 0, fontSize: 13, color: "#374151", lineHeight: 1.5 }}>
+                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#DC2626", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que fait l'immigrant</p>
+                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
                     <AnnotatedText text={s.ce_que_fait_immigrant} annotations={ann} />
                   </p>
                 </div>
                 <div style={{ padding: "12px 14px", background: "#FFF7ED", borderBottom: "1px solid #FED7AA" }}>
-                  <p style={{ margin: "0 0 3px", fontSize: 11, fontWeight: 700, color: "#92400E", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que pensent les Québécois (sans le dire)</p>
-                  <p style={{ margin: 0, fontSize: 13, color: "#374151", lineHeight: 1.5, fontStyle: "italic" }}>
+                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#92400E", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que pensent les Québécois (sans le dire)</p>
+                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5, fontStyle: "italic" }}>
                     <AnnotatedText text={s.ce_que_pensent_les_quebecois} annotations={ann} />
                   </p>
                 </div>
                 <div style={{ padding: "12px 14px", background: "#F0FDF4", borderBottom: "1px solid #BBF7D0" }}>
-                  <p style={{ margin: "0 0 3px", fontSize: 11, fontWeight: 700, color: "#065F46", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce qui se passe vraiment</p>
-                  <p style={{ margin: 0, fontSize: 13, color: "#374151", lineHeight: 1.5 }}>
+                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#065F46", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce qui se passe vraiment</p>
+                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
                     <AnnotatedText text={s.ce_qui_se_passe_vraiment} annotations={ann} />
                   </p>
                 </div>
                 <div style={{ padding: "12px 14px", background: ST_BG }}>
-                  <p style={{ margin: "0 0 3px", fontSize: 11, fontWeight: 700, color: ST_COLOR, textTransform: "uppercase", letterSpacing: 0.4 }}>Comment s'en sortir</p>
-                  <p style={{ margin: 0, fontSize: 13, color: "#374151", lineHeight: 1.5 }}>
+                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: ST_COLOR, textTransform: "uppercase", letterSpacing: 0.4 }}>Comment s'en sortir</p>
+                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
                     <AnnotatedText text={s.comment_sen_sortir} annotations={ann} />
                   </p>
                 </div>
@@ -750,6 +750,24 @@ function STValeursCard({ data }) {
           </div>
         ))}
       </div>
+
+      {/* Référence bibliographique */}
+      {data.reference && (
+        <div style={{ marginTop: 20, background: "#F8F6FF", border: `1px solid ${ST_COLOR}30`, borderRadius: 12, padding: "14px 16px", display: "flex", gap: 12, alignItems: "flex-start" }}>
+          <span style={{ fontSize: 24, flexShrink: 0 }}>📚</span>
+          <div>
+            <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: ST_COLOR }}>Pour aller plus loin</p>
+            <p style={{ margin: "0 0 6px", fontSize: 14, color: "#1F2937", fontWeight: 500 }}>
+              <em>{data.reference.titre}</em>
+            </p>
+            <p style={{ margin: "0 0 8px", fontSize: 13, color: "#555" }}>{data.reference.auteur}</p>
+            <a href={data.reference.lien} target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 4, background: ST_COLOR, color: "white", borderRadius: 8, padding: "6px 12px", fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
+              Voir le livre →
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -762,8 +780,8 @@ function STExpressionsCard({ data: rawData }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
-      {ann.length > 0 && <p style={{ fontSize: 11, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
+      {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {data.expressions.map((e, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -773,18 +791,18 @@ function STExpressionsCard({ data: rawData }) {
             </div>
             {/* Scénario */}
             <div style={{ padding: "12px 14px" }}>
-              <p style={{ margin: "0 0 10px", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>
+              <p style={{ margin: "0 0 10px", fontSize: 15, color: "#374151", lineHeight: 1.6 }}>
                 <strong>📍 Scénario :</strong> <AnnotatedText text={e.scenario} annotations={ann} />
               </p>
               {/* Interprétation erronée — révélable */}
               {!revealed[`err_${i}`] ? (
                 <button onClick={() => setRevealed(r => ({ ...r, [`err_${i}`]: true }))}
-                  style={{ fontSize: 12, color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
+                  style={{ fontSize: 14, color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
                   🤔 Qu'est-ce que tu penserais que ça veut dire ?
                 </button>
               ) : (
                 <div style={{ background: "#FEF2F2", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
-                  <p style={{ margin: 0, fontSize: 12, color: "#DC2626" }}>
+                  <p style={{ margin: 0, fontSize: 14, color: "#DC2626" }}>
                     <strong>Interprétation erronée :</strong> {e.interpretation_erronee}
                   </p>
                 </div>
@@ -792,12 +810,12 @@ function STExpressionsCard({ data: rawData }) {
               {/* Vrai sens */}
               {!revealed[`vrai_${i}`] ? (
                 <button onClick={() => setRevealed(r => ({ ...r, [`vrai_${i}`]: true }))}
-                  style={{ fontSize: 12, color: "#065F46", background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
+                  style={{ fontSize: 14, color: "#065F46", background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
                   ✅ Voir le vrai sens
                 </button>
               ) : (
                 <div style={{ background: "#ECFDF5", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
-                  <p style={{ margin: 0, fontSize: 13, color: "#065F46", fontWeight: 600 }}>
+                  <p style={{ margin: 0, fontSize: 15, color: "#065F46", fontWeight: 600 }}>
                     ✅ <AnnotatedText text={e.vrai_sens} annotations={ann} />
                   </p>
                 </div>
@@ -805,7 +823,7 @@ function STExpressionsCard({ data: rawData }) {
               {/* Réutilisation */}
               {revealed[`vrai_${i}`] && e.exemple_reutilisation && (
                 <div style={{ background: ST_BG, borderRadius: 8, padding: "8px 12px" }}>
-                  <p style={{ margin: 0, fontSize: 12, color: ST_COLOR }}>
+                  <p style={{ margin: 0, fontSize: 14, color: ST_COLOR }}>
                     💬 <strong>Comment le réutiliser :</strong> <em>« {e.exemple_reutilisation} »</em>
                   </p>
                 </div>
@@ -824,8 +842,8 @@ function STSacresCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 14, lineHeight: 1.6 }}>{data.intro}</p>
-      {ann.length > 0 && <p style={{ fontSize: 11, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 14, lineHeight: 1.6 }}>{data.intro}</p>
+      {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.sections.map((s, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -839,7 +857,7 @@ function STSacresCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}>
+                <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}>
                   <AnnotatedText text={s.contenu} annotations={ann} />
                 </p>
                 {s.exemples?.length > 0 && (
@@ -851,22 +869,22 @@ function STSacresCard({ data }) {
                             <AnnotatedText text={ex.sacre} annotations={ann} />
                           </strong>
                           {ex.forme_attenuation && (
-                            <span style={{ fontSize: 11, background: "white", color: "#555", borderRadius: 10, padding: "1px 8px", border: `1px solid ${ST_COLOR}30` }}>
+                            <span style={{ fontSize: 13, background: "white", color: "#555", borderRadius: 10, padding: "1px 8px", border: `1px solid ${ST_COLOR}30` }}>
                               atténué : <em>{ex.forme_attenuation}</em>
                             </span>
                           )}
                         </div>
-                        <p style={{ margin: "0 0 4px", fontSize: 12, color: "#6B7280" }}>
+                        <p style={{ margin: "0 0 4px", fontSize: 14, color: "#6B7280" }}>
                           😤 {ex.emotion} → <em style={{ color: "#374151" }}>« <AnnotatedText text={ex.exemple_phrase} annotations={ann} /> »</em>
                         </p>
-                        <p style={{ margin: 0, fontSize: 11, color: "#888" }}>Ce que ça exprime vraiment : {ex.traduction_emotion}</p>
+                        <p style={{ margin: 0, fontSize: 13, color: "#888" }}>Ce que ça exprime vraiment : {ex.traduction_emotion}</p>
                       </div>
                     ))}
                   </div>
                 )}
                 {s.conseil && (
                   <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "8px 12px" }}>
-                    <p style={{ margin: 0, fontSize: 12 }}>💡 {s.conseil}</p>
+                    <p style={{ margin: 0, fontSize: 14 }}>💡 {s.conseil}</p>
                   </div>
                 )}
               </div>
@@ -884,8 +902,8 @@ function STFauxAmisCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 14, lineHeight: 1.6 }}>{data.intro}</p>
-      {ann.length > 0 && <p style={{ fontSize: 11, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur sens québécois</p>}
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 14, lineHeight: 1.6 }}>{data.intro}</p>
+      {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur sens québécois</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {data.faux_amis.map((fa, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -897,18 +915,18 @@ function STFauxAmisCard({ data }) {
             </div>
             <div style={{ padding: "12px 14px" }}>
               {/* Scénario */}
-              <p style={{ margin: "0 0 10px", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>
+              <p style={{ margin: "0 0 10px", fontSize: 15, color: "#374151", lineHeight: 1.6 }}>
                 <strong>📍 Scénario :</strong> <AnnotatedText text={fa.scenario} annotations={ann} />
               </p>
               {/* Sens Québec */}
               {!revealed[`qc_${i}`] ? (
                 <button onClick={() => setRevealed(r => ({ ...r, [`qc_${i}`]: true }))}
-                  style={{ fontSize: 12, color: "#065F46", background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
+                  style={{ fontSize: 14, color: "#065F46", background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
                   🇨🇦 Ce que ça veut dire au Québec ?
                 </button>
               ) : (
                 <div style={{ background: "#ECFDF5", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
-                  <p style={{ margin: 0, fontSize: 13, color: "#065F46", fontWeight: 600 }}>
+                  <p style={{ margin: 0, fontSize: 15, color: "#065F46", fontWeight: 600 }}>
                     🇨🇦 Au Québec : {fa.sens_quebec}
                   </p>
                 </div>
@@ -916,12 +934,12 @@ function STFauxAmisCard({ data }) {
               {/* Sens France / malentendu */}
               {!revealed[`fr_${i}`] ? (
                 <button onClick={() => setRevealed(r => ({ ...r, [`fr_${i}`]: true }))}
-                  style={{ fontSize: 12, color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
+                  style={{ fontSize: 14, color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
                   🇫🇷 Et en France / le malentendu ?
                 </button>
               ) : (
                 <div style={{ background: "#FEF2F2", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
-                  <p style={{ margin: 0, fontSize: 13, color: "#DC2626" }}>
+                  <p style={{ margin: 0, fontSize: 15, color: "#DC2626" }}>
                     🇫🇷 {fa.sens_france_ou_malentendu}
                   </p>
                 </div>
@@ -929,7 +947,7 @@ function STFauxAmisCard({ data }) {
               {/* Astuce mémo — visible après révélation */}
               {revealed[`qc_${i}`] && revealed[`fr_${i}`] && fa.astuce && (
                 <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "7px 12px" }}>
-                  <p style={{ margin: 0, fontSize: 12 }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
+                  <p style={{ margin: 0, fontSize: 14 }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
                 </div>
               )}
             </div>
@@ -960,49 +978,36 @@ UNIQUEMENT JSON, sans markdown.`,
 Inclus "annotations": 5-8 expressions québécoises des dialogues avec leur définition courte.
 JSON: {"titre":string,"intro":string,"situations":[{"ce_que_dit_martin":string,"reactions":[{"type":"ideal"|"correct"|"mauvais","reponse":string,"pourquoi":string}],"lecon":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-    simulation: `Tu es expert du small talk québécois à la pause café. Génère une simulation de conversation entre Martin (collègue québécois) et un immigrant francophone. 8 tours de conversation. Martin dit quelque chose en québécois authentique, l'élève choisit parmi 3 réponses (A, B, C). Une seule est idéale, une est correcte mais imparfaite, une est à éviter (trop formelle, maladroite ou hors sujet). Les répliques de Martin doivent utiliser le québécois vivant : t'as, j'sais, c'est-tu, là là, faque, t'sais veux-tu dire, pantoute, etc.
-Inclus "annotations": 6-8 expressions québécoises du texte avec définition courte.
+    simulation: `Tu es expert du small talk québécois à la pause café. Génère une simulation de conversation entre Martin (collègue québécois) et un immigrant francophone. Exactement 6 tours. Martin dit quelque chose en québécois authentique, l'élève choisit parmi 3 réponses (A, B, C). Une seule est idéale, une est correcte mais imparfaite, une est à éviter. Garde toutes les répliques COURTES (1-2 phrases max). Martin utilise : t'as, j'sais, c'est-tu, là là, faque, pantoute, etc.
+Inclus "annotations": 5 expressions québécoises avec définition courte.
 JSON: {"titre":string,"intro":string,"scenarios":[{"ce_que_dit_martin":string,"contexte":string,"choix":[{"lettre":"A"|"B"|"C","texte":string}],"bonne_reponse":"A"|"B"|"C","explication":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
     lunch: `Tu es expert de la culture québécoise au bureau. Génère un guide complet sur le lunch (dîner) au bureau québécois — un univers social à part entière pour un immigrant. Couvre : la boîte à lunch et ce qu'on y met typiquement, les commandes collectives (sushis, pho, sandwichs), les conversations de table, les expressions autour de la nourriture, et les codes sociaux (on s'invite, on partage, on commente ce que l'autre mange...). Inclus aussi un lexique des mots québécois liés au lunch (dîner vs lunch, le boss paie la traite, commander en masse, le popote roulante, etc.). 4 sections distinctes.
 Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-    sacres: `Tu es expert de la langue et de la culture québécoise. Génère un guide complet sur les sacres québécois utilisés comme intensificateurs émotionnels dans la vie quotidienne et au travail. IMPORTANT : traite les sacres comme un phénomène linguistique et culturel fascinant, pas comme des grossièretés choquantes. Couvre : 1) Les principaux sacres et leur origine religieuse (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime, viarge, baptême) avec leurs formes atténuées utilisées en contexte mixte ; 2) La gamme d'émotions qu'ils expriment selon le ton (admiration, frustration, surprise, emphase positive) avec exemples concrets ; 3) Les règles sociales implicites (avec qui, dans quel contexte, quand s'abstenir) ; 4) Des scénarios de chantier, bureau et pause café pour illustrer l'usage naturel.
-Inclus "annotations": les formes atténuées et expressions clés avec leur définition.
+    sacres: `Tu es expert de la langue québécoise. Génère un guide sur les sacres québécois comme intensificateurs émotionnels. IMPORTANT : traite-les comme un phénomène linguistique fascinant. Génère exactement 3 sections courtes : 1) Origine et formes (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime) avec forme atténuée et 2 exemples courts chacun ; 2) Émotions exprimées selon le ton (admiration, frustration, surprise) avec 2 exemples courts ; 3) Règles sociales (avec qui, quand s'abstenir) avec conseil. Garde TOUS les textes très courts (1-2 phrases max).
+Inclus "annotations": 6 formes atténuées avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"exemples":[{"sacre":string,"forme_attenuation":string,"emotion":string,"exemple_phrase":string,"traduction_emotion":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-    faux_amis: `Tu es expert de la langue québécoise et des différences avec le français de France, mais aussi des erreurs fréquentes des francophones venant d'autres langues (espagnol, anglais, arabe...). Génère 12 faux amis et pièges linguistiques — des mots ou constructions qui créent des malentendus hilarants ou embarrassants. Inclus OBLIGATOIREMENT :
-1. S'ennuyer de quelqu'un (calque de "I miss you" au QC = tu me manques, alors qu'en France "je m'ennuie" = trouver le temps long)
-2. "J'ai envie de toi" (erreur des hispanophones : calque de "tener envidia" = envier quelqu'un, mais en français = désir amoureux/sexuel — catastrophique en contexte de classe ou de bureau !)
-3. Gosser (agacer au QC / les gosses = enfants en France)
-4. Char (voiture au QC / tank en France)
-5. Dépanneur (épicerie de quartier au QC / technicien en France)
-6. Pogner (attraper/être populaire au QC / connotation vulgaire en France)
-7. Magasiner (faire du shopping au QC / inconnu en France)
-8. Brunante (tombée de la nuit au QC)
-9. Clavarder (chatter au QC)
-10. Niaiseux (idiot au QC)
-11. Être game (être partant au QC)
-12. Blé d'Inde (maïs au QC)
-Pour chaque entrée : un mini-scénario réel où la confusion se produit, le sens correct, le malentendu créé, et une astuce pour retenir la différence.
-Inclus "annotations": les 12 termes avec leur sens correct en définition courte.
+    faux_amis: `Tu es expert de la langue québécoise. Génère 8 faux amis et pièges linguistiques qui créent des malentendus hilarants ou embarrassants. Inclus OBLIGATOIREMENT ces 3 premiers : 1) S'ennuyer de quelqu'un (I miss you au QC / trouver le temps long en France) ; 2) "J'ai envie de toi" (erreur hispanophone : tener envidia = envier, mais en français = désir amoureux — catastrophique !) ; 3) Gosser (agacer au QC / les gosses = enfants en France). Puis choisis 5 parmi : char, dépanneur, pogner, magasiner, brunante, clavarder, niaiseux, être game, blé d'Inde. Garde les textes COURTS (1-2 phrases max par champ).
+Inclus "annotations": les 8 termes avec leur sens québécois en définition courte.
 JSON: {"titre":string,"intro":string,"faux_amis":[{"mot":string,"scenario":string,"sens_quebec":string,"sens_france_ou_malentendu":string,"astuce":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-    valeurs: `Tu es expert de la culture québécoise et des codes sociaux implicites au travail. Génère 10 scénarios de faux pas culturels autour des VALEURS NON DITES du Québec. Couvre OBLIGATOIREMENT ces thèmes :
+    valeurs: `Tu es expert de la culture québécoise et des codes sociaux implicites au travail. Génère 7 scénarios de faux pas culturels autour des VALEURS NON DITES du Québec. Choisis parmi ces thèmes :
 1. La modestie obligatoire (ne pas se vanter, ne pas "flasher")
-2. L'égalitarisme (tout le monde se tutoie, le boss mange à la même table, appeler son patron par son prénom)
-3. Le rapport particulier à l'argent ("né pour un petit pain", gêne de parler de salaire mais curiosité quand même)
-4. L'humour autodérisoire comme code de bienvenue et de confiance
-5. Le débat souverainiste/fédéraliste — comment esquiver poliment sans prendre position (règle d'or : écouter, jamais initier)
-6. La laïcité et la religion — sujet sensible post-Révolution tranquille, la religion est une affaire privée au bureau
-7. RESTER TARD AU BUREAU : contrairement à la France ou d'autres cultures, partir à l'heure n'est PAS un manque d'engagement — rester tard signifie au contraire qu'on est mal organisé ou qu'on a une vie personnelle sacrifiée. Le présentéisme est mal vu au Québec.
-8. Les réunions québécoises : le consensus mou, personne ne dit non directement, "c'est le fun" peut vouloir dire qu'on n'est pas du tout convaincu — décoder le oui poli
-9. Les évaluations de performance : la critique est très indirecte au Québec, "c'est correct" peut signifier que c'est loin d'être correct — apprendre à lire entre les lignes
-10. Se démarquer vs appartenir au groupe : l'initiative individuelle trop visible peut être mal perçue, la solidarité collective prime sur le vedettariat personnel
-Pour chaque scénario : ce que fait l'immigrant (sans mauvaise intention), ce que ça produit chez les collègues québécois (sans qu'ils le disent), ce qui se passe vraiment, et comment s'en sortir.
-Inclus "annotations": 10-12 expressions québécoises clés avec définition courte.
-JSON: {"titre":string,"intro":string,"scenarios":[{"situation":string,"ce_que_fait_immigrant":string,"ce_que_pensent_les_quebecois":string,"ce_qui_se_passe_vraiment":string,"comment_sen_sortir":string,"valeur_en_jeu":string}],"annotations":[{"terme":string,"definition":string}]}
+2. L'égalitarisme (tout le monde se tutoie, le boss mange à la même table)
+3. Le rapport à l'argent ("né pour un petit pain", gêne de parler de salaire)
+4. L'humour autodérisoire comme code de bienvenue
+5. Le débat souverainiste/fédéraliste — esquiver poliment sans prendre position
+6. La laïcité et la religion — sujet sensible post-Révolution tranquille
+7. RESTER TARD AU BUREAU : partir à l'heure n'est PAS un manque d'engagement au Québec — rester tard = mal organisé
+8. Le consensus mou en réunion — "c'est le fun" peut vouloir dire qu'on n'est pas convaincu
+9. Les évaluations indirectes — "c'est correct" peut signifier que c'est loin d'être correct
+Pour chaque scénario : ce que fait l'immigrant (sans mauvaise intention), ce que ça produit chez les collègues québécois (sans qu'ils le disent), ce qui se passe vraiment, et comment s'en sortir. Garde les textes COURTS (2-3 phrases max par champ).
+Inclus "annotations": 8 expressions québécoises clés avec définition courte.
+Inclus "reference": {"titre":"Le Code Québec","auteur":"Jean-Marc Léger, Jacques Nantel et Pierre Duhamel","lien":"https://editionshomme.groupelivre.com/products/le-code-quebec-1?variant=42637639287041","description":"Pour aller plus loin sur les valeurs québécoises"}.
+JSON: {"titre":string,"intro":string,"scenarios":[{"situation":string,"ce_que_fait_immigrant":string,"ce_que_pensent_les_quebecois":string,"ce_qui_se_passe_vraiment":string,"comment_sen_sortir":string,"valeur_en_jeu":string}],"annotations":[{"terme":string,"definition":string}],"reference":{"titre":string,"auteur":string,"lien":string,"description":string}}
 UNIQUEMENT JSON, sans markdown.`,
     expressions: `Tu es expert de la langue imagée québécoise. Génère 8 expressions imagées québécoises courantes dans les conversations de bureau et de pause café — des expressions métaphoriques ou idiomatiques qu'un francophone de France ou d'ailleurs ne comprend pas au sens littéral.
 Pour chaque expression : un scénario réel où quelqu'un entend cette expression sans la comprendre, ce qu'il pense que ça veut dire (l'interprétation littérale ou erronée), ce que ça veut dire vraiment, et un exemple de comment la réutiliser soi-même.
@@ -1055,9 +1060,9 @@ UNIQUEMENT JSON, sans markdown.`
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       {/* Header */}
       <div style={{ background: "#2D1B5E", padding: "18px 16px", position: "relative", textAlign: "center" }}>
-        <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 12 }}>← Accueil</button>
+        <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
         <h1 style={{ margin: 0, color: "white", fontSize: 20, fontWeight: 800 }}>☕ Small talk québécois</h1>
-        <p style={{ margin: "5px 0 0", color: "#C4B5FD", fontSize: 12 }}>Pause café, lunch, ascenseur, couloir… ne sois jamais mal pris !</p>
+        <p style={{ margin: "5px 0 0", color: "#C4B5FD", fontSize: 14 }}>Pause café, lunch, ascenseur, couloir… ne sois jamais mal pris !</p>
       </div>
 
       {/* Onglets */}
@@ -1067,7 +1072,7 @@ UNIQUEMENT JSON, sans markdown.`
             const isActive = activeSTModule?.id === mod.id;
             return (
               <button key={mod.id} onClick={() => loadSTModule(mod)}
-                style={{ padding: "12px 13px 10px", background: "none", border: "none", borderBottom: isActive ? `3px solid ${ST_COLOR}` : "3px solid transparent", cursor: "pointer", fontSize: 12, fontWeight: isActive ? 700 : 500, color: isActive ? ST_COLOR : "#666", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.15s" }}>
+                style={{ padding: "12px 13px 10px", background: "none", border: "none", borderBottom: isActive ? `3px solid ${ST_COLOR}` : "3px solid transparent", cursor: "pointer", fontSize: 14, fontWeight: isActive ? 700 : 500, color: isActive ? ST_COLOR : "#666", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.15s" }}>
                 <span>{mod.icon}</span><span>{mod.label}</span>
               </button>
             );
@@ -1081,7 +1086,7 @@ UNIQUEMENT JSON, sans markdown.`
           <div>
             <div style={{ background: "white", borderRadius: 14, padding: 18, marginBottom: 16, border: `1px solid ${ST_COLOR}20` }}>
               <p style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 600, color: ST_COLOR }}>Pourquoi c'est difficile ?</p>
-              <p style={{ margin: 0, fontSize: 13, color: "#666", lineHeight: 1.7 }}>
+              <p style={{ margin: 0, fontSize: 15, color: "#666", lineHeight: 1.7 }}>
                 Pause café, lunch, ascenseur, couloir… Ces petits moments du quotidien sont souvent les plus difficiles à naviguer en québécois. Le rythme est rapide, les références sont locales, et personne ne t'explique les règles. Ce module est là pour que tu ne sois jamais mal pris.
               </p>
             </div>
@@ -1092,9 +1097,9 @@ UNIQUEMENT JSON, sans markdown.`
                   onMouseEnter={e => e.currentTarget.style.boxShadow = `0 4px 16px ${ST_COLOR}20`}
                   onMouseLeave={e => e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)"}>
                   <div style={{ fontSize: 24, marginBottom: 6 }}>{mod.icon}</div>
-                  <div style={{ fontWeight: 700, fontSize: 13, color: ST_COLOR, marginBottom: 3 }}>{mod.label}</div>
-                  <div style={{ fontSize: 11, color: "#888", lineHeight: 1.4 }}>{mod.desc}</div>
-                  {mod.id === "simulation" && <div style={{ marginTop: 8, fontSize: 10, background: ST_BG, color: ST_COLOR, borderRadius: 10, padding: "2px 8px", display: "inline-block", fontWeight: 600 }}>8 TOURS · QCM</div>}
+                  <div style={{ fontWeight: 700, fontSize: 15, color: ST_COLOR, marginBottom: 3 }}>{mod.label}</div>
+                  <div style={{ fontSize: 13, color: "#888", lineHeight: 1.4 }}>{mod.desc}</div>
+                  {mod.id === "simulation" && <div style={{ marginTop: 8, fontSize: 12, background: ST_BG, color: ST_COLOR, borderRadius: 10, padding: "2px 8px", display: "inline-block", fontWeight: 600 }}>6 TOURS · QCM</div>}
                 </button>
               ))}
             </div>
@@ -1108,8 +1113,8 @@ UNIQUEMENT JSON, sans markdown.`
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 18 }}>{activeSTModule.icon}</span>
                 <div>
-                  <div style={{ fontWeight: 700, color: ST_COLOR, fontSize: 13 }}>{activeSTModule.label}</div>
-                  <div style={{ fontSize: 11, color: "#888" }}>{activeSTModule.desc}</div>
+                  <div style={{ fontWeight: 700, color: ST_COLOR, fontSize: 15 }}>{activeSTModule.label}</div>
+                  <div style={{ fontSize: 13, color: "#888" }}>{activeSTModule.desc}</div>
                 </div>
               </div>
               {/* 🔄 Bouton réservé au mode Enseignante */}
@@ -1119,10 +1124,10 @@ UNIQUEMENT JSON, sans markdown.`
               {activeSTModule.id === "simulation" && content && !loading && !error && (
                 <SimulationQCM data={content} />
               )}
-              {loading && <div style={{ textAlign: "center", padding: "18px 0" }}><LoadingDots color={ST_COLOR} /><p style={{ color: "#888", fontSize: 12, marginTop: 6 }}>Génération en cours… (jusqu'à 3 tentatives si le serveur est occupé)</p></div>}
+              {loading && <div style={{ textAlign: "center", padding: "18px 0" }}><LoadingDots color={ST_COLOR} /><p style={{ color: "#888", fontSize: 14, marginTop: 6 }}>Génération en cours… (jusqu'à 3 tentatives si le serveur est occupé)</p></div>}
               {error && !loading && (
                 <div style={{ textAlign: "center", padding: 18 }}>
-                  <p style={{ fontSize: 13, color: "#c0392b", marginBottom: 10 }}>{error}</p>
+                  <p style={{ fontSize: 15, color: "#c0392b", marginBottom: 10 }}>{error}</p>
                 </div>
               )}
               {/* Écran d'attente si pas de contenu */}
@@ -1130,7 +1135,7 @@ UNIQUEMENT JSON, sans markdown.`
                 <div style={{ textAlign: "center", padding: "28px 16px" }}>
                   <div style={{ fontSize: 48, marginBottom: 14 }}>☕</div>
                   <p style={{ fontWeight: 900, fontSize: 15, color: ST_COLOR, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Contenu bientôt disponible</p>
-                  <p style={{ fontSize: 13, color: "#888", lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi.<br/>Reviens dans quelques instants !</p>
+                  <p style={{ fontSize: 15, color: "#888", lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi.<br/>Reviens dans quelques instants !</p>
                 </div>
               )}
               {content && !loading && !error && activeSTModule.id !== "simulation" && (
@@ -1147,11 +1152,11 @@ UNIQUEMENT JSON, sans markdown.`
             </div>
 
             <div style={{ marginTop: 14 }}>
-              <p style={{ fontSize: 11, color: "#999", marginBottom: 7 }}>Explorer aussi :</p>
+              <p style={{ fontSize: 13, color: "#999", marginBottom: 7 }}>Explorer aussi :</p>
               <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
                 {ST_MODULES.filter(m => m.id !== activeSTModule.id).map(m => (
                   <button key={m.id} onClick={() => loadSTModule(m)}
-                    style={{ background: "white", border: `1px solid ${ST_COLOR}30`, borderRadius: 20, padding: "5px 11px", cursor: "pointer", fontSize: 12, color: ST_COLOR, fontWeight: 500 }}>
+                    style={{ background: "white", border: `1px solid ${ST_COLOR}30`, borderRadius: 20, padding: "5px 11px", cursor: "pointer", fontSize: 14, color: ST_COLOR, fontWeight: 500 }}>
                     {m.icon} {m.label}
                   </button>
                 ))}
@@ -1169,7 +1174,7 @@ function STLunchCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 13, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
+      <p style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.sections.map((s, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -1183,20 +1188,20 @@ function STLunchCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}>{s.contenu}</p>
+                <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}>{s.contenu}</p>
                 {s.expressions?.length > 0 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 10 }}>
                     {s.expressions.map((ex, j) => (
                       <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "8px 12px" }}>
-                        <span style={{ fontWeight: 700, color: ST_COLOR, fontSize: 13 }}>« {ex.expression} »</span>
-                        <span style={{ fontSize: 12, color: "#555", marginLeft: 8 }}>— {ex.explication}</span>
+                        <span style={{ fontWeight: 700, color: ST_COLOR, fontSize: 15 }}>« {ex.expression} »</span>
+                        <span style={{ fontSize: 14, color: "#555", marginLeft: 8 }}>— {ex.explication}</span>
                       </div>
                     ))}
                   </div>
                 )}
                 {s.conseil && (
                   <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "7px 10px" }}>
-                    <p style={{ margin: 0, fontSize: 12 }}>💡 {s.conseil}</p>
+                    <p style={{ margin: 0, fontSize: 14 }}>💡 {s.conseil}</p>
                   </div>
                 )}
               </div>
@@ -1214,20 +1219,20 @@ function LectureGrammaireCard({ data, color }) {
   return (
     <div>
       <h3 style={{ color, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ color: "#888", fontSize: 12, marginBottom: 14 }}>📅 {data.periode_precise}</p>
+      <p style={{ color: "#888", fontSize: 14, marginBottom: 14 }}>📅 {data.periode_precise}</p>
 
       {/* Encadré notion */}
       <div style={{ background: HG_BG, border: `1px solid ${color}30`, borderRadius: 12, padding: 14, marginBottom: 16 }}>
         <button onClick={() => setShowNotion(s => !s)} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-          <span style={{ fontWeight: 700, color, fontSize: 13 }}>✏️ Notion : {data.notion_titre}</span>
-          <span style={{ color, fontSize: 13 }}>{showNotion ? "▲" : "▼"}</span>
+          <span style={{ fontWeight: 700, color, fontSize: 15 }}>✏️ Notion : {data.notion_titre}</span>
+          <span style={{ color, fontSize: 15 }}>{showNotion ? "▲" : "▼"}</span>
         </button>
         {showNotion && (
           <div style={{ marginTop: 10 }}>
-            <p style={{ margin: "0 0 10px", fontSize: 13, color: "#444", lineHeight: 1.6 }}>{data.notion_explication}</p>
+            <p style={{ margin: "0 0 10px", fontSize: 15, color: "#444", lineHeight: 1.6 }}>{data.notion_explication}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {data.notion_exemples.map((ex, i) => (
-                <div key={i} style={{ background: "white", borderRadius: 8, padding: "7px 10px", fontSize: 13, color, fontStyle: "italic" }}>« {ex} »</div>
+                <div key={i} style={{ background: "white", borderRadius: 8, padding: "7px 10px", fontSize: 15, color, fontStyle: "italic" }}>« {ex} »</div>
               ))}
             </div>
           </div>
@@ -1248,12 +1253,12 @@ function LectureGrammaireCard({ data, color }) {
       {/* Repère historique */}
       {data.repere_historique && (
         <div style={{ background: "#F8F8F8", borderRadius: 10, padding: 12, marginBottom: 16 }}>
-          <p style={{ margin: 0, fontSize: 12, color: "#555" }}>🏛️ <strong>Repère :</strong> {data.repere_historique}</p>
+          <p style={{ margin: 0, fontSize: 14, color: "#555" }}>🏛️ <strong>Repère :</strong> {data.repere_historique}</p>
         </div>
       )}
 
       {/* Exercices d'application */}
-      <h4 style={{ color, marginBottom: 10, fontSize: 13 }}>✏️ À toi de jouer :</h4>
+      <h4 style={{ color, marginBottom: 10, fontSize: 15 }}>✏️ À toi de jouer :</h4>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.exercices.map((ex, i) => (
           <ExerciceItem key={i} exercice={ex} color={color} />
@@ -1267,15 +1272,15 @@ function ExerciceItem({ exercice, color }) {
   const [revealed, setRevealed] = useState(false);
   return (
     <div style={{ background: "white", border: `1px solid ${color}25`, borderRadius: 10, padding: 12 }}>
-      <p style={{ margin: "0 0 8px", fontSize: 13, color: "#1F2937" }}>{exercice.consigne}</p>
+      <p style={{ margin: "0 0 8px", fontSize: 15, color: "#1F2937" }}>{exercice.consigne}</p>
       {!revealed ? (
-        <button onClick={() => setRevealed(true)} style={{ fontSize: 12, color, background: "none", border: `1px solid ${color}40`, borderRadius: 16, padding: "4px 12px", cursor: "pointer" }}>
+        <button onClick={() => setRevealed(true)} style={{ fontSize: 14, color, background: "none", border: `1px solid ${color}40`, borderRadius: 16, padding: "4px 12px", cursor: "pointer" }}>
           Voir la réponse
         </button>
       ) : (
         <div style={{ background: HG_BG, borderRadius: 8, padding: "8px 12px" }}>
-          <p style={{ margin: "0 0 4px", fontSize: 13, color, fontWeight: 600 }}>✓ {exercice.reponse}</p>
-          {exercice.explication && <p style={{ margin: 0, fontSize: 12, color: "#666" }}>{exercice.explication}</p>}
+          <p style={{ margin: "0 0 4px", fontSize: 15, color, fontWeight: 600 }}>✓ {exercice.reponse}</p>
+          {exercice.explication && <p style={{ margin: 0, fontSize: 14, color: "#666" }}>{exercice.explication}</p>}
         </div>
       )}
     </div>
@@ -1292,11 +1297,11 @@ function TrousGrammaireCard({ data, color }) {
   return (
     <div>
       <h3 style={{ color, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ color: "#888", fontSize: 12, marginBottom: 14 }}>📅 {data.periode_precise}</p>
+      <p style={{ color: "#888", fontSize: 14, marginBottom: 14 }}>📅 {data.periode_precise}</p>
 
       <div style={{ background: HG_BG, border: `1px solid ${color}30`, borderRadius: 12, padding: 14, marginBottom: 16 }}>
-        <p style={{ margin: "0 0 8px", fontWeight: 700, color, fontSize: 13 }}>✏️ Notion : {data.notion_titre}</p>
-        <p style={{ margin: 0, fontSize: 13, color: "#444", lineHeight: 1.6 }}>{data.notion_explication}</p>
+        <p style={{ margin: "0 0 8px", fontWeight: 700, color, fontSize: 15 }}>✏️ Notion : {data.notion_titre}</p>
+        <p style={{ margin: 0, fontSize: 15, color: "#444", lineHeight: 1.6 }}>{data.notion_explication}</p>
       </div>
 
       <div style={{ background: "white", border: `1px solid ${color}20`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
@@ -1334,11 +1339,11 @@ function TrousGrammaireCard({ data, color }) {
         <div>
           <div style={{ background: score === data.trous.length ? "#ECFDF5" : "#FEF3E2", border: `1px solid ${score === data.trous.length ? "#065F46" : color}40`, borderRadius: 12, padding: "12px 16px", marginBottom: 14, textAlign: "center" }}>
             <span style={{ fontSize: 20, fontWeight: 800, color: score === data.trous.length ? "#065F46" : color }}>{score}/{data.trous.length}</span>
-            <span style={{ fontSize: 13, color: "#555", marginLeft: 8 }}>bonnes réponses</span>
+            <span style={{ fontSize: 15, color: "#555", marginLeft: 8 }}>bonnes réponses</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
             {data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() !== t.reponse.toLowerCase()).map(t => (
-              <div key={t.id} style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "8px 12px", fontSize: 12 }}>
+              <div key={t.id} style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "8px 12px", fontSize: 14 }}>
                 <strong style={{ color: "#92400E" }}>Réponse attendue : {t.reponse}</strong>
                 {t.explication && <p style={{ margin: "3px 0 0", color: "#78350F" }}>{t.explication}</p>}
               </div>
@@ -1374,8 +1379,8 @@ function HGQuizCard({ data, color, onRetry }) {
             <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
               {q.choix.map(c => (
                 <button key={c.lettre} onClick={() => !submitted && setAnswers(a => ({ ...a, [idx]: c.lettre }))}
-                  style={{ ...cs(q, idx, c.lettre), borderRadius: 8, padding: "10px 12px", cursor: submitted ? "default" : "pointer", textAlign: "left", fontSize: 13, display: "flex", gap: 10, alignItems: "flex-start", width: "100%" }}>
-                  <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, flexShrink: 0, background: answers[idx] === c.lettre ? color : "#E5E7EB", color: answers[idx] === c.lettre ? "white" : "#6B7280" }}>{c.lettre}</span>
+                  style={{ ...cs(q, idx, c.lettre), borderRadius: 8, padding: "10px 12px", cursor: submitted ? "default" : "pointer", textAlign: "left", fontSize: 15, display: "flex", gap: 10, alignItems: "flex-start", width: "100%" }}>
+                  <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, flexShrink: 0, background: answers[idx] === c.lettre ? color : "#E5E7EB", color: answers[idx] === c.lettre ? "white" : "#6B7280" }}>{c.lettre}</span>
                   <span>{c.texte}</span>
                   {submitted && c.lettre === q.bonne_reponse && <span style={{ marginLeft: "auto" }}>✅</span>}
                 </button>
@@ -1383,7 +1388,7 @@ function HGQuizCard({ data, color, onRetry }) {
             </div>
             {submitted && (
               <div style={{ padding: "10px 14px 14px", background: answers[idx] === q.bonne_reponse ? "#F0FDF4" : "#FFF7ED" }}>
-                <p style={{ margin: 0, fontSize: 13, color: "#374151" }}>{q.explication}</p>
+                <p style={{ margin: 0, fontSize: 15, color: "#374151" }}>{q.explication}</p>
               </div>
             )}
           </div>
@@ -1400,7 +1405,7 @@ function HGQuizCard({ data, color, onRetry }) {
             <div style={{ background: HG_BG, border: `1px solid ${color}40`, borderRadius: 12, padding: "14px 18px", marginBottom: 12, textAlign: "center" }}>
               <div style={{ fontSize: 28, fontWeight: 800, color }}>{score}/{total}</div>
             </div>
-            <button onClick={onRetry} style={{ width: "100%", padding: "10px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>🔄 Nouveau quiz</button>
+            <button onClick={onRetry} style={{ width: "100%", padding: "10px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 15, fontWeight: 600, cursor: "pointer" }}>🔄 Nouveau quiz</button>
           </div>
         )}
       </div>
@@ -1509,16 +1514,16 @@ UNIQUEMENT JSON, sans markdown.`;
   return (
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ background: "#3D1F0F", padding: "18px 16px", position: "relative", textAlign: "center" }}>
-        <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#D4A574", cursor: "pointer", fontSize: 12 }}>← Accueil</button>
+        <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#D4A574", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
         <h1 style={{ margin: 0, color: "white", fontSize: 20, fontWeight: 800 }}>📜 Histoire & Grammaire</h1>
-        <p style={{ margin: "5px 0 0", color: "#D4A574", fontSize: 12 }}>Apprendre la grammaire à travers l'histoire du Québec</p>
+        <p style={{ margin: "5px 0 0", color: "#D4A574", fontSize: 14 }}>Apprendre la grammaire à travers l'histoire du Québec</p>
       </div>
 
       {/* Sélecteur de niveau */}
       <div style={{ background: "white", borderBottom: "1px solid #E0E0E0", padding: "10px 16px", display: "flex", justifyContent: "center", gap: 6 }}>
         {NIVEAUX.map(n => (
           <button key={n.id} onClick={() => setNiveau(n.id)}
-            style={{ padding: "6px 14px", borderRadius: 20, border: `1.5px solid ${niveau === n.id ? HG_COLOR : "#E5E7EB"}`, background: niveau === n.id ? HG_COLOR : "white", color: niveau === n.id ? "white" : "#666", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+            style={{ padding: "6px 14px", borderRadius: 20, border: `1.5px solid ${niveau === n.id ? HG_COLOR : "#E5E7EB"}`, background: niveau === n.id ? HG_COLOR : "white", color: niveau === n.id ? "white" : "#666", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
             {n.label}
           </button>
         ))}
@@ -1529,11 +1534,11 @@ UNIQUEMENT JSON, sans markdown.`;
         {/* Frise chronologique */}
         {!epoque && (
           <div>
-            <p style={{ fontSize: 13, color: "#666", marginBottom: 16, textAlign: "center" }}>
+            <p style={{ fontSize: 15, color: "#666", marginBottom: 16, textAlign: "center" }}>
               Chaque époque historique te fait travailler une notion de grammaire précise — inspiré de la structure de <strong>Récitus</strong>, un site de référence en histoire du Québec.
             </p>
             {!isPremium() && (
-              <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: "10px 14px", marginBottom: 14, fontSize: 12, color: "#92400E" }}>
+              <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: "10px 14px", marginBottom: 14, fontSize: 14, color: "#92400E" }}>
                 🎁 La première section est gratuite. Les 6 autres font partie de l'<strong>accès complet à 19 $</strong>.
               </div>
             )}
@@ -1551,11 +1556,11 @@ UNIQUEMENT JSON, sans markdown.`;
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontWeight: 700, fontSize: 14, color: locked ? "#999" : ep.color }}>{ep.label}</div>
-                      <div style={{ fontSize: 11, color: "#999", marginBottom: 4 }}>{ep.periode}</div>
+                      <div style={{ fontSize: 13, color: "#999", marginBottom: 4 }}>{ep.periode}</div>
                       <div style={{ display: "inline-flex", alignItems: "center", gap: 4, background: locked ? "#F0EFED" : ep.bg, borderRadius: 10, padding: "2px 8px" }}>
-                        <span style={{ fontSize: 11, color: locked ? "#aaa" : ep.color, fontWeight: 600 }}>✏️ {n.notion}</span>
+                        <span style={{ fontSize: 13, color: locked ? "#aaa" : ep.color, fontWeight: 600 }}>✏️ {n.notion}</span>
                       </div>
-                      {locked && <span style={{ display: "block", fontSize: 10, color: "#bbb", marginTop: 4 }}>🔒 Accès complet requis</span>}
+                      {locked && <span style={{ display: "block", fontSize: 12, color: "#bbb", marginTop: 4 }}>🔒 Accès complet requis</span>}
                     </div>
                     {i < EPOQUES.length - 1 && <div style={{ position: "absolute", left: 38, bottom: -10, width: 2, height: 10, background: "#E5E7EB" }} />}
                   </button>
@@ -1575,14 +1580,14 @@ UNIQUEMENT JSON, sans markdown.`;
           <div ref={contentRef}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
               <button onClick={() => { setEpoque(null); setContent(null); setMode(null); }}
-                style={{ background: "none", border: "none", color: epoque.color, fontSize: 12, cursor: "pointer", padding: 0 }}>← Époques</button>
+                style={{ background: "none", border: "none", color: epoque.color, fontSize: 14, cursor: "pointer", padding: 0 }}>← Époques</button>
               <div style={{ display: "flex", gap: 6 }}>
                 <button onClick={() => loadContenu(epoque, "contenu")} disabled={loading}
-                  style={{ fontSize: 11, padding: "5px 11px", borderRadius: 16, border: "none", cursor: loading ? "not-allowed" : "pointer", background: mode === "contenu" ? epoque.color : "white", color: mode === "contenu" ? "white" : epoque.color, fontWeight: 600, border: `1px solid ${epoque.color}40` }}>
+                  style={{ fontSize: 13, padding: "5px 11px", borderRadius: 16, border: "none", cursor: loading ? "not-allowed" : "pointer", background: mode === "contenu" ? epoque.color : "white", color: mode === "contenu" ? "white" : epoque.color, fontWeight: 600, border: `1px solid ${epoque.color}40` }}>
                   📖 {(epoque.notions[niveau] || epoque.notions["b1b2"]).format === "trous" ? "Texte à trous" : "Lecture"}
                 </button>
                 <button onClick={() => loadContenu(epoque, "quiz")} disabled={loading}
-                  style={{ fontSize: 11, padding: "5px 11px", borderRadius: 16, cursor: loading ? "not-allowed" : "pointer", background: mode === "quiz" ? epoque.color : "white", color: mode === "quiz" ? "white" : epoque.color, fontWeight: 600, border: `1px solid ${epoque.color}40` }}>
+                  style={{ fontSize: 13, padding: "5px 11px", borderRadius: 16, cursor: loading ? "not-allowed" : "pointer", background: mode === "quiz" ? epoque.color : "white", color: mode === "quiz" ? "white" : epoque.color, fontWeight: 600, border: `1px solid ${epoque.color}40` }}>
                   🧩 Quiz
                 </button>
               </div>
@@ -1592,15 +1597,15 @@ UNIQUEMENT JSON, sans markdown.`;
               <span style={{ fontSize: 24 }}>{epoque.icon}</span>
               <div>
                 <div style={{ fontWeight: 700, color: epoque.color, fontSize: 15 }}>{epoque.label}</div>
-                <div style={{ fontSize: 11, color: "#888" }}>{epoque.periode} · niveau {NIVEAUX.find(n => n.id === niveau)?.label}</div>
+                <div style={{ fontSize: 13, color: "#888" }}>{epoque.periode} · niveau {NIVEAUX.find(n => n.id === niveau)?.label}</div>
               </div>
             </div>
 
             <div style={{ background: "white", borderRadius: 16, padding: 16, border: `1px solid ${epoque.color}15`, boxShadow: `0 2px 12px ${epoque.color}08` }}>
-              {loading && <div style={{ textAlign: "center", padding: "18px 0" }}><LoadingDots color={epoque.color} /><p style={{ color: "#888", fontSize: 12, marginTop: 6 }}>Génération en cours…</p></div>}
+              {loading && <div style={{ textAlign: "center", padding: "18px 0" }}><LoadingDots color={epoque.color} /><p style={{ color: "#888", fontSize: 14, marginTop: 6 }}>Génération en cours…</p></div>}
               {error && !loading && (
                 <div style={{ textAlign: "center", padding: 18 }}>
-                  <p style={{ fontSize: 13, color: "#c0392b", marginBottom: 10 }}>{error}</p>
+                  <p style={{ fontSize: 15, color: "#c0392b", marginBottom: 10 }}>{error}</p>
                 </div>
               )}
               {/* Écran d'attente si pas de contenu */}
@@ -1608,7 +1613,7 @@ UNIQUEMENT JSON, sans markdown.`;
                 <div style={{ textAlign: "center", padding: "28px 16px" }}>
                   <div style={{ fontSize: 48, marginBottom: 14 }}>📜</div>
                   <p style={{ fontWeight: 900, fontSize: 15, color: epoque.color, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Contenu bientôt disponible</p>
-                  <p style={{ fontSize: 13, color: "#888", lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi.<br/>Reviens dans quelques instants !</p>
+                  <p style={{ fontSize: 15, color: "#888", lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi.<br/>Reviens dans quelques instants !</p>
                 </div>
               )}
               {content && !loading && !error && mode === "quiz" && <HGQuizCard data={content} color={epoque.color} onRetry={() => loadContenu(epoque, "quiz")} />}
@@ -1647,9 +1652,9 @@ function AltPreview({ data, cacheKey }) {
       {data.expressions.map((e, i) => (
         <div key={i} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: i < data.expressions.length - 1 ? "1px solid #E5E7EB" : "none" }}>
           <strong style={{ color: "#1D4ED8" }}>« {e.expression} »</strong>
-          <span style={{ marginLeft: 8, fontSize: 11, background: "#EFF6FF", borderRadius: 10, padding: "1px 7px" }}>{e.registre}</span>
-          <p style={{ margin: "3px 0 0", color: "#555", fontSize: 12 }}>{e.contexte}</p>
-          <p style={{ margin: "2px 0 0", fontStyle: "italic", fontSize: 12 }}>« {e.exemple} »</p>
+          <span style={{ marginLeft: 8, fontSize: 13, background: "#EFF6FF", borderRadius: 10, padding: "1px 7px" }}>{e.registre}</span>
+          <p style={{ margin: "3px 0 0", color: "#555", fontSize: 14 }}>{e.contexte}</p>
+          <p style={{ margin: "2px 0 0", fontStyle: "italic", fontSize: 14 }}>« {e.exemple} »</p>
         </div>
       ))}
     </div>
@@ -1659,10 +1664,10 @@ function AltPreview({ data, cacheKey }) {
   if (data.versions) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
-      {data.situation && <p style={{ color: "#555", marginBottom: 10, fontSize: 12 }}>Situation : {data.situation}</p>}
+      {data.situation && <p style={{ color: "#555", marginBottom: 10, fontSize: 14 }}>Situation : {data.situation}</p>}
       {data.versions.map((v, i) => (
         <div key={i} style={{ marginBottom: 8 }}>
-          <strong style={{ fontSize: 12, textTransform: "uppercase", color: "#6B7280" }}>{v.registre}</strong>
+          <strong style={{ fontSize: 14, textTransform: "uppercase", color: "#6B7280" }}>{v.registre}</strong>
           <p style={{ margin: "2px 0 0", fontStyle: "italic" }}>« {v.texte} »</p>
         </div>
       ))}
@@ -1674,9 +1679,9 @@ function AltPreview({ data, cacheKey }) {
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
       <p style={{ fontWeight: 600, marginBottom: 6 }}>{data.concept}</p>
-      <p style={{ color: "#555", fontSize: 12, marginBottom: 8 }}>{data.comment_ca_marche}</p>
+      <p style={{ color: "#555", fontSize: 14, marginBottom: 8 }}>{data.comment_ca_marche}</p>
       {data.exemples?.map((e, i) => (
-        <p key={i} style={{ margin: "0 0 4px", fontSize: 12 }}>📌 {e.situation} → <em>« {e.reaction_typique_quebecoise} »</em></p>
+        <p key={i} style={{ margin: "0 0 4px", fontSize: 14 }}>📌 {e.situation} → <em>« {e.reaction_typique_quebecoise} »</em></p>
       ))}
     </div>
   );
@@ -1687,9 +1692,9 @@ function AltPreview({ data, cacheKey }) {
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
       {data.questions.map((q, i) => (
         <div key={i} style={{ marginBottom: 10, paddingBottom: 10, borderBottom: i < data.questions.length - 1 ? "1px solid #E5E7EB" : "none" }}>
-          <p style={{ fontWeight: 600, margin: "0 0 4px", fontSize: 12 }}>Q{i+1}. {q.question}</p>
+          <p style={{ fontWeight: 600, margin: "0 0 4px", fontSize: 14 }}>Q{i+1}. {q.question}</p>
           {q.choix.map(c => (
-            <p key={c.lettre} style={{ margin: "1px 0", fontSize: 11, color: c.lettre === q.bonne_reponse ? "#065F46" : "#555", fontWeight: c.lettre === q.bonne_reponse ? 700 : 400 }}>
+            <p key={c.lettre} style={{ margin: "1px 0", fontSize: 13, color: c.lettre === q.bonne_reponse ? "#065F46" : "#555", fontWeight: c.lettre === q.bonne_reponse ? 700 : 400 }}>
               {c.lettre === q.bonne_reponse ? "✓" : "○"} {c.lettre}. {c.texte}
             </p>
           ))}
@@ -1702,10 +1707,10 @@ function AltPreview({ data, cacheKey }) {
   if (data.entrees) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
-      <p style={{ fontWeight: 600, fontSize: 12, marginBottom: 4 }}>🚪 Entrer :</p>
-      {data.entrees.map((e, i) => <p key={i} style={{ margin: "0 0 4px", fontSize: 12 }}>• <strong>« {e.formule} »</strong> — {e.quand}</p>)}
-      <p style={{ fontWeight: 600, fontSize: 12, margin: "10px 0 4px" }}>👋 Sortir :</p>
-      {data.sorties.map((s, i) => <p key={i} style={{ margin: "0 0 4px", fontSize: 12 }}>• <strong>« {s.formule} »</strong> — {s.quand}</p>)}
+      <p style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>🚪 Entrer :</p>
+      {data.entrees.map((e, i) => <p key={i} style={{ margin: "0 0 4px", fontSize: 14 }}>• <strong>« {e.formule} »</strong> — {e.quand}</p>)}
+      <p style={{ fontWeight: 600, fontSize: 14, margin: "10px 0 4px" }}>👋 Sortir :</p>
+      {data.sorties.map((s, i) => <p key={i} style={{ margin: "0 0 4px", fontSize: 14 }}>• <strong>« {s.formule} »</strong> — {s.quand}</p>)}
     </div>
   );
 
@@ -1716,7 +1721,7 @@ function AltPreview({ data, cacheKey }) {
       {data.references.map((r, i) => (
         <div key={i} style={{ marginBottom: 8 }}>
           <p style={{ margin: "0 0 2px", fontWeight: 600 }}>{r.emoji} {r.sujet}</p>
-          <p style={{ margin: "0 0 4px", fontSize: 12, color: "#555" }}>{r.ce_quil_faut_savoir}</p>
+          <p style={{ margin: "0 0 4px", fontSize: 14, color: "#555" }}>{r.ce_quil_faut_savoir}</p>
         </div>
       ))}
     </div>
@@ -1728,9 +1733,9 @@ function AltPreview({ data, cacheKey }) {
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
       {data.faux_amis.map((fa, i) => (
         <div key={i} style={{ marginBottom: 8 }}>
-          <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 13, color: ST_COLOR }}>« {fa.mot} »</p>
-          <p style={{ margin: "0 0 1px", fontSize: 12, color: "#065F46" }}>🇨🇦 {fa.sens_quebec}</p>
-          <p style={{ margin: 0, fontSize: 12, color: "#DC2626" }}>🇫🇷 {fa.sens_france_ou_malentendu}</p>
+          <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 15, color: ST_COLOR }}>« {fa.mot} »</p>
+          <p style={{ margin: "0 0 1px", fontSize: 14, color: "#065F46" }}>🇨🇦 {fa.sens_quebec}</p>
+          <p style={{ margin: 0, fontSize: 14, color: "#DC2626" }}>🇫🇷 {fa.sens_france_ou_malentendu}</p>
         </div>
       ))}
     </div>
@@ -1742,9 +1747,9 @@ function AltPreview({ data, cacheKey }) {
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
       {data.scenarios.map((s, i) => (
         <div key={i} style={{ marginBottom: 10 }}>
-          <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 12 }}>📌 {s.situation}</p>
-          <p style={{ margin: "0 0 2px", fontSize: 11, color: "#DC2626" }}>❌ {s.ce_que_fait_immigrant}</p>
-          <p style={{ margin: 0, fontSize: 11, color: "#065F46" }}>✅ {s.comment_sen_sortir}</p>
+          <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 14 }}>📌 {s.situation}</p>
+          <p style={{ margin: "0 0 2px", fontSize: 13, color: "#DC2626" }}>❌ {s.ce_que_fait_immigrant}</p>
+          <p style={{ margin: 0, fontSize: 13, color: "#065F46" }}>✅ {s.comment_sen_sortir}</p>
         </div>
       ))}
     </div>
@@ -1756,8 +1761,8 @@ function AltPreview({ data, cacheKey }) {
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
       {data.expressions.map((e, i) => (
         <div key={i} style={{ marginBottom: 8 }}>
-          <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 13, color: ST_COLOR }}>« {e.expression} »</p>
-          <p style={{ margin: 0, fontSize: 12, color: "#555" }}>{e.vrai_sens}</p>
+          <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: 15, color: ST_COLOR }}>« {e.expression} »</p>
+          <p style={{ margin: 0, fontSize: 14, color: "#555" }}>{e.vrai_sens}</p>
         </div>
       ))}
     </div>
@@ -1769,9 +1774,9 @@ function AltPreview({ data, cacheKey }) {
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
       {data.situations.map((s, i) => (
         <div key={i} style={{ marginBottom: 10 }}>
-          <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 12 }}>Martin : « {s.ce_que_dit_martin} »</p>
+          <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 14 }}>Martin : « {s.ce_que_dit_martin} »</p>
           {s.reactions.map((r, j) => (
-            <p key={j} style={{ margin: "1px 0", fontSize: 11, color: r.type === "ideal" ? "#065F46" : r.type === "mauvais" ? "#991B1B" : "#555" }}>
+            <p key={j} style={{ margin: "1px 0", fontSize: 13, color: r.type === "ideal" ? "#065F46" : r.type === "mauvais" ? "#991B1B" : "#555" }}>
               {r.type === "ideal" ? "✅" : r.type === "mauvais" ? "❌" : "🆗"} « {r.reponse} »
             </p>
           ))}
@@ -1787,9 +1792,9 @@ function AltPreview({ data, cacheKey }) {
       {data.sections.map((s, i) => (
         <div key={i} style={{ marginBottom: 10 }}>
           <p style={{ margin: "0 0 4px", fontWeight: 700 }}>{s.emoji} {s.titre}</p>
-          <p style={{ margin: "0 0 6px", fontSize: 12, color: "#555" }}>{s.contenu}</p>
+          <p style={{ margin: "0 0 6px", fontSize: 14, color: "#555" }}>{s.contenu}</p>
           {s.expressions?.slice(0, 2).map((e, j) => (
-            <p key={j} style={{ margin: "0 0 2px", fontSize: 11 }}>• <strong>« {e.expression} »</strong> — {e.explication}</p>
+            <p key={j} style={{ margin: "0 0 2px", fontSize: 13 }}>• <strong>« {e.expression} »</strong> — {e.explication}</p>
           ))}
         </div>
       ))}
@@ -1800,8 +1805,8 @@ function AltPreview({ data, cacheKey }) {
   if (data.texte_trous) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
-      <p style={{ fontSize: 12, color: "#555", marginBottom: 8 }}><strong>Notion :</strong> {data.notion_titre}</p>
-      <p style={{ fontSize: 13, lineHeight: 1.7 }}>{data.texte_trous.replace(/\{\{\d+\}\}/g, "[ ___ ]")}</p>
+      <p style={{ fontSize: 14, color: "#555", marginBottom: 8 }}><strong>Notion :</strong> {data.notion_titre}</p>
+      <p style={{ fontSize: 15, lineHeight: 1.7 }}>{data.texte_trous.replace(/\{\{\d+\}\}/g, "[ ___ ]")}</p>
     </div>
   );
 
@@ -1809,8 +1814,8 @@ function AltPreview({ data, cacheKey }) {
   if (data.texte) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
-      <p style={{ fontSize: 12, color: "#555", marginBottom: 8 }}><strong>Notion :</strong> {data.notion_titre}</p>
-      <p style={{ fontSize: 13, lineHeight: 1.7 }}>{data.texte}</p>
+      <p style={{ fontSize: 14, color: "#555", marginBottom: 8 }}><strong>Notion :</strong> {data.notion_titre}</p>
+      <p style={{ fontSize: 15, lineHeight: 1.7 }}>{data.texte}</p>
     </div>
   );
 
@@ -1818,7 +1823,7 @@ function AltPreview({ data, cacheKey }) {
   return (
     <div>
       {Object.entries(data).filter(([k]) => typeof data[k] === "string").slice(0, 5).map(([k, v]) => (
-        <p key={k} style={{ margin: "0 0 6px", fontSize: 12 }}><strong>{k} :</strong> {v.substring(0, 120)}</p>
+        <p key={k} style={{ margin: "0 0 6px", fontSize: 14 }}><strong>{k} :</strong> {v.substring(0, 120)}</p>
       ))}
     </div>
   );
@@ -1853,7 +1858,7 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
         <h3 style={{ margin: "0 0 6px", fontSize: 17, fontWeight: 500, color: D.noir, letterSpacing: -0.3 }}>
           {isHG ? "Histoire & Grammaire complet" : "Contenu professionnel"}
         </h3>
-        <p style={{ margin: 0, fontSize: 12, color: D.gris3, lineHeight: 1.6 }}>
+        <p style={{ margin: 0, fontSize: 14, color: D.gris3, lineHeight: 1.6 }}>
           {isHG
             ? "Les 7 sections × 3 niveaux font partie de l'accès complet."
             : "Les modules par secteur professionnel font partie de l'accès complet."}
@@ -1862,7 +1867,7 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
 
       {/* Ce qui est inclus */}
       <div style={{ background: D.gris0, borderRadius: 8, padding: 14, marginBottom: 20 }}>
-        <p style={{ margin: "0 0 10px", fontSize: 11, fontWeight: 500, color: D.gris3, textTransform: "uppercase", letterSpacing: 0.5 }}>Accès complet à 19 $ — une seule fois</p>
+        <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 500, color: D.gris3, textTransform: "uppercase", letterSpacing: 0.5 }}>Accès complet à 19 $ — une seule fois</p>
         {[
           "6 secteurs professionnels (Construction, Finance, Santé, Éducation, Commerce, TI)",
           "5 modules par secteur : oral, vocabulaire, registres, culture, quiz",
@@ -1871,38 +1876,38 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
           "Accès illimité, sans abonnement",
         ].map((item, i) => (
           <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < 4 ? 6 : 0 }}>
-            <span style={{ color: D.rouge, fontSize: 13, flexShrink: 0, marginTop: 1 }}>✓</span>
-            <span style={{ fontSize: 12, color: D.gris4, lineHeight: 1.5 }}>{item}</span>
+            <span style={{ color: D.rouge, fontSize: 15, flexShrink: 0, marginTop: 1 }}>✓</span>
+            <span style={{ fontSize: 14, color: D.gris4, lineHeight: 1.5 }}>{item}</span>
           </div>
         ))}
       </div>
 
       {/* Gratuit inclus */}
-      <p style={{ margin: "0 0 16px", fontSize: 11, color: D.gris3, textAlign: "center" }}>
+      <p style={{ margin: "0 0 16px", fontSize: 13, color: D.gris3, textAlign: "center" }}>
         Déjà gratuit : Small talk complet · Lexique québécois · Une époque Histoire & Grammaire
       </p>
 
       {/* Saisie du code */}
       {!success ? (
         <div>
-          <p style={{ margin: "0 0 8px", fontSize: 12, color: D.gris4, fontWeight: 500 }}>Tu as déjà un code d'accès ?</p>
+          <p style={{ margin: "0 0 8px", fontSize: 14, color: D.gris4, fontWeight: 500 }}>Tu as déjà un code d'accès ?</p>
           <div style={{ display: "flex", gap: 8 }}>
             <input value={code} onChange={e => { setCode(e.target.value); setError(false); }}
               onKeyDown={e => e.key === "Enter" && handleSubmit()}
               placeholder="Entre ton code ici"
-              style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: `1.5px solid ${error ? D.rouge : D.gris2}`, fontSize: 13, outline: "none", color: D.noir, background: D.blanc, transition: "border-color 0.15s" }} />
+              style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: `1.5px solid ${error ? D.rouge : D.gris2}`, fontSize: 15, outline: "none", color: D.noir, background: D.blanc, transition: "border-color 0.15s" }} />
             <button onClick={handleSubmit}
-              style={{ background: D.noir, color: D.blanc, border: "none", borderRadius: 8, padding: "10px 16px", fontSize: 13, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
+              style={{ background: D.noir, color: D.blanc, border: "none", borderRadius: 8, padding: "10px 16px", fontSize: 15, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
               Activer →
             </button>
           </div>
-          {error && <p style={{ margin: "6px 0 0", fontSize: 12, color: D.rouge }}>Code invalide — vérifie et réessaie.</p>}
+          {error && <p style={{ margin: "6px 0 0", fontSize: 14, color: D.rouge }}>Code invalide — vérifie et réessaie.</p>}
           <div style={{ height: 1, background: D.gris2, margin: "16px 0" }} />
           <a href="https://carolinedouret.com" target="_blank" rel="noopener noreferrer"
-            style={{ display: "block", textAlign: "center", background: D.rouge, color: D.blanc, borderRadius: 8, padding: "12px", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
+            style={{ display: "block", textAlign: "center", background: D.rouge, color: D.blanc, borderRadius: 8, padding: "12px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>
             Obtenir l'accès complet — 19 $ →
           </a>
-          <p style={{ margin: "8px 0 0", fontSize: 11, color: D.gris3, textAlign: "center" }}>
+          <p style={{ margin: "8px 0 0", fontSize: 13, color: D.gris3, textAlign: "center" }}>
             Paiement unique · Accès illimité · Aucun abonnement
           </p>
         </div>
@@ -1937,12 +1942,12 @@ UNIQUEMENT JSON, sans markdown.`;
     } catch (e) { setStatus("error"); }
   }
 
-  if (status === "done") return <p style={{ fontSize: 13, color: "#065F46", fontWeight: 600 }}>✅ {count} expressions ajoutées au lexique !</p>;
-  if (status === "error") return <p style={{ fontSize: 13, color: "#DC2626" }}>❌ Erreur — réessaie</p>;
+  if (status === "done") return <p style={{ fontSize: 15, color: "#065F46", fontWeight: 600 }}>✅ {count} expressions ajoutées au lexique !</p>;
+  if (status === "error") return <p style={{ fontSize: 15, color: "#DC2626" }}>❌ Erreur — réessaie</p>;
 
   return (
     <button onClick={generate} disabled={status === "loading"}
-      style={{ background: "#065F46", color: "white", border: "none", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: status === "loading" ? "not-allowed" : "pointer", opacity: status === "loading" ? 0.7 : 1 }}>
+      style={{ background: "#065F46", color: "white", border: "none", borderRadius: 8, padding: "8px 16px", fontSize: 15, fontWeight: 600, cursor: status === "loading" ? "not-allowed" : "pointer", opacity: status === "loading" ? 0.7 : 1 }}>
       {status === "loading" ? "⏳ Génération…" : "💬 Générer les expressions → Lexique"}
     </button>
   );
@@ -2087,7 +2092,7 @@ function TeacherMode({ onClose }) {
   if (!auth) return (
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", display: "flex", flexDirection: "column" }}>
       <div style={{ background: "#1B2B1E", padding: "18px 16px", display: "flex", alignItems: "center", gap: 12 }}>
-        <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 13 }}>← Retour</button>
+        <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 15 }}>← Retour</button>
         <h2 style={{ margin: 0, color: "white", fontSize: 18, fontWeight: 800 }}>🔑 Mode Enseignante</h2>
       </div>
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
@@ -2095,13 +2100,13 @@ function TeacherMode({ onClose }) {
           <div style={{ textAlign: "center", marginBottom: 20 }}>
             <div style={{ fontSize: 40, marginBottom: 8 }}>🔑</div>
             <h3 style={{ margin: 0, color: "#1B2B1E" }}>Accès Enseignante</h3>
-            <p style={{ fontSize: 13, color: "#888", margin: "6px 0 0" }}>Valide et corrige les contenus générés</p>
+            <p style={{ fontSize: 15, color: "#888", margin: "6px 0 0" }}>Valide et corrige les contenus générés</p>
           </div>
           <input type="password" value={pwd} onChange={e => { setPwd(e.target.value); setPwdError(false); }}
             onKeyDown={e => e.key === "Enter" && handleLogin()}
             placeholder="Mot de passe"
             style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: `1.5px solid ${pwdError ? "#DC2626" : "#E5E7EB"}`, fontSize: 14, marginBottom: 10, boxSizing: "border-box", outline: "none" }} />
-          {pwdError && <p style={{ margin: "0 0 10px", fontSize: 12, color: "#DC2626" }}>Mot de passe incorrect</p>}
+          {pwdError && <p style={{ margin: "0 0 10px", fontSize: 14, color: "#DC2626" }}>Mot de passe incorrect</p>}
           <button onClick={handleLogin} style={{ width: "100%", padding: "11px", borderRadius: 10, border: "none", background: "#1B2B1E", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
             Entrer
           </button>
@@ -2114,17 +2119,17 @@ function TeacherMode({ onClose }) {
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ background: "#1B2B1E", padding: "18px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 13 }}>← Retour</button>
+          <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 15 }}>← Retour</button>
           <h2 style={{ margin: 0, color: "white", fontSize: 17, fontWeight: 800 }}>🔑 Mode Enseignante</h2>
         </div>
-        {pendingCount > 0 && <span style={{ background: "#F59E0B", color: "white", borderRadius: 10, fontSize: 11, padding: "3px 9px", fontWeight: 700 }}>{pendingCount} à valider</span>}
+        {pendingCount > 0 && <span style={{ background: "#F59E0B", color: "white", borderRadius: 10, fontSize: 13, padding: "3px 9px", fontWeight: 700 }}>{pendingCount} à valider</span>}
       </div>
 
       {/* Filtres */}
       <div style={{ background: "white", borderBottom: "1px solid #E0E0E0", padding: "10px 16px", display: "flex", gap: 8 }}>
         {[["all", "Tout"], ["pending", "⏳ À valider"], ["validated", "✅ Validés"]].map(([id, label]) => (
           <button key={id} onClick={() => setFilter(id)}
-            style={{ padding: "5px 12px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, background: filter === id ? "#1B2B1E" : "#F3F4F6", color: filter === id ? "white" : "#555" }}>
+            style={{ padding: "5px 12px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 14, fontWeight: 600, background: filter === id ? "#1B2B1E" : "#F3F4F6", color: filter === id ? "white" : "#555" }}>
             {label}
           </button>
         ))}
@@ -2134,7 +2139,7 @@ function TeacherMode({ onClose }) {
         {cacheLoading ? (
           <div style={{ textAlign: "center", padding: 40 }}>
             <LoadingDots color="#1B2B1E" />
-            <p style={{ color: "#888", fontSize: 13, marginTop: 8 }}>Chargement depuis Supabase…</p>
+            <p style={{ color: "#888", fontSize: 15, marginTop: 8 }}>Chargement depuis Supabase…</p>
           </div>
         ) : filtered.length === 0 ? (
           <div style={{ background: "white", borderRadius: 14, padding: 28, textAlign: "center", marginTop: 20 }}>
@@ -2150,10 +2155,10 @@ function TeacherMode({ onClose }) {
                 {/* Header carte */}
                 <div style={{ padding: "12px 14px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, borderBottom: "1px solid #F3F4F6" }}>
                   <div>
-                    <p style={{ margin: 0, fontWeight: 700, fontSize: 13, color: "#1F2937" }}>{LABEL(key)}</p>
-                    <p style={{ margin: "2px 0 0", fontSize: 10, color: "#9CA3AF" }}>{new Date(entry.created_at || entry.createdAt).toLocaleDateString("fr-CA")}</p>
+                    <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: "#1F2937" }}>{LABEL(key)}</p>
+                    <p style={{ margin: "2px 0 0", fontSize: 12, color: "#9CA3AF" }}>{new Date(entry.created_at || entry.createdAt).toLocaleDateString("fr-CA")}</p>
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: entry.status === "validated" ? "#ECFDF5" : "#FFFBE6", color: entry.status === "validated" ? "#065F46" : "#92400E" }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: entry.status === "validated" ? "#ECFDF5" : "#FFFBE6", color: entry.status === "validated" ? "#065F46" : "#92400E" }}>
                     {entry.status === "validated" ? "✅ Validé" : "⏳ À valider"}
                   </span>
                 </div>
@@ -2162,14 +2167,14 @@ function TeacherMode({ onClose }) {
                 {editKey === key ? (
                   <div style={{ padding: 14 }}>
                     <textarea value={editText} onChange={e => setEditText(e.target.value)}
-                      style={{ width: "100%", height: 200, fontSize: 11, fontFamily: "monospace", padding: 10, borderRadius: 8, border: "1px solid #E5E7EB", boxSizing: "border-box", resize: "vertical" }} />
+                      style={{ width: "100%", height: 200, fontSize: 13, fontFamily: "monospace", padding: 10, borderRadius: 8, border: "1px solid #E5E7EB", boxSizing: "border-box", resize: "vertical" }} />
                     <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-                      <button onClick={() => handleEditSave(key)} style={{ flex: 1, padding: "9px", borderRadius: 8, border: "none", background: "#065F46", color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>💾 Sauvegarder</button>
-                      <button onClick={() => setEditKey(null)} style={{ padding: "9px 14px", borderRadius: 8, border: "1px solid #E5E7EB", background: "white", color: "#555", fontSize: 13, cursor: "pointer" }}>Annuler</button>
+                      <button onClick={() => handleEditSave(key)} style={{ flex: 1, padding: "9px", borderRadius: 8, border: "none", background: "#065F46", color: "white", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>💾 Sauvegarder</button>
+                      <button onClick={() => setEditKey(null)} style={{ padding: "9px 14px", borderRadius: 8, border: "1px solid #E5E7EB", background: "white", color: "#555", fontSize: 15, cursor: "pointer" }}>Annuler</button>
                     </div>
                   </div>
                 ) : (
-                  <div style={{ padding: "10px 14px", fontSize: 12, color: "#555", lineHeight: 1.5, maxHeight: 80, overflow: "hidden", position: "relative" }}>
+                  <div style={{ padding: "10px 14px", fontSize: 14, color: "#555", lineHeight: 1.5, maxHeight: 80, overflow: "hidden", position: "relative" }}>
                     <span style={{ color: "#9CA3AF" }}>{JSON.stringify(entry.data).substring(0, 180)}…</span>
                   </div>
                 )}
@@ -2178,18 +2183,18 @@ function TeacherMode({ onClose }) {
                 {editKey !== key && (
                   <div style={{ padding: "10px 14px", borderTop: "1px solid #F3F4F6", display: "flex", gap: 8, flexWrap: "wrap" }}>
                     {entry.status !== "validated" && (
-                      <button onClick={() => handleValidate(key)} style={{ flex: 1, padding: "8px", borderRadius: 8, border: "none", background: "#ECFDF5", color: "#065F46", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>✅ Valider</button>
+                      <button onClick={() => handleValidate(key)} style={{ flex: 1, padding: "8px", borderRadius: 8, border: "none", background: "#ECFDF5", color: "#065F46", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>✅ Valider</button>
                     )}
                     {entry.status === "validated" && (
-                      <button onClick={async () => { await sbUpdate(key, { status: "pending" }); refresh(); }} style={{ flex: 1, padding: "8px", borderRadius: 8, border: "none", background: "#FEF2F2", color: "#DC2626", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↩ Invalider</button>
+                      <button onClick={async () => { await sbUpdate(key, { status: "pending" }); refresh(); }} style={{ flex: 1, padding: "8px", borderRadius: 8, border: "none", background: "#FEF2F2", color: "#DC2626", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>↩ Invalider</button>
                     )}
                     <button onClick={() => { setEditKey(key); setEditText(JSON.stringify(entry.data, null, 2)); }}
-                      style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid #E5E7EB", background: "white", color: "#374151", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>✏️ Corriger</button>
+                      style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid #E5E7EB", background: "white", color: "#374151", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>✏️ Corriger</button>
                     <button onClick={() => handleRegen(key, entry)} disabled={regenLoading === key}
-                      style={{ flex: 1, padding: "8px", borderRadius: 8, border: "none", background: "#EFF6FF", color: "#1D4ED8", fontSize: 12, fontWeight: 600, cursor: regenLoading === key ? "not-allowed" : "pointer", opacity: regenLoading === key ? 0.6 : 1 }}>
+                      style={{ flex: 1, padding: "8px", borderRadius: 8, border: "none", background: "#EFF6FF", color: "#1D4ED8", fontSize: 14, fontWeight: 600, cursor: regenLoading === key ? "not-allowed" : "pointer", opacity: regenLoading === key ? 0.6 : 1 }}>
                       {regenLoading === key ? "⏳…" : entry.status === "validated" ? "🔄 Voir une alternative" : "🔄 Régénérer"}
                     </button>
-                    <button onClick={() => handleReject(key)} style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#FEF2F2", color: "#DC2626", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>🗑️</button>
+                    <button onClick={() => handleReject(key)} style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#FEF2F2", color: "#DC2626", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>🗑️</button>
                   </div>
                 )}
 
@@ -2197,20 +2202,20 @@ function TeacherMode({ onClose }) {
                 {altData[key] && (
                   <div style={{ margin: "0 14px 14px", background: "#EFF6FF", borderRadius: 10, padding: 12, border: "1px solid #BFDBFE" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: "#1D4ED8" }}>🔄 Alternative générée — lis et compare</span>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: "#1D4ED8" }}>🔄 Alternative générée — lis et compare</span>
                       <div style={{ display: "flex", gap: 6 }}>
                         <button onClick={() => handleKeepAlt(key)}
-                          style={{ fontSize: 11, padding: "4px 10px", borderRadius: 8, border: "none", background: "#065F46", color: "white", fontWeight: 700, cursor: "pointer" }}>
+                          style={{ fontSize: 13, padding: "4px 10px", borderRadius: 8, border: "none", background: "#065F46", color: "white", fontWeight: 700, cursor: "pointer" }}>
                           ✅ Utiliser celle-ci
                         </button>
                         <button onClick={() => handleDiscardAlt(key)}
-                          style={{ fontSize: 11, padding: "4px 10px", borderRadius: 8, border: "1px solid #93C5FD", background: "white", color: "#1D4ED8", cursor: "pointer" }}>
+                          style={{ fontSize: 13, padding: "4px 10px", borderRadius: 8, border: "1px solid #93C5FD", background: "white", color: "#1D4ED8", cursor: "pointer" }}>
                           ✕ Ignorer
                         </button>
                       </div>
                     </div>
                     {/* Contenu lisible et scrollable */}
-                    <div style={{ background: "white", borderRadius: 8, padding: 12, maxHeight: 320, overflowY: "auto", fontSize: 13, color: "#1F2937", lineHeight: 1.6 }}>
+                    <div style={{ background: "white", borderRadius: 8, padding: 12, maxHeight: 320, overflowY: "auto", fontSize: 15, color: "#1F2937", lineHeight: 1.6 }}>
                       <AltPreview data={altData[key]} cacheKey={key} />
                     </div>
                   </div>
@@ -2222,8 +2227,8 @@ function TeacherMode({ onClose }) {
 
         {/* Générateur d'expressions imagées → Lexique */}
         <div style={{ marginTop: 16, background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 12, padding: 14 }}>
-          <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 700, color: "#065F46" }}>💬 Expressions imagées → Lexique</p>
-          <p style={{ margin: "0 0 10px", fontSize: 12, color: "#555", lineHeight: 1.5 }}>
+          <p style={{ margin: "0 0 6px", fontSize: 15, fontWeight: 700, color: "#065F46" }}>💬 Expressions imagées → Lexique</p>
+          <p style={{ margin: "0 0 10px", fontSize: 14, color: "#555", lineHeight: 1.5 }}>
             Génère les expressions imagées québécoises et les ajoute automatiquement au lexique pour tes élèves. À faire une seule fois.
           </p>
           <GenerateExpressionsBtn />
@@ -2234,8 +2239,8 @@ function TeacherMode({ onClose }) {
 
           {/* Export */}
           <div style={{ background: "#EFF6FF", border: "1px solid #BFDBFE", borderRadius: 12, padding: 14 }}>
-            <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: "#1D4ED8" }}>💾 Sauvegarder mes validations</p>
-            <p style={{ margin: "0 0 10px", fontSize: 12, color: "#555", lineHeight: 1.5 }}>
+            <p style={{ margin: "0 0 8px", fontSize: 15, fontWeight: 700, color: "#1D4ED8" }}>💾 Sauvegarder mes validations</p>
+            <p style={{ margin: "0 0 10px", fontSize: 14, color: "#555", lineHeight: 1.5 }}>
               Télécharge tes validations en fichier JSON pour les réimporter dans une prochaine session.
             </p>
             <button onClick={() => {
@@ -2246,15 +2251,15 @@ function TeacherMode({ onClose }) {
               a.href = url; a.download = `tu-comprends-tu-${new Date().toISOString().slice(0,10)}.json`;
               a.click(); URL.revokeObjectURL(url);
             }}
-              style={{ background: "#1D4ED8", color: "white", border: "none", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+              style={{ background: "#1D4ED8", color: "white", border: "none", borderRadius: 8, padding: "8px 16px", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
               ⬇️ Exporter mes validations
             </button>
           </div>
 
           {/* Import */}
           <div style={{ background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 12, padding: 14 }}>
-            <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: "#065F46" }}>📂 Restaurer mes validations</p>
-            <p style={{ margin: "0 0 10px", fontSize: 12, color: "#555", lineHeight: 1.5 }}>
+            <p style={{ margin: "0 0 8px", fontSize: 15, fontWeight: 700, color: "#065F46" }}>📂 Restaurer mes validations</p>
+            <p style={{ margin: "0 0 10px", fontSize: 14, color: "#555", lineHeight: 1.5 }}>
               Réimporte un fichier de validations exporté précédemment.
             </p>
             <input type="file" accept=".json" id="import-cache"
@@ -2276,7 +2281,7 @@ function TeacherMode({ onClose }) {
                 e.target.value = "";
               }} />
             <button onClick={() => document.getElementById("import-cache").click()}
-              style={{ background: "#065F46", color: "white", border: "none", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+              style={{ background: "#065F46", color: "white", border: "none", borderRadius: 8, padding: "8px 16px", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
               ⬆️ Importer un fichier de validations
             </button>
           </div>
@@ -2285,7 +2290,7 @@ function TeacherMode({ onClose }) {
           {entries.length > 0 && (
             <div style={{ textAlign: "center" }}>
               <button onClick={async () => { if (confirm("Effacer tout le cache ?")) { const ids = Object.keys(cache); for (const id of ids) await sbDelete(id); refresh(); } }}
-                style={{ background: "none", border: "1px solid #E5E7EB", borderRadius: 20, padding: "6px 16px", fontSize: 12, color: "#9CA3AF", cursor: "pointer" }}>
+                style={{ background: "none", border: "1px solid #E5E7EB", borderRadius: 20, padding: "6px 16px", fontSize: 14, color: "#9CA3AF", cursor: "pointer" }}>
                 🗑️ Vider le cache
               </button>
             </div>
@@ -2307,12 +2312,12 @@ function ProgressionScreen({ onClose }) {
   const parSecteur = {};
   prog.quizScores.forEach(s => { if (!parSecteur[s.secteurId]) parSecteur[s.secteurId] = { label: s.secteurLabel, scores: [] }; parSecteur[s.secteurId].scores.push((s.score / s.total) * 100); });
   function clearData() { if (confirm("Effacer toute la progression ?")) { const e = { quizScores: [], modulesVus: {}, expressionsRatees: [] }; saveProgression(e); setProg(e); } }
-  const TS = (a) => ({ padding: "8px 14px", background: "none", border: "none", borderBottom: a ? "2px solid #0369A1" : "2px solid transparent", color: a ? "#0369A1" : "#666", fontWeight: a ? 700 : 500, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" });
+  const TS = (a) => ({ padding: "8px 14px", background: "none", border: "none", borderBottom: a ? "2px solid #0369A1" : "2px solid transparent", color: a ? "#0369A1" : "#666", fontWeight: a ? 700 : 500, fontSize: 15, cursor: "pointer", whiteSpace: "nowrap" });
 
   return (
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ background: "#1B2B1E", padding: "18px 16px", display: "flex", alignItems: "center", gap: 12 }}>
-        <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 13, padding: 0 }}>← Retour</button>
+        <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 15, padding: 0 }}>← Retour</button>
         <h2 style={{ margin: 0, color: "white", fontSize: 18, fontWeight: 800 }}>📊 Ma progression</h2>
       </div>
       <div style={{ background: "white", borderBottom: "1px solid #E0E0E0", display: "flex", padding: "0 12px", overflowX: "auto" }}>
@@ -2335,26 +2340,26 @@ function ProgressionScreen({ onClose }) {
                     <div key={i} style={{ background: "white", borderRadius: 12, padding: "14px 12px", textAlign: "center", border: `1px solid ${s.color}20` }}>
                       <div style={{ fontSize: 22 }}>{s.icon}</div>
                       <div style={{ fontSize: 22, fontWeight: 800, color: s.color, lineHeight: 1.2, marginTop: 4 }}>{s.value}</div>
-                      <div style={{ fontSize: 10, color: "#888", marginTop: 2 }}>{s.label}</div>
+                      <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>{s.label}</div>
                     </div>
                   ))}
                 </div>
                 {Object.keys(parSecteur).length > 0 && (
                   <div style={{ background: "white", borderRadius: 14, padding: 16, marginBottom: 16 }}>
-                    <h4 style={{ margin: "0 0 14px", fontSize: 13, color: "#555", textTransform: "uppercase", letterSpacing: 0.5 }}>Score moyen par secteur</h4>
+                    <h4 style={{ margin: "0 0 14px", fontSize: 15, color: "#555", textTransform: "uppercase", letterSpacing: 0.5 }}>Score moyen par secteur</h4>
                     {Object.entries(parSecteur).map(([id,{label,scores}]) => {
                       const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
                       const sec = SECTEURS.find(s=>s.id===id);
                       const bc = avg>=75?"#065F46":avg>=50?"#B45309":"#9B1C1C";
                       return (<div key={id} style={{ marginBottom: 12 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-                          <span style={{ fontSize: 13, color: "#333" }}>{sec?.icon} {label}</span>
-                          <span style={{ fontSize: 13, fontWeight: 700, color: bc }}>{avg}%</span>
+                          <span style={{ fontSize: 15, color: "#333" }}>{sec?.icon} {label}</span>
+                          <span style={{ fontSize: 15, fontWeight: 700, color: bc }}>{avg}%</span>
                         </div>
                         <div style={{ background: "#F3F4F6", borderRadius: 10, height: 8, overflow: "hidden" }}>
                           <div style={{ width: `${avg}%`, height: "100%", background: bc, borderRadius: 10 }} />
                         </div>
-                        <div style={{ fontSize: 10, color: "#999", marginTop: 3 }}>{scores.length} quiz complété{scores.length>1?"s":""}</div>
+                        <div style={{ fontSize: 12, color: "#999", marginTop: 3 }}>{scores.length} quiz complété{scores.length>1?"s":""}</div>
                       </div>);
                     })}
                   </div>
@@ -2362,15 +2367,15 @@ function ProgressionScreen({ onClose }) {
                 {ratees.length > 0 && (
                   <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 14, padding: 16 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                      <h4 style={{ margin: 0, fontSize: 13, color: "#92400E" }}>⚠️ Expressions à réviser</h4>
-                      <button onClick={() => setTab("ratees")} style={{ fontSize: 11, color: "#0369A1", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>Voir tout →</button>
+                      <h4 style={{ margin: 0, fontSize: 15, color: "#92400E" }}>⚠️ Expressions à réviser</h4>
+                      <button onClick={() => setTab("ratees")} style={{ fontSize: 13, color: "#0369A1", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>Voir tout →</button>
                     </div>
                     {ratees.slice(0,3).map((r,i)=>(
-                      <div key={i} style={{ fontSize: 13, color: "#78350F", background: "white", borderRadius: 8, padding: "6px 10px", marginBottom: 6 }}>
+                      <div key={i} style={{ fontSize: 15, color: "#78350F", background: "white", borderRadius: 8, padding: "6px 10px", marginBottom: 6 }}>
                         <strong>« {r.expression} »</strong> — {r.secteurLabel}
                       </div>
                     ))}
-                    {ratees.length>3 && <p style={{ margin: "6px 0 0", fontSize: 11, color: "#92400E" }}>+ {ratees.length-3} autre{ratees.length-3>1?"s":""}</p>}
+                    {ratees.length>3 && <p style={{ margin: "6px 0 0", fontSize: 13, color: "#92400E" }}>+ {ratees.length-3} autre{ratees.length-3>1?"s":""}</p>}
                   </div>
                 )}
               </div>
@@ -2387,15 +2392,15 @@ function ProgressionScreen({ onClose }) {
                   const bc = pct>=75?"#065F46":pct>=50?"#B45309":"#9B1C1C";
                   return (<div key={i} style={{ background: "white", borderRadius: 12, padding: 14, border: "1px solid #E5E7EB" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                      <div><span style={{ fontSize: 13, fontWeight: 600, color: "#111" }}>{sec?.icon} {s.secteurLabel}</span>{s.type&&<span style={{ marginLeft: 8, fontSize: 11, background: "#EFF6FF", color: "#1D4ED8", borderRadius: 10, padding: "1px 7px" }}>{s.type}</span>}</div>
+                      <div><span style={{ fontSize: 15, fontWeight: 600, color: "#111" }}>{sec?.icon} {s.secteurLabel}</span>{s.type&&<span style={{ marginLeft: 8, fontSize: 13, background: "#EFF6FF", color: "#1D4ED8", borderRadius: 10, padding: "1px 7px" }}>{s.type}</span>}</div>
                       <span style={{ fontSize: 20, fontWeight: 800, color: bc }}>{pct}%</span>
                     </div>
                     <div style={{ background: "#F3F4F6", borderRadius: 10, height: 6, overflow: "hidden", marginBottom: 6 }}>
                       <div style={{ width: `${pct}%`, height: "100%", background: bc, borderRadius: 10 }} />
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span style={{ fontSize: 11, color: "#888" }}>{s.score}/{s.total} bonnes réponses</span>
-                      <span style={{ fontSize: 11, color: "#aaa" }}>{new Date(s.date).toLocaleDateString("fr-CA")}</span>
+                      <span style={{ fontSize: 13, color: "#888" }}>{s.score}/{s.total} bonnes réponses</span>
+                      <span style={{ fontSize: 13, color: "#aaa" }}>{new Date(s.date).toLocaleDateString("fr-CA")}</span>
                     </div>
                   </div>);
                 })}
@@ -2407,17 +2412,17 @@ function ProgressionScreen({ onClose }) {
           <div>
             {ratees.length === 0 ? <div style={{ background: "white", borderRadius: 14, padding: 24, textAlign: "center" }}><div style={{ fontSize: 36, marginBottom: 10 }}>🎉</div><p style={{ color: "#555", fontSize: 14 }}>Aucune expression à réviser !</p></div> : (
               <div>
-                <p style={{ fontSize: 13, color: "#666", marginBottom: 14 }}>Ces expressions t'ont posé problème dans les quiz. Révise-les avant ta prochaine session !</p>
+                <p style={{ fontSize: 15, color: "#666", marginBottom: 14 }}>Ces expressions t'ont posé problème dans les quiz. Révise-les avant ta prochaine session !</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {ratees.map((r,i) => {
                     const sec = SECTEURS.find(s=>s.id===r.secteurId);
                     return (<div key={i} style={{ background: "white", borderRadius: 12, padding: 14, border: "1px solid #FED7AA", borderLeft: "4px solid #F59E0B" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
                         <strong style={{ fontSize: 15, color: "#92400E" }}>« {r.expression} »</strong>
-                        <span style={{ fontSize: 10, background: sec?.bg||"#F8F8F8", color: sec?.color||"#555", borderRadius: 10, padding: "2px 8px", border: `1px solid ${sec?.color||"#555"}20`, whiteSpace: "nowrap", marginLeft: 8 }}>{sec?.icon} {r.secteurLabel}</span>
+                        <span style={{ fontSize: 12, background: sec?.bg||"#F8F8F8", color: sec?.color||"#555", borderRadius: 10, padding: "2px 8px", border: `1px solid ${sec?.color||"#555"}20`, whiteSpace: "nowrap", marginLeft: 8 }}>{sec?.icon} {r.secteurLabel}</span>
                       </div>
-                      <p style={{ margin: 0, fontSize: 13, color: "#555", lineHeight: 1.5 }}>{r.explication}</p>
-                      {r.astuce&&<p style={{ margin: "5px 0 0", fontSize: 12, color: "#888", fontStyle: "italic" }}>💡 {r.astuce}</p>}
+                      <p style={{ margin: 0, fontSize: 15, color: "#555", lineHeight: 1.5 }}>{r.explication}</p>
+                      {r.astuce&&<p style={{ margin: "5px 0 0", fontSize: 14, color: "#888", fontStyle: "italic" }}>💡 {r.astuce}</p>}
                     </div>);
                   })}
                 </div>
@@ -2436,7 +2441,7 @@ function ProgressionScreen({ onClose }) {
                       <span style={{ fontWeight: 700, color: s.color, fontSize: 14 }}>{s.label}</span>
                     </div>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                      {MODULES.map(m => { const c = prog.modulesVus[s.id]?.[m.id]||0; if(!c) return null; return (<div key={m.id} style={{ background: s.bg, border: `1px solid ${s.color}30`, borderRadius: 10, padding: "5px 10px", display: "flex", alignItems: "center", gap: 5 }}><span style={{ fontSize: 12 }}>{m.icon}</span><span style={{ fontSize: 12, color: s.color, fontWeight: 600 }}>{m.label}</span><span style={{ fontSize: 11, background: s.color, color: "white", borderRadius: 10, padding: "0 5px", fontWeight: 700 }}>{c}×</span></div>); })}
+                      {MODULES.map(m => { const c = prog.modulesVus[s.id]?.[m.id]||0; if(!c) return null; return (<div key={m.id} style={{ background: s.bg, border: `1px solid ${s.color}30`, borderRadius: 10, padding: "5px 10px", display: "flex", alignItems: "center", gap: 5 }}><span style={{ fontSize: 14 }}>{m.icon}</span><span style={{ fontSize: 14, color: s.color, fontWeight: 600 }}>{m.label}</span><span style={{ fontSize: 13, background: s.color, color: "white", borderRadius: 10, padding: "0 5px", fontWeight: 700 }}>{c}×</span></div>); })}
                     </div>
                   </div>
                 ))}
@@ -2445,7 +2450,7 @@ function ProgressionScreen({ onClose }) {
           </div>
         )}
         <div style={{ marginTop: 30, textAlign: "center" }}>
-          <button onClick={clearData} style={{ background: "none", border: "1px solid #E5E7EB", borderRadius: 20, padding: "6px 16px", fontSize: 12, color: "#9CA3AF", cursor: "pointer" }}>🗑️ Effacer la progression</button>
+          <button onClick={clearData} style={{ background: "none", border: "1px solid #E5E7EB", borderRadius: 20, padding: "6px 16px", fontSize: 14, color: "#9CA3AF", cursor: "pointer" }}>🗑️ Effacer la progression</button>
         </div>
       </div>
     </div>
@@ -2483,24 +2488,24 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
         <h3 style={{ margin: 0, fontSize: 15, color: "#1F2937" }}>{data.titre}</h3>
-        {data.type&&<span style={{ fontSize: 11, background: color+"20", color, borderRadius: 10, padding: "2px 10px", fontWeight: 600 }}>{data.type}</span>}
+        {data.type&&<span style={{ fontSize: 13, background: color+"20", color, borderRadius: 10, padding: "2px 10px", fontWeight: 600 }}>{data.type}</span>}
       </div>
       <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
-        {QT.map(t=><button key={t.id} onClick={()=>onNewType(t.id)} style={{ fontSize: 11, padding: "4px 10px", borderRadius: 20, cursor: "pointer", fontWeight: 500, background: "white", color, border: `1px solid ${color}40` }}>{t.icon} {t.label}</button>)}
+        {QT.map(t=><button key={t.id} onClick={()=>onNewType(t.id)} style={{ fontSize: 13, padding: "4px 10px", borderRadius: 20, cursor: "pointer", fontWeight: 500, background: "white", color, border: `1px solid ${color}40` }}>{t.icon} {t.label}</button>)}
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {data.questions.map((q,idx)=>(
           <div key={idx} style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #E5E7EB" }}>
             <div style={{ background: "#F9FAFB", padding: "12px 14px", borderBottom: "1px solid #E5E7EB" }}>
-              <div style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>QUESTION {idx+1}</div>
-              {q.contexte&&<div style={{ fontSize: 11, color: "#6B7280", fontStyle: "italic", marginBottom: 5 }}>📍 {q.contexte}</div>}
+              <div style={{ fontSize: 13, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>QUESTION {idx+1}</div>
+              {q.contexte&&<div style={{ fontSize: 13, color: "#6B7280", fontStyle: "italic", marginBottom: 5 }}>📍 {q.contexte}</div>}
               <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: "#111827", lineHeight: 1.5 }}>{q.question}</p>
             </div>
             <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
               {q.choix.map(c=>(
                 <button key={c.lettre} onClick={()=>!submitted&&setAnswers(a=>({...a,[idx]:c.lettre}))}
-                  style={{ ...cs(q,idx,c.lettre), borderRadius: 8, padding: "10px 12px", cursor: submitted?"default":"pointer", textAlign: "left", fontSize: 13, display: "flex", gap: 10, alignItems: "flex-start", transition: "all 0.15s", width: "100%" }}>
-                  <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, flexShrink: 0, background: answers[idx]===c.lettre?color:"#E5E7EB", color: answers[idx]===c.lettre?"white":"#6B7280" }}>{c.lettre}</span>
+                  style={{ ...cs(q,idx,c.lettre), borderRadius: 8, padding: "10px 12px", cursor: submitted?"default":"pointer", textAlign: "left", fontSize: 15, display: "flex", gap: 10, alignItems: "flex-start", transition: "all 0.15s", width: "100%" }}>
+                  <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, flexShrink: 0, background: answers[idx]===c.lettre?color:"#E5E7EB", color: answers[idx]===c.lettre?"white":"#6B7280" }}>{c.lettre}</span>
                   <span style={{ lineHeight: 1.4 }}>{c.texte}</span>
                   {submitted&&c.lettre===q.bonne_reponse&&<span style={{ marginLeft: "auto", flexShrink: 0 }}>✅</span>}
                   {submitted&&answers[idx]===c.lettre&&c.lettre!==q.bonne_reponse&&<span style={{ marginLeft: "auto", flexShrink: 0 }}>❌</span>}
@@ -2509,9 +2514,9 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
             </div>
             {submitted&&(
               <div style={{ padding: "10px 14px 14px", background: answers[idx]===q.bonne_reponse?"#F0FDF4":"#FFF7ED", borderTop: `1px solid ${answers[idx]===q.bonne_reponse?"#BBF7D0":"#FED7AA"}` }}>
-                <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 600, color: answers[idx]===q.bonne_reponse?"#065F46":"#92400E" }}>{answers[idx]===q.bonne_reponse?"✅ Bonne réponse !":"✅ Bonne réponse : "+q.bonne_reponse}</p>
-                <p style={{ margin: "0 0 4px", fontSize: 13, color: "#374151" }}>{q.explication}</p>
-                {q.astuce&&<p style={{ margin: 0, fontSize: 12, color: "#6B7280", fontStyle: "italic" }}>💡 {q.astuce}</p>}
+                <p style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 600, color: answers[idx]===q.bonne_reponse?"#065F46":"#92400E" }}>{answers[idx]===q.bonne_reponse?"✅ Bonne réponse !":"✅ Bonne réponse : "+q.bonne_reponse}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#374151" }}>{q.explication}</p>
+                {q.astuce&&<p style={{ margin: 0, fontSize: 14, color: "#6B7280", fontStyle: "italic" }}>💡 {q.astuce}</p>}
               </div>
             )}
           </div>
@@ -2530,8 +2535,8 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
               <div style={{ fontSize: 14, color: sc, marginTop: 4 }}>{sm}</div>
             </div>
             <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={onRetry} style={{ flex: 1, padding: "10px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>🔄 Nouveau quiz</button>
-              <button onClick={()=>{setAnswers({});setSubmitted(false);}} style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: color, color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>↩ Recommencer</button>
+              <button onClick={onRetry} style={{ flex: 1, padding: "10px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 15, fontWeight: 600, cursor: "pointer" }}>🔄 Nouveau quiz</button>
+              <button onClick={()=>{setAnswers({});setSubmitted(false);}} style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: color, color: "white", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>↩ Recommencer</button>
             </div>
           </div>
         )}
@@ -2547,34 +2552,34 @@ function DialogueCard({ data, color }) {
   return (
     <div>
       <h3 style={{ color, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      {data.lieu&&<p style={{ color: "#888", fontSize: 13, marginBottom: 14 }}>📍 {data.lieu}</p>}
-      {ann.length > 0 && <p style={{ fontSize: 11, color: "#999", marginBottom: 10, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
+      {data.lieu&&<p style={{ color: "#888", fontSize: 15, marginBottom: 14 }}>📍 {data.lieu}</p>}
+      {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 10, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
       <div style={{ background: "#F8F8F8", borderRadius: 12, padding: 14, marginBottom: 18 }}>
         {data.dialogue.map((line,i)=>(
           <div key={i} style={{ marginBottom: 12 }}>
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-              <span style={{ background: color, color: "white", borderRadius: 20, padding: "2px 10px", fontSize: 11, fontWeight: 700, whiteSpace: "nowrap", marginTop: 3, flexShrink: 0 }}>{line.personnage}</span>
+              <span style={{ background: color, color: "white", borderRadius: 20, padding: "2px 10px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", marginTop: 3, flexShrink: 0 }}>{line.personnage}</span>
               <div style={{ flex: 1 }}>
                 <p style={{ margin: 0, fontSize: 15, lineHeight: 1.5 }}>
                   <AnnotatedText text={line.texte} annotations={ann} />
                 </p>
-                {!rev[i]?<button onClick={()=>setRev(r=>({...r,[i]:true}))} style={{ marginTop: 4, fontSize: 12, color, background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline" }}>💡 Note phonétique</button>
-                :<p style={{ margin: "4px 0 0", fontSize: 12, color: "#555", fontStyle: "italic", background: "white", padding: "4px 8px", borderRadius: 6 }}>📢 {line.note_phonetique}</p>}
+                {!rev[i]?<button onClick={()=>setRev(r=>({...r,[i]:true}))} style={{ marginTop: 4, fontSize: 14, color, background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline" }}>💡 Note phonétique</button>
+                :<p style={{ margin: "4px 0 0", fontSize: 14, color: "#555", fontStyle: "italic", background: "white", padding: "4px 8px", borderRadius: 6 }}>📢 {line.note_phonetique}</p>}
               </div>
             </div>
           </div>
         ))}
       </div>
-      <h4 style={{ color, marginBottom: 10, fontSize: 13 }}>À retenir :</h4>
+      <h4 style={{ color, marginBottom: 10, fontSize: 15 }}>À retenir :</h4>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {data.explications.map((e,i)=>(
           <div key={i} style={{ background: "white", border: `1px solid ${color}30`, borderRadius: 10, padding: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 6 }}>
               <strong style={{ color, fontSize: 14 }}>« {e.expression} »</strong>
-              {e.specifique_au_secteur&&<span style={{ fontSize: 10, background: color, color: "white", borderRadius: 10, padding: "1px 8px" }}>SECTEUR</span>}
+              {e.specifique_au_secteur&&<span style={{ fontSize: 12, background: color, color: "white", borderRadius: 10, padding: "1px 8px" }}>SECTEUR</span>}
             </div>
-            <p style={{ margin: "3px 0 1px", fontSize: 12, color: "#666" }}>S'entend comme : <em>« {e.ce_que_ca_sonne} »</em></p>
-            <p style={{ margin: 0, fontSize: 12, color: "#444" }}>Standard : <em>{e.traduction_standard}</em></p>
+            <p style={{ margin: "3px 0 1px", fontSize: 14, color: "#666" }}>S'entend comme : <em>« {e.ce_que_ca_sonne} »</em></p>
+            <p style={{ margin: 0, fontSize: 14, color: "#444" }}>Standard : <em>{e.traduction_standard}</em></p>
           </div>
         ))}
       </div>
@@ -2588,12 +2593,12 @@ function VocabCard({ data, color }) {
       <div key={i} style={{ background: rb[e.registre]||"#F8F8F8", border: `1px solid ${(rc[e.registre]||color)}30`, borderRadius: 12, padding: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 6, marginBottom: 6 }}>
           <strong style={{ fontSize: 15, color: rc[e.registre]||color }}>« {e.expression} »</strong>
-          <span style={{ background: rc[e.registre]||color, color: "white", borderRadius: 20, padding: "2px 10px", fontSize: 10, textTransform: "uppercase" }}>{e.registre}</span>
+          <span style={{ background: rc[e.registre]||color, color: "white", borderRadius: 20, padding: "2px 10px", fontSize: 12, textTransform: "uppercase" }}>{e.registre}</span>
         </div>
-        <p style={{ margin: "0 0 4px", fontSize: 12, color: "#444" }}><strong>Contexte :</strong> {e.contexte}</p>
-        <p style={{ margin: "0 0 4px", fontSize: 13, color: "#333", fontStyle: "italic" }}>« {e.exemple} »</p>
-        {e.equivalent_france&&<p style={{ margin: "0 0 3px", fontSize: 11, color: "#777" }}>🇫🇷 En France : <em>{e.equivalent_france}</em></p>}
-        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 11, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
+        <p style={{ margin: "0 0 4px", fontSize: 14, color: "#444" }}><strong>Contexte :</strong> {e.contexte}</p>
+        <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333", fontStyle: "italic" }}>« {e.exemple} »</p>
+        {e.equivalent_france&&<p style={{ margin: "0 0 3px", fontSize: 13, color: "#777" }}>🇫🇷 En France : <em>{e.equivalent_france}</em></p>}
+        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 13, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
       </div>
     ))}
   </div></div>;
@@ -2601,40 +2606,40 @@ function VocabCard({ data, color }) {
 function RegistreCard({ data }) {
   const colors=["#1B4332","#7B2D8B","#9E4F00"], bgs=["#F0F7F4","#F5EEF8","#FEF3E2"];
   return <div><h3 style={{ marginBottom: 8, fontSize: 17 }}>{data.titre}</h3>
-    <div style={{ background: "#F8F8F8", borderRadius: 10, padding: 12, marginBottom: 16 }}><p style={{ margin: 0, fontSize: 13 }}><strong>Situation :</strong> {data.situation}</p></div>
+    <div style={{ background: "#F8F8F8", borderRadius: 10, padding: 12, marginBottom: 16 }}><p style={{ margin: 0, fontSize: 15 }}><strong>Situation :</strong> {data.situation}</p></div>
     <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 14 }}>
       {data.versions.map((v,i)=>(
         <div key={i} style={{ background: bgs[i], borderLeft: `4px solid ${colors[i]}`, borderRadius: "0 10px 10px 0", padding: 12 }}>
-          <div style={{ color: colors[i], fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>{v.registre}</div>
+          <div style={{ color: colors[i], fontWeight: 700, fontSize: 13, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>{v.registre}</div>
           <p style={{ margin: "0 0 6px", fontSize: 14, lineHeight: 1.6, fontStyle: "italic" }}>
             <AnnotatedText text={`« ${v.texte} »`} annotations={data.annotations||[]} />
           </p>
-          <p style={{ margin: "0 0 6px", fontSize: 11, color: "#666" }}>📍 {v.quand_utiliser}</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>{v.signes_distinctifs.map((s,j)=><span key={j} style={{ background: "white", border: `1px solid ${colors[i]}40`, borderRadius: 20, padding: "2px 7px", fontSize: 10, color: "#444" }}>{s}</span>)}</div>
+          <p style={{ margin: "0 0 6px", fontSize: 13, color: "#666" }}>📍 {v.quand_utiliser}</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>{v.signes_distinctifs.map((s,j)=><span key={j} style={{ background: "white", border: `1px solid ${colors[i]}40`, borderRadius: 20, padding: "2px 7px", fontSize: 12, color: "#444" }}>{s}</span>)}</div>
         </div>
       ))}
     </div>
-    {data.conseil&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 13 }}>💡 <strong>Conseil :</strong> {data.conseil}</p></div>}
+    {data.conseil&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>Conseil :</strong> {data.conseil}</p></div>}
   </div>;
 }
 function CultureCard({ data, color }) {
   const ann = data.annotations || [];
   return <div>
     <h3 style={{ marginBottom: 8, fontSize: 17 }}>{data.titre}</h3>
-    {ann.length > 0 && <p style={{ fontSize: 11, color: "#999", marginBottom: 10, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
+    {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 10, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
     <div style={{ background: "#FFF5F5", borderLeft: `4px solid ${color}`, borderRadius: "0 10px 10px 0", padding: 12, marginBottom: 12 }}><p style={{ margin: 0, fontSize: 14, fontWeight: 600 }}>{data.concept}</p></div>
-    <p style={{ fontSize: 13, color: "#555", margin: "0 0 5px" }}><strong>😕 Pourquoi ça surprend :</strong> <AnnotatedText text={data.pourquoi_ca_surprend} annotations={ann} /></p>
-    <p style={{ fontSize: 13, color: "#333", margin: "0 0 14px" }}><strong>🎯 Comment ça marche :</strong> <AnnotatedText text={data.comment_ca_marche} annotations={ann} /></p>
+    <p style={{ fontSize: 15, color: "#555", margin: "0 0 5px" }}><strong>😕 Pourquoi ça surprend :</strong> <AnnotatedText text={data.pourquoi_ca_surprend} annotations={ann} /></p>
+    <p style={{ fontSize: 15, color: "#333", margin: "0 0 14px" }}><strong>🎯 Comment ça marche :</strong> <AnnotatedText text={data.comment_ca_marche} annotations={ann} /></p>
     <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
       {data.exemples.map((ex,i)=>(
         <div key={i} style={{ background: "#F8F8F8", borderRadius: 10, padding: 12 }}>
-          <p style={{ margin: "0 0 5px", fontSize: 13, fontWeight: 600 }}>📌 {ex.situation}</p>
-          <p style={{ margin: "0 0 3px", fontSize: 13, color: "#1B4332", fontStyle: "italic" }}>🇨🇦 « <AnnotatedText text={ex.reaction_typique_quebecoise} annotations={ann} /> »</p>
-          <p style={{ margin: 0, fontSize: 11, color: "#777" }}>→ {ex.interpretation_possible}</p>
+          <p style={{ margin: "0 0 5px", fontSize: 15, fontWeight: 600 }}>📌 {ex.situation}</p>
+          <p style={{ margin: "0 0 3px", fontSize: 15, color: "#1B4332", fontStyle: "italic" }}>🇨🇦 « <AnnotatedText text={ex.reaction_typique_quebecoise} annotations={ann} /> »</p>
+          <p style={{ margin: 0, fontSize: 13, color: "#777" }}>→ {ex.interpretation_possible}</p>
         </div>
       ))}
     </div>
-    {data.conseil_pratique&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 13 }}>💡 <strong>À retenir :</strong> {data.conseil_pratique}</p></div>}
+    {data.conseil_pratique&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_pratique}</p></div>}
   </div>;
 }
 function ResultCard({ moduleId, data, color, secteur, onQuizRetry, onQuizNewType, onQuizDone }) {
@@ -2674,10 +2679,10 @@ function LexiqueScreen({ onBack }) {
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ background: D.noir, padding: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <button onClick={onBack} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 12, padding: 0 }}>←</button>
+          <button onClick={onBack} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>←</button>
           <div>
             <h2 style={{ margin: 0, color: D.blanc, fontSize: 17, fontWeight: 500, letterSpacing: -0.3 }}>Lexique québécois</h2>
-            <p style={{ margin: "2px 0 0", color: D.gris3, fontSize: 11 }}>{entries.length} expression{entries.length > 1 ? "s" : ""} · se remplit au fil des sessions</p>
+            <p style={{ margin: "2px 0 0", color: D.gris3, fontSize: 13 }}>{entries.length} expression{entries.length > 1 ? "s" : ""} · se remplit au fil des sessions</p>
           </div>
         </div>
       </div>
@@ -2687,7 +2692,7 @@ function LexiqueScreen({ onBack }) {
         {entries.length === 0 ? (
           <div style={{ background: D.blanc, borderRadius: 10, padding: 28, textAlign: "center", border: `1px solid ${D.gris2}` }}>
             <p style={{ fontWeight: 500, color: D.noir, fontSize: 14, margin: "0 0 6px" }}>Lexique vide pour l'instant</p>
-            <p style={{ color: D.gris3, fontSize: 13, margin: 0, lineHeight: 1.6 }}>Explore un module pour alimenter le lexique automatiquement. Les expressions imagées québécoises s'y retrouvent aussi !</p>
+            <p style={{ color: D.gris3, fontSize: 15, margin: 0, lineHeight: 1.6 }}>Explore un module pour alimenter le lexique automatiquement. Les expressions imagées québécoises s'y retrouvent aussi !</p>
           </div>
         ) : filtered.length === 0 ? (
           <p style={{ color: D.gris3, fontSize: 14, textAlign: "center", padding: 24 }}>Aucun résultat pour « {search} »</p>
@@ -2697,9 +2702,9 @@ function LexiqueScreen({ onBack }) {
               <div key={i} style={{ background: D.blanc, borderRadius: 8, padding: "12px 14px", borderLeft: `3px solid ${D.rouge}`, border: `1px solid ${D.gris2}`, borderLeft: `3px solid ${D.rouge}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
                   <strong style={{ fontSize: 14, color: D.noir, fontWeight: 500 }}>« {entry.terme} »</strong>
-                  {entry.sources?.length > 0 && <span style={{ fontSize: 10, color: D.gris3, whiteSpace: "nowrap" }}>{entry.sources[0]}</span>}
+                  {entry.sources?.length > 0 && <span style={{ fontSize: 12, color: D.gris3, whiteSpace: "nowrap" }}>{entry.sources[0]}</span>}
                 </div>
-                <p style={{ margin: 0, fontSize: 13, color: D.gris4, lineHeight: 1.5 }}>{entry.definition}</p>
+                <p style={{ margin: 0, fontSize: 15, color: D.gris4, lineHeight: 1.5 }}>{entry.definition}</p>
               </div>
             ))}
           </div>
@@ -2720,7 +2725,10 @@ export default function App() {
   const [history, setHistory] = useState({});
   const [quizType, setQuizType] = useState("traduction");
   const [sessionStats, setSessionStats] = useState({ quizDone: 0, modulesDone: 0 });
+  const [fontSize, setFontSize] = useState(1); // 0=petit, 1=normal, 2=grand
   const resultRef = useRef(null);
+
+  const FS = fontSize === 0 ? 0.85 : fontSize === 2 ? 1.2 : 1; // multiplicateur
 
   async function loadModule(mod, sec=secteur, qType=quizType, forceRegen=false) {
     setActiveModule(mod); setContent(null); setError(null); setLoading(true);
@@ -2771,13 +2779,13 @@ export default function App() {
   if(screen==="lexique") return <LexiqueScreen onBack={()=>setScreen("home")} />;
 
   return (
-    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${FS}em` }}>
 
       {/* Header */}
       <div style={{ background: D.noir }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px" }}>
           <div style={{ minWidth: 64 }}>
-            {secteur && <button onClick={()=>{setSecteur(null);setActiveModule(null);setContent(null);setScreen("home");}} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 12, padding: 0 }}>← Accueil</button>}
+            {secteur && <button onClick={()=>{setSecteur(null);setActiveModule(null);setContent(null);setScreen("home");}} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>← Accueil</button>}
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <h1 style={{ margin: 0, lineHeight: 1, letterSpacing: -0.5 }}>
@@ -2785,22 +2793,33 @@ export default function App() {
               <span style={{ color: D.blanc, fontSize: 21, fontWeight: 500 }}> comprends-</span>
               <span style={{ color: D.rouge, fontSize: 21, fontWeight: 500 }}>tu</span>
               <span style={{ color: D.blanc, fontSize: 21, fontWeight: 500 }}> ? </span>
-              <span style={{ color: D.gris3, fontSize: 10, fontWeight: 400, verticalAlign: "super" }}>™</span>
+              <span style={{ color: D.gris3, fontSize: 12, fontWeight: 400, verticalAlign: "super" }}>™</span>
               <span style={{ fontSize: 18 }}>🐿️</span>
             </h1>
             {secteur ? (
               <div style={{ marginTop: 5, display: "inline-flex", alignItems: "center", gap: 5, background: D.rouge, borderRadius: 4, padding: "2px 8px" }}>
-                <span style={{ fontSize: 11 }}>{secteur.icon}</span>
-                <span style={{ color: D.blanc, fontSize: 10, fontWeight: 500, letterSpacing: 0.3 }}>{secteur.label}</span>
+                <span style={{ fontSize: 13 }}>{secteur.icon}</span>
+                <span style={{ color: D.blanc, fontSize: 12, fontWeight: 500, letterSpacing: 0.3 }}>{secteur.label}</span>
               </div>
             ) : (
-              <p style={{ margin: "3px 0 0", color: D.gris3, fontSize: 10, letterSpacing: 0.5 }}>Le québécois du quotidien · au travail</p>
+              <p style={{ margin: "3px 0 0", color: D.gris3, fontSize: 12, letterSpacing: 0.5 }}>Le québécois du quotidien · au travail</p>
             )}
           </div>
-          <div style={{ minWidth: 64, display: "flex", justifyContent: "flex-end" }}>
+          <div style={{ minWidth: 64, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 6 }}>
+            {/* Boutons taille de texte A- / A+ */}
+            <div style={{ display: "flex", gap: 3 }}>
+              <button onClick={() => setFontSize(f => Math.max(0, f-1))}
+                style={{ background: fontSize === 0 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: D.gris3, cursor: "pointer", fontSize: 11, padding: "3px 6px", fontWeight: 700, lineHeight: 1 }}>
+                A-
+              </button>
+              <button onClick={() => setFontSize(f => Math.min(2, f+1))}
+                style={{ background: fontSize === 2 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: D.gris3, cursor: "pointer", fontSize: 15, padding: "3px 6px", fontWeight: 700, lineHeight: 1 }}>
+                A+
+              </button>
+            </div>
             <button onClick={()=>setScreen("progression")}
-              style={{ background: "none", border: `1px solid ${D.gris4}`, borderRadius: 6, color: D.gris3, cursor: "pointer", fontSize: 11, padding: "5px 10px", display: "flex", alignItems: "center", gap: 4 }}>
-              ↗{sessionCount > 0 && <span style={{ background: D.rouge, color: D.blanc, borderRadius: 8, fontSize: 9, padding: "0 4px", fontWeight: 500, marginLeft: 2 }}>{sessionCount}</span>}
+              style={{ background: "none", border: `1px solid ${D.gris4}`, borderRadius: 6, color: D.gris3, cursor: "pointer", fontSize: 13, padding: "5px 10px", display: "flex", alignItems: "center", gap: 4 }}>
+              ↗{sessionCount > 0 && <span style={{ background: D.rouge, color: D.blanc, borderRadius: 8, fontSize: 11, padding: "0 4px", fontWeight: 500, marginLeft: 2 }}>{sessionCount}</span>}
             </button>
           </div>
         </div>
@@ -2821,8 +2840,8 @@ export default function App() {
                 onMouseLeave={e=>e.currentTarget.style.borderColor=D.gris2}>
                 <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 500, color: D.noir }}>{item.label}</div>
-                  <div style={{ fontSize: 11, color: D.gris3, marginTop: 2 }}>{item.sub}</div>
+                  <div style={{ fontSize: 15, fontWeight: 500, color: D.noir }}>{item.label}</div>
+                  <div style={{ fontSize: 13, color: D.gris3, marginTop: 2 }}>{item.sub}</div>
                 </div>
                 <span style={{ color: D.gris2, fontSize: 16 }}>→</span>
               </button>
@@ -2831,7 +2850,7 @@ export default function App() {
 
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
             <div style={{ flex: 1, height: 1, background: D.gris2 }} />
-            <span style={{ fontSize: 10, color: D.gris3, letterSpacing: 0.8, textTransform: "uppercase" }}>Ton milieu de travail</span>
+            <span style={{ fontSize: 12, color: D.gris3, letterSpacing: 0.8, textTransform: "uppercase" }}>Ton milieu de travail</span>
             <div style={{ flex: 1, height: 1, background: D.gris2 }} />
           </div>
 
@@ -2841,12 +2860,12 @@ export default function App() {
                 style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 10, padding: "13px 12px", cursor: "pointer", textAlign: "left", transition: "all 0.15s", position: "relative" }}
                 onMouseEnter={e=>{ e.currentTarget.style.borderColor=D.noir; e.currentTarget.style.background=D.gris0; }}
                 onMouseLeave={e=>{ e.currentTarget.style.borderColor=D.gris2; e.currentTarget.style.background=D.blanc; }}>
-                {!premiumState && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 10 }}>🔒</span>}
+                {!premiumState && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 12 }}>🔒</span>}
                 <div style={{ fontSize: 22, marginBottom: 6 }}>{s.icon}</div>
-                <div style={{ fontSize: 12, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{s.label}</div>
-                <div style={{ fontSize: 10, color: D.gris3, lineHeight: 1.4 }}>{s.desc}</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{s.label}</div>
+                <div style={{ fontSize: 12, color: D.gris3, lineHeight: 1.4 }}>{s.desc}</div>
                 <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 4 }}>
-                  {s.exemples.slice(0,2).map((ex,i)=><span key={i} style={{ fontSize: 9, background: D.gris1, color: D.gris4, borderRadius: 4, padding: "2px 6px" }}>{ex}</span>)}
+                  {s.exemples.slice(0,2).map((ex,i)=><span key={i} style={{ fontSize: 11, background: D.gris1, color: D.gris4, borderRadius: 4, padding: "2px 6px" }}>{ex}</span>)}
                 </div>
               </button>
             ))}
@@ -2860,23 +2879,23 @@ export default function App() {
               </div>
               <div>
                 <p style={{ margin: "0 0 1px", fontWeight: 500, fontSize: 14, color: D.blanc }}>Caroline Douret</p>
-                <p style={{ margin: 0, fontSize: 10, color: D.gris3, letterSpacing: 0.3 }}>Enseignante en immersion québécoise</p>
+                <p style={{ margin: 0, fontSize: 12, color: D.gris3, letterSpacing: 0.3 }}>Enseignante en immersion québécoise</p>
               </div>
             </div>
-            <p style={{ margin: "0 0 14px", fontSize: 12, color: D.gris3, lineHeight: 1.7, fontStyle: "italic" }}>
+            <p style={{ margin: "0 0 14px", fontSize: 14, color: D.gris3, lineHeight: 1.7, fontStyle: "italic" }}>
               « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas mes collègues québécois !"</em> Cette application est pour eux. »
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <p style={{ margin: 0, fontSize: 10, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
+              <p style={{ margin: 0, fontSize: 12, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
               <a href="https://carolinedouret.com" target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: 4, background: D.rouge, color: D.blanc, borderRadius: 6, padding: "7px 12px", fontSize: 11, fontWeight: 500, textDecoration: "none" }}>
+                style={{ display: "inline-flex", alignItems: "center", gap: 4, background: D.rouge, color: D.blanc, borderRadius: 6, padding: "7px 12px", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
                 carolinedouret.com →
               </a>
             </div>
           </div>
 
           <div style={{ marginTop: 18, textAlign: "center" }}>
-            <button onClick={() => setScreen("teacher")} style={{ background: "none", border: "none", color: D.gris2, cursor: "pointer", fontSize: 12, padding: "4px 8px" }}>🔑</button>
+            <button onClick={() => setScreen("teacher")} style={{ background: "none", border: "none", color: D.gris2, cursor: "pointer", fontSize: 14, padding: "4px 8px" }}>🔑</button>
           </div>
         </div>
       )}
@@ -2887,10 +2906,10 @@ export default function App() {
           {/* Header secteur */}
           <div style={{ background: D.noir, padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <button onClick={()=>{setSecteur(null);setActiveModule(null);setContent(null);setScreen("home");}}
-              style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 12, padding: 0 }}>← Accueil</button>
+              style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>← Accueil</button>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: D.rouge, borderRadius: 4, padding: "2px 8px" }}>
-              <span style={{ fontSize: 11 }}>{secteur.icon}</span>
-              <span style={{ color: D.blanc, fontSize: 10, fontWeight: 500 }}>{secteur.label}</span>
+              <span style={{ fontSize: 13 }}>{secteur.icon}</span>
+              <span style={{ color: D.blanc, fontSize: 12, fontWeight: 500 }}>{secteur.label}</span>
             </div>
             <div style={{ width: 60 }} />
           </div>
@@ -2910,9 +2929,9 @@ export default function App() {
                 const count = history[`${secteur.id}-${mod.id}`]||0;
                 return (
                   <button key={mod.id} onClick={()=>loadModule(mod)}
-                    style={{ padding: "11px 12px 9px", background: "none", border: "none", borderBottom: isActive ? `2px solid ${mc}` : "2px solid transparent", cursor: "pointer", fontSize: 11, fontWeight: isActive ? 500 : 400, color: isActive ? mc : D.gris3, whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.12s" }}>
-                    <span style={{ fontSize: 13 }}>{mod.icon}</span><span>{mod.label}</span>
-                    {count>0 && <span style={{ background: isActive?mc:D.gris2, color: isActive?D.blanc:D.gris4, borderRadius: 8, fontSize: 9, padding: "1px 5px" }}>{count}</span>}
+                    style={{ padding: "11px 12px 9px", background: "none", border: "none", borderBottom: isActive ? `2px solid ${mc}` : "2px solid transparent", cursor: "pointer", fontSize: 13, fontWeight: isActive ? 500 : 400, color: isActive ? mc : D.gris3, whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.12s" }}>
+                    <span style={{ fontSize: 15 }}>{mod.icon}</span><span>{mod.label}</span>
+                    {count>0 && <span style={{ background: isActive?mc:D.gris2, color: isActive?D.blanc:D.gris4, borderRadius: 8, fontSize: 11, padding: "1px 5px" }}>{count}</span>}
                   </button>
                 );
               })}
@@ -2924,7 +2943,7 @@ export default function App() {
               <div>
                 <div style={{ marginBottom: 16 }}>
                   <h2 style={{ margin: "0 0 2px", fontSize: 16, fontWeight: 500, color: D.noir }}>{secteur.icon} {secteur.label}</h2>
-                  <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Contenus générés spécifiquement pour ce milieu</p>
+                  <p style={{ margin: 0, fontSize: 13, color: D.gris3 }}>Contenus générés spécifiquement pour ce milieu</p>
                   <div style={{ height: 1, background: D.gris2, marginTop: 12 }} />
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -2936,8 +2955,8 @@ export default function App() {
                         onMouseEnter={e=>{ e.currentTarget.style.borderColor=mc; e.currentTarget.style.background=D.gris0; }}
                         onMouseLeave={e=>{ e.currentTarget.style.borderColor=D.gris2; e.currentTarget.style.background=D.blanc; }}>
                         <div style={{ fontSize: 20, marginBottom: 5 }}>{mod.icon}</div>
-                        <div style={{ fontSize: 12, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{mod.label}</div>
-                        <div style={{ fontSize: 10, color: D.gris3 }}>{mod.desc}</div>
+                        <div style={{ fontSize: 14, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{mod.label}</div>
+                        <div style={{ fontSize: 12, color: D.gris3 }}>{mod.desc}</div>
                       </button>
                     );
                   })}
@@ -2951,19 +2970,19 @@ export default function App() {
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 16 }}>{activeModule.icon}</span>
                     <div>
-                      <div style={{ fontSize: 12, fontWeight: 500, color: D.noir }}>{activeModule.label}</div>
-                      <div style={{ fontSize: 10, color: D.gris3 }}>{activeModule.desc}</div>
+                      <div style={{ fontSize: 14, fontWeight: 500, color: D.noir }}>{activeModule.label}</div>
+                      <div style={{ fontSize: 12, color: D.gris3 }}>{activeModule.desc}</div>
                     </div>
                   </div>
                 </div>
                 <div style={{ background: D.blanc, borderRadius: 10, padding: 16, border: `1px solid ${D.gris2}`, borderTop: `3px solid ${modColor(activeModule)}` }}>
-                  {loading && <div style={{ textAlign: "center", padding: "20px 0" }}><LoadingDots color={D.noir}/><p style={{ color: D.gris3, fontSize: 12, marginTop: 8 }}>Génération en cours…</p></div>}
-                  {error && !loading && <div style={{ textAlign: "center", padding: 18 }}><p style={{ fontSize: 13, color: D.rouge }}>{error}</p></div>}
+                  {loading && <div style={{ textAlign: "center", padding: "20px 0" }}><LoadingDots color={D.noir}/><p style={{ color: D.gris3, fontSize: 14, marginTop: 8 }}>Génération en cours…</p></div>}
+                  {error && !loading && <div style={{ textAlign: "center", padding: 18 }}><p style={{ fontSize: 15, color: D.rouge }}>{error}</p></div>}
                   {!content && !loading && !error && (
                     <div style={{ textAlign: "center", padding: "28px 16px" }}>
                       <p style={{ fontSize: 22, marginBottom: 12 }}>🍁</p>
                       <p style={{ fontWeight: 500, fontSize: 14, color: D.noir, margin: "0 0 6px" }}>Contenu bientôt disponible</p>
-                      <p style={{ fontSize: 12, color: D.gris3, lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi. Reviens dans quelques instants !</p>
+                      <p style={{ fontSize: 14, color: D.gris3, lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi. Reviens dans quelques instants !</p>
                     </div>
                   )}
                   {content && !loading && !error && <ResultCard moduleId={activeModule.id} data={content} color={modColor(activeModule)} secteur={secteur} onQuizRetry={()=>loadModule(activeModule)} onQuizNewType={handleNewQuizType} onQuizDone={handleQuizDone}/>}
@@ -2971,7 +2990,7 @@ export default function App() {
                 <div style={{ marginTop: 12, display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {MODULES.filter(m=>m.id!==activeModule.id).map(m => (
                     <button key={m.id} onClick={()=>loadModule(m)}
-                      style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "5px 10px", cursor: "pointer", fontSize: 11, color: D.gris4, transition: "border-color 0.12s" }}
+                      style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "5px 10px", cursor: "pointer", fontSize: 13, color: D.gris4, transition: "border-color 0.12s" }}
                       onMouseEnter={e=>e.currentTarget.style.borderColor=D.noir}
                       onMouseLeave={e=>e.currentTarget.style.borderColor=D.gris2}>
                       {m.icon} {m.label}
