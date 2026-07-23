@@ -290,22 +290,29 @@ async function callClaude(messages, system, json = true, retries = 3) {
     ? [{ role: "user", content: `[INSTRUCTIONS]\n${system}\n[/INSTRUCTIONS]\n\n${messages[0].content}` }, ...messages.slice(1)]
     : messages;
 
+  // Utilise la fonction serverless Vercel en production, l'API directe en développement
+  const isVercel = window.location.hostname !== 'localhost' && !window.location.hostname.includes('claude.ai');
+  const endpoint = isVercel ? '/api/generate' : 'https://api.anthropic.com/v1/messages';
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const body = {
+        model: "claude-sonnet-4-6",
+        max_tokens: 4000,
+        messages: allMessages
+      };
+
+      const headers = { "content-type": "application/json" };
+
+      const res = await fetch(endpoint, {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 4000,
-          messages: allMessages
-        })
+        headers,
+        body: JSON.stringify(body)
       });
 
-      // Erreurs transitoires → on réessaie
       if (res.status === 529 || res.status === 503 || res.status === 502) {
         if (attempt < retries) {
-          const wait = attempt * 3000; // 3s, 6s, 9s
+          const wait = attempt * 3000;
           await new Promise(r => setTimeout(r, wait));
           continue;
         }
@@ -318,7 +325,6 @@ async function callClaude(messages, system, json = true, retries = 3) {
         throw new Error(msg);
       }
 
-      // Safari peut échouer sur res.json() si content-type inattendu — on lit le texte d'abord
       const responseText = await res.text();
       let data;
       try { data = JSON.parse(responseText); }
@@ -327,29 +333,25 @@ async function callClaude(messages, system, json = true, retries = 3) {
       const raw = data.content?.find(b => b.type === "text")?.text || "";
       if (!json) return raw;
 
-      // Nettoyage robuste : markdown fences, BOM, guillemets typographiques, espaces insécables
       const cleaned = raw
-        .replace(/^\uFEFF/, "")                    // BOM
-        .replace(/```json\s*/gi, "")               // ```json
-        .replace(/```\s*/g, "")                    // ```
-        .replace(/[\u2018\u2019]/g, "'")           // guillemets simples typographiques
-        .replace(/[\u201C\u201D]/g, '"')           // guillemets doubles typographiques
-        .replace(/\u00A0/g, " ")                   // espace insécable
+        .replace(/^\uFEFF/, "")
+        .replace(/```json\s*/gi, "")
+        .replace(/```\s*/g, "")
+        .replace(/[\u2018\u2019]/g, "'")
+        .replace(/[\u201C\u201D]/g, '"')
+        .replace(/\u00A0/g, " ")
         .trim();
 
       try {
         return JSON.parse(cleaned);
       } catch {
-        // Tentative 2 : extraire le premier objet JSON valide
         const match = cleaned.match(/\{[\s\S]*\}/);
         if (match) {
           try { return JSON.parse(match[0]); } catch {}
         }
-        // Tentative 3 : afficher les 200 premiers caractères pour diagnostic
         throw new Error(`Format inattendu : ${cleaned.substring(0, 200)}`);
       }
     } catch (e) {
-      // Erreur réseau → on réessaie
       if (attempt < retries && (e.message.includes("fetch") || e.message.includes("network"))) {
         await new Promise(r => setTimeout(r, attempt * 2000));
         continue;
