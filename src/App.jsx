@@ -1,20 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 
-// ── PALETTE — Affiche culturelle québécoise ────────────────────────────────────
 const C = {
-  rouge:    "#D42B2B",  // rouge Saint-Jean
-  bleu:     "#1A1F5E",  // bleu nuit métro
-  jaune:    "#F5C800",  // jaune solaire Expo 67
-  creme:    "#F7F3EC",  // crème affiche
-  noir:     "#111111",  // noir typographique
+  rouge:    "#D42B2B",
+  bleu:     "#1A1F5E",
+  jaune:    "#F5C800",
+  creme:    "#F7F3EC",
+  noir:     "#111111",
   blanc:    "#FFFFFF",
-  vertForet:"#1B4332",  // vert forêt (conservé pour cohérence)
+  vertForet:"#1B4332",
 };
 
 const ST_COLOR = "#6B21A8";
 const ST_BG    = "#F3E8FF";
 
-// ── SECTEURS ──────────────────────────────────────────────────────────────────
 const SECTEURS = [
   { id: "construction", label: "Construction & Génie", icon: "🏗️", color: "#B45309", bg: "#FEF3C7", desc: "Chantiers, sous-traitants, plans, sécurité", exemples: ["checker les cossins", "le boute", "la shed", "un truck", "foreman"], contexte: "chantier de construction québécois, réunion de chantier, interaction avec contremaître et ouvriers" },
   { id: "finance", label: "Finance & Banque", icon: "💰", color: "#1A1F5E", bg: "#E0E7FF", desc: "REER, placements, conseils aux clients", exemples: ["mon cash", "les cennes", "le bas de laine", "magasiner un prêt", "l'impôt"], contexte: "succursale bancaire ou cabinet de conseil financier québécois, rencontre avec client" },
@@ -24,7 +22,6 @@ const SECTEURS = [
   { id: "ti", label: "Technologies (TI)", icon: "💻", color: "#0F766E", bg: "#CCFBF1", desc: "Développement, réunions agiles, startups", exemples: ["pitcher une idée", "le backlog", "ça fait du sens", "on se revire de bord"], contexte: "startup ou département TI québécois, standup, réunion d'équipe agile" }
 ];
 
-// ── MODULES SECTEUR ───────────────────────────────────────────────────────────
 const MODULES = [
   { id: "oral", label: "Comprendre l'oral", icon: "🎙️", color: "#1B4332", desc: "Accent, rythme, syllabes avalées",
     buildPrompt: (s) => `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec contractions typiques (t'as, j'sais, c'est-tu, y'a, là là, faque, asteure, pantoute...) ET vocabulaire du secteur. Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
@@ -55,18 +52,17 @@ UNIQUEMENT JSON, sans markdown.` },
   { id: "quiz", label: "Quiz", icon: "🧩", color: "#0369A1", desc: "Teste tes connaissances",
     buildPrompt: (s, type) => {
       const types = {
-        traduction: `4 questions QCM: une expression québécoise du secteur "${s.label}" → 4 choix de sens. "croche" et NON "croché".`,
-        situation: `4 questions QCM de mise en situation dans le secteur "${s.label}". Scène réelle → réaction québécoise appropriée ? 4 choix.`,
-        registre: `4 questions QCM sur les registres dans le secteur "${s.label}". Phrase → quel contexte ? ou contexte → quelle formulation ?`
+        traduction: `Génère 5 questions QCM DISTINCTES : une expression québécoise du secteur "${s.label}" → 4 choix de sens. "croche" et NON "croché". Chaque question doit tester une expression DIFFÉRENTE.`,
+        situation: `Génère 5 questions QCM DISTINCTES de mise en situation dans le secteur "${s.label}". Scène réelle → réaction québécoise appropriée ? 4 choix. Chaque scénario doit être DIFFÉRENT.`,
+        registre: `Génère 5 questions QCM DISTINCTES sur les registres dans le secteur "${s.label}". Phrase → quel contexte ? ou contexte → quelle formulation ? Chaque question doit cibler un registre DIFFÉRENT.`
       };
       return `Tu es expert du québécois professionnel dans le secteur "${s.label}" (${s.contexte}). ${types[type]||types.traduction} Exemples: ${s.exemples.join(", ")}.
-JSON: {"titre":string,"type":string,"questions":[{"question":string,"contexte":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string,"astuce":string}],"annotations":[{"terme":string,"definition":string}]}
+JSON: {"titre":string,"type":string,"quiz":[{"question":string,"contexte":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string,"astuce":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
     }
   }
 ];
 
-// ── SMALL TALK SOUS-MODULES ───────────────────────────────────────────────────
 const ST_MODULES = [
   { id: "simulation", label: "Simulation", icon: "🗣️", desc: "Joue une conversation avec Martin, ton collègue québécois" },
   { id: "references", label: "Références culturelles", icon: "📡", desc: "Hockey, météo, chalet, culture pop québécoise" },
@@ -78,7 +74,6 @@ const ST_MODULES = [
   { id: "faux_amis", label: "Faux amis", icon: "😂", desc: "Les mots qui n'ont pas le même sens qu'en France — et qui peuvent surprendre !" }
 ];
 
-// ── HISTOIRE & GRAMMAIRE ──────────────────────────────────────────────────────
 const HG_COLOR = "#9A3412";
 const HG_BG = "#FFF7ED";
 
@@ -154,7 +149,6 @@ const EPOQUES = [
   }
 ];
 
-// ── SUPABASE CONFIG ───────────────────────────────────────────────────────────
 const SUPABASE_URL = "https://wdgoksaepdbxevzoootz.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkZ29rc2FlcGRieGV2em9vb3R6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzMDM0MjIsImV4cCI6MjA5OTg3OTQyMn0.m6_PaZkqfxvC-2ipX5-9nUPVbxgZ_qMXN-gUr_v9_sM";
 
@@ -209,14 +203,13 @@ async function sbGetAll() {
       headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
     });
     const rows = await res.json();
-    // Convertir en format objet {id: entry}
+  
     const obj = {};
     rows.forEach(r => { obj[r.id] = r; });
     return obj;
   } catch { return {}; }
 }
 
-// ── STORAGE ───────────────────────────────────────────────────────────────────
 const STORAGE_KEY = "qc_pro_progression";
 const TEACHER_PWD = "Simple";
 const LEXIQUE_KEY = "qc_pro_lexique";
@@ -230,7 +223,6 @@ function activatePremium() {
   try { localStorage.setItem(PREMIUM_KEY, "true"); } catch {}
 }
 
-// ── LEXIQUE STORAGE ───────────────────────────────────────────────────────────
 function loadLexique() {
   try { return JSON.parse(localStorage.getItem(LEXIQUE_KEY) || "null") || {}; }
   catch { return {}; }
@@ -254,44 +246,79 @@ function loadProgression() {
 }
 function saveProgression(d) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch {} }
 
-// Cache des contenus — utilise Supabase
+// Cache des contenus — localStorage dans l'artifact/dev, Supabase sur Vercel
+const CACHE_KEY = "qc_pro_cache";
+const USE_SUPABASE = window.location.hostname.includes('vercel.app');
+
 function getCacheKey(type, id, subId = "") { return `${type}__${id}__${subId}`; }
+
+// Fonctions localStorage (artifact Claude)
+function loadCache() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY) || "null") || {}; }
+  catch { return {}; }
+}
+function saveCache(c) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); } catch {} }
 
 async function getCached(type, id, subId = "") {
   const key = getCacheKey(type, id, subId);
-  const row = await sbGet(key);
-  if (!row) return null;
-  return { data: row.data, status: row.status, createdAt: row.created_at };
+  if (USE_SUPABASE) {
+    const row = await sbGet(key);
+    if (!row) return null;
+    return { data: row.data, status: row.status, createdAt: row.created_at };
+  } else {
+    const cache = loadCache();
+    return cache[key] || null;
+  }
 }
 
 async function setCached(type, id, data, subId = "") {
   const key = getCacheKey(type, id, subId);
-  await sbSet(key, data, "pending");
+  if (USE_SUPABASE) {
+    await sbSet(key, data, "pending");
+  } else {
+    const cache = loadCache();
+    cache[key] = { data, status: "pending", createdAt: new Date().toISOString() };
+    saveCache(cache);
+  }
 }
 
 async function validateCached(type, id, subId = "") {
   const key = getCacheKey(type, id, subId);
-  await sbUpdate(key, { status: "validated" });
+  if (USE_SUPABASE) {
+    await sbUpdate(key, { status: "validated" });
+  } else {
+    const cache = loadCache();
+    if (cache[key]) { cache[key].status = "validated"; saveCache(cache); }
+  }
 }
 
 async function rejectCached(type, id, subId = "") {
   const key = getCacheKey(type, id, subId);
-  await sbDelete(key);
+  if (USE_SUPABASE) {
+    await sbDelete(key);
+  } else {
+    const cache = loadCache();
+    delete cache[key];
+    saveCache(cache);
+  }
 }
 
 async function updateCached(type, id, data, subId = "") {
   const key = getCacheKey(type, id, subId);
-  await sbUpdate(key, { data, status: "validated" });
+  if (USE_SUPABASE) {
+    await sbUpdate(key, { data, status: "validated" });
+  } else {
+    const cache = loadCache();
+    if (cache[key]) { cache[key].data = data; cache[key].status = "validated"; saveCache(cache); }
+  }
 }
 
-// ── API ───────────────────────────────────────────────────────────────────────
 async function callClaude(messages, system, json = true, retries = 3) {
   const allMessages = system
     ? [{ role: "user", content: `[INSTRUCTIONS]\n${system}\n[/INSTRUCTIONS]\n\n${messages[0].content}` }, ...messages.slice(1)]
     : messages;
 
-  // Utilise la fonction serverless Vercel en production, l'API directe en développement
-  const isVercel = window.location.hostname !== 'localhost' && !window.location.hostname.includes('claude.ai');
+  const isVercel = window.location.hostname.includes('vercel.app');
   const endpoint = isVercel ? '/api/generate' : 'https://api.anthropic.com/v1/messages';
 
   for (let attempt = 1; attempt <= retries; attempt++) {
@@ -361,7 +388,6 @@ async function callClaude(messages, system, json = true, retries = 3) {
   }
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────────────
 function LoadingDots({ color = "#555" }) {
   return (
     <div style={{ display: "flex", gap: 6, alignItems: "center", padding: "8px 0" }}>
@@ -371,7 +397,6 @@ function LoadingDots({ color = "#555" }) {
   );
 }
 
-// ── TOOLTIP & TEXTE ANNOTÉ ────────────────────────────────────────────────────
 function Tooltip({ terme, definition, children }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
@@ -428,10 +453,8 @@ function AnnotatedText({ text, annotations = [], style = {} }) {
   if (!text) return null;
   if (!annotations.length) return <span style={style}>{text}</span>;
 
-  // Trier par longueur décroissante pour matcher les expressions d'abord
   const sorted = [...annotations].sort((a, b) => b.terme.length - a.terme.length);
 
-  // Découper le texte en segments annotés/non-annotés
   let segments = [{ text, annotated: false }];
   sorted.forEach(({ terme, definition }) => {
     const regex = new RegExp(`(${terme.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
@@ -462,7 +485,6 @@ function AnnotatedText({ text, annotations = [], style = {} }) {
   );
 }
 
-// ── SMALL TALK SCREENS ────────────────────────────────────────────────────────
 function SimulationQCM({ data }) {
   const [etape, setEtape] = useState(0);
   const [choix, setChoix] = useState({});
@@ -777,7 +799,7 @@ function STValeursCard({ data }) {
 function STExpressionsCard({ data: rawData }) {
   const [revealed, setRevealed] = useState({});
   const ann = rawData.annotations || [];
-  // Éviter collision de nom avec STEntreeSortieCard
+
   const data = rawData;
   return (
     <div>
@@ -837,6 +859,58 @@ function STExpressionsCard({ data: rawData }) {
     </div>
   );
 }
+
+const ST_PROMPTS = {
+references: `Tu es expert de la culture québécoise et du small talk au bureau. Génère un guide sur 5 sujets de conversation incontournables à la pause café québécoise (hockey, météo, chalet, routes/circulation, séries québécoises ou culture pop). Pour chaque sujet : ce qu'il faut savoir pour ne pas être perdu, 3 phrases utiles à placer naturellement.
+Inclus "annotations": 6-10 termes québécois du guide avec leur définition courte en français standard.
+JSON: {"titre":string,"intro":string,"references":[{"emoji":string,"sujet":string,"sous_titre":string,"ce_quil_faut_savoir":string,"phrases_utiles":[string],"piege":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+entree_sortie: `Tu es expert du small talk québécois au bureau. Génère un guide pratique avec 4 façons d'entrer dans une conversation à la pause café ET 4 façons d'en sortir poliment, en québécois authentique. Contexte: machine à café, couloir, salle de pause.
+Inclus "annotations": 5-8 expressions québécoises des formules avec leur définition courte.
+JSON: {"titre":string,"intro":string,"entrees":[{"formule":string,"quand":string,"effet":string,"variante":string}],"sorties":[{"formule":string,"quand":string,"effet":string,"variante":string}],"conseil_cle":string,"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+rythme: `Tu es expert du small talk québécois. Génère 5 situations typiques où un immigrant francophone casse le rythme de la conversation — parce qu'il répond trop formellement, trop brièvement ou à côté. Pour chaque situation: ce que dit le collègue québécois Martin, 3 types de réponses possibles (idéale, correcte, à éviter) avec explication.
+Inclus "annotations": 5-8 expressions québécoises des dialogues avec leur définition courte.
+JSON: {"titre":string,"intro":string,"situations":[{"ce_que_dit_martin":string,"reactions":[{"type":"ideal"|"correct"|"mauvais","reponse":string,"pourquoi":string}],"lecon":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+simulation: `Tu es expert du small talk québécois à la pause café. Génère une simulation de conversation entre Martin (collègue québécois) et un immigrant francophone. Exactement 6 tours. Martin dit quelque chose en québécois authentique, l'élève choisit parmi 3 réponses (A, B, C). Une seule est idéale, une est correcte mais imparfaite, une est à éviter. Garde toutes les répliques COURTES (1-2 phrases max). Martin utilise : t'as, j'sais, c'est-tu, là là, faque, pantoute, etc.
+Inclus "annotations": 5 expressions québécoises avec définition courte.
+JSON: {"titre":string,"intro":string,"scenarios":[{"ce_que_dit_martin":string,"contexte":string,"choix":[{"lettre":"A"|"B"|"C","texte":string}],"bonne_reponse":"A"|"B"|"C","explication":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+lunch: `Tu es expert de la culture québécoise au bureau. Génère un guide complet sur le lunch (dîner) au bureau québécois — un univers social à part entière pour un immigrant. Couvre : la boîte à lunch et ce qu'on y met typiquement, les commandes collectives (sushis, pho, sandwichs), les conversations de table, les expressions autour de la nourriture, et les codes sociaux (on s'invite, on partage, on commente ce que l'autre mange...). Inclus aussi un lexique des mots québécois liés au lunch (dîner vs lunch, le boss paie la traite, commander en masse, le popote roulante, etc.). 4 sections distinctes.
+Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
+JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+sacres: `Tu es expert de la langue québécoise. Génère un guide sur les sacres québécois comme intensificateurs émotionnels. IMPORTANT : traite-les comme un phénomène linguistique fascinant. Génère exactement 3 sections courtes : 1) Origine et formes (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime) avec forme atténuée et 2 exemples courts chacun ; 2) Émotions exprimées selon le ton (admiration, frustration, surprise) avec 2 exemples courts ; 3) Règles sociales (avec qui, quand s'abstenir) avec conseil. Garde TOUS les textes très courts (1-2 phrases max).
+Inclus "annotations": 6 formes atténuées avec leur définition courte.
+JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"exemples":[{"sacre":string,"forme_attenuation":string,"emotion":string,"exemple_phrase":string,"traduction_emotion":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+faux_amis: `Tu es expert de la langue québécoise. Génère 8 faux amis et pièges linguistiques qui créent des malentendus hilarants ou embarrassants. Inclus OBLIGATOIREMENT ces 3 premiers : 1) S'ennuyer de quelqu'un (I miss you au QC / trouver le temps long en France) ; 2) "J'ai envie de toi" (erreur hispanophone : tener envidia = envier, mais en français = désir amoureux — catastrophique !) ; 3) Gosser (agacer au QC / les gosses = enfants en France). Puis choisis 5 parmi : char, dépanneur, pogner, magasiner, brunante, clavarder, niaiseux, être game, blé d'Inde. Garde les textes COURTS (1-2 phrases max par champ).
+Inclus "annotations": les 8 termes avec leur sens québécois en définition courte.
+JSON: {"titre":string,"intro":string,"faux_amis":[{"mot":string,"scenario":string,"sens_quebec":string,"sens_france_ou_malentendu":string,"astuce":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+valeurs: `Tu es expert de la culture québécoise et des codes sociaux implicites au travail. Génère 7 scénarios de faux pas culturels autour des VALEURS NON DITES du Québec. Choisis parmi ces thèmes :
+1. La modestie obligatoire (ne pas se vanter, ne pas "flasher")
+2. L'égalitarisme (tout le monde se tutoie, le boss mange à la même table)
+3. Le rapport à l'argent ("né pour un petit pain", gêne de parler de salaire)
+4. L'humour autodérisoire comme code de bienvenue
+5. Le débat souverainiste/fédéraliste — esquiver poliment sans prendre position
+6. La laïcité et la religion — sujet sensible post-Révolution tranquille
+7. RESTER TARD AU BUREAU : partir à l'heure n'est PAS un manque d'engagement au Québec — rester tard = mal organisé
+8. Le consensus mou en réunion — "c'est le fun" peut vouloir dire qu'on n'est pas convaincu
+9. Les évaluations indirectes — "c'est correct" peut signifier que c'est loin d'être correct
+Pour chaque scénario : ce que fait l'immigrant (sans mauvaise intention), ce que ça produit chez les collègues québécois (sans qu'ils le disent), ce qui se passe vraiment, et comment s'en sortir. Garde les textes COURTS (2-3 phrases max par champ).
+Inclus "annotations": 8 expressions québécoises clés avec définition courte.
+Inclus "reference": {"titre":"Le Code Québec","auteur":"Jean-Marc Léger, Jacques Nantel et Pierre Duhamel","lien":"https://editionshomme.groupelivre.com/products/le-code-quebec-1?variant=42637639287041","description":"Pour aller plus loin sur les valeurs québécoises"}.
+JSON: {"titre":string,"intro":string,"scenarios":[{"situation":string,"ce_que_fait_immigrant":string,"ce_que_pensent_les_quebecois":string,"ce_qui_se_passe_vraiment":string,"comment_sen_sortir":string,"valeur_en_jeu":string}],"annotations":[{"terme":string,"definition":string}],"reference":{"titre":string,"auteur":string,"lien":string,"description":string}}
+UNIQUEMENT JSON, sans markdown.`,
+expressions: `Tu es expert de la langue imagée québécoise. Génère 8 expressions imagées québécoises courantes dans les conversations de bureau et de pause café — des expressions métaphoriques ou idiomatiques qu'un francophone de France ou d'ailleurs ne comprend pas au sens littéral.
+Pour chaque expression : un scénario réel où quelqu'un entend cette expression sans la comprendre, ce qu'il pense que ça veut dire (l'interprétation littérale ou erronée), ce que ça veut dire vraiment, et un exemple de comment la réutiliser soi-même.
+Inclus des classiques comme : attacher sa tuque, péter de la broue, avoir le dos large, virer su'l'top, être dans le boutte, avoir du front tout le tour de la tête, se sucrer le bec, lâcher son fou, etc.
+Inclus "annotations": les 8 expressions elles-mêmes avec leur définition courte.
+JSON: {"titre":string,"intro":string,"expressions":[{"expression":string,"scenario":string,"interpretation_erronee":string,"vrai_sens":string,"exemple_reutilisation":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`
+};
 
 function STSacresCard({ data }) {
   const [open, setOpen] = useState({ 0: true });
@@ -960,64 +1034,18 @@ function STFauxAmisCard({ data }) {
   );
 }
 
-function SmallTalkScreen({ onBack, onUpdateProgression }) {
-  const [activeSTModule, setActiveSTModule] = useState(null);
+function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
+  const [activeSTModule, setActiveSTModule] = useState(
+    initialModule && initialModule !== "smalltalk"
+      ? ST_MODULES.find(m => m.id === initialModule) || null
+      : null
+  );
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const contentRef = useRef(null);
 
-  const PROMPTS = {
-    references: `Tu es expert de la culture québécoise et du small talk au bureau. Génère un guide sur 5 sujets de conversation incontournables à la pause café québécoise (hockey, météo, chalet, routes/circulation, séries québécoises ou culture pop). Pour chaque sujet : ce qu'il faut savoir pour ne pas être perdu, 3 phrases utiles à placer naturellement.
-Inclus "annotations": 6-10 termes québécois du guide avec leur définition courte en français standard.
-JSON: {"titre":string,"intro":string,"references":[{"emoji":string,"sujet":string,"sous_titre":string,"ce_quil_faut_savoir":string,"phrases_utiles":[string],"piege":string}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`,
-    entree_sortie: `Tu es expert du small talk québécois au bureau. Génère un guide pratique avec 4 façons d'entrer dans une conversation à la pause café ET 4 façons d'en sortir poliment, en québécois authentique. Contexte: machine à café, couloir, salle de pause.
-Inclus "annotations": 5-8 expressions québécoises des formules avec leur définition courte.
-JSON: {"titre":string,"intro":string,"entrees":[{"formule":string,"quand":string,"effet":string,"variante":string}],"sorties":[{"formule":string,"quand":string,"effet":string,"variante":string}],"conseil_cle":string,"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`,
-    rythme: `Tu es expert du small talk québécois. Génère 5 situations typiques où un immigrant francophone casse le rythme de la conversation — parce qu'il répond trop formellement, trop brièvement ou à côté. Pour chaque situation: ce que dit le collègue québécois Martin, 3 types de réponses possibles (idéale, correcte, à éviter) avec explication.
-Inclus "annotations": 5-8 expressions québécoises des dialogues avec leur définition courte.
-JSON: {"titre":string,"intro":string,"situations":[{"ce_que_dit_martin":string,"reactions":[{"type":"ideal"|"correct"|"mauvais","reponse":string,"pourquoi":string}],"lecon":string}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`,
-    simulation: `Tu es expert du small talk québécois à la pause café. Génère une simulation de conversation entre Martin (collègue québécois) et un immigrant francophone. Exactement 6 tours. Martin dit quelque chose en québécois authentique, l'élève choisit parmi 3 réponses (A, B, C). Une seule est idéale, une est correcte mais imparfaite, une est à éviter. Garde toutes les répliques COURTES (1-2 phrases max). Martin utilise : t'as, j'sais, c'est-tu, là là, faque, pantoute, etc.
-Inclus "annotations": 5 expressions québécoises avec définition courte.
-JSON: {"titre":string,"intro":string,"scenarios":[{"ce_que_dit_martin":string,"contexte":string,"choix":[{"lettre":"A"|"B"|"C","texte":string}],"bonne_reponse":"A"|"B"|"C","explication":string}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`,
-    lunch: `Tu es expert de la culture québécoise au bureau. Génère un guide complet sur le lunch (dîner) au bureau québécois — un univers social à part entière pour un immigrant. Couvre : la boîte à lunch et ce qu'on y met typiquement, les commandes collectives (sushis, pho, sandwichs), les conversations de table, les expressions autour de la nourriture, et les codes sociaux (on s'invite, on partage, on commente ce que l'autre mange...). Inclus aussi un lexique des mots québécois liés au lunch (dîner vs lunch, le boss paie la traite, commander en masse, le popote roulante, etc.). 4 sections distinctes.
-Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
-JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`,
-    sacres: `Tu es expert de la langue québécoise. Génère un guide sur les sacres québécois comme intensificateurs émotionnels. IMPORTANT : traite-les comme un phénomène linguistique fascinant. Génère exactement 3 sections courtes : 1) Origine et formes (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime) avec forme atténuée et 2 exemples courts chacun ; 2) Émotions exprimées selon le ton (admiration, frustration, surprise) avec 2 exemples courts ; 3) Règles sociales (avec qui, quand s'abstenir) avec conseil. Garde TOUS les textes très courts (1-2 phrases max).
-Inclus "annotations": 6 formes atténuées avec leur définition courte.
-JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"exemples":[{"sacre":string,"forme_attenuation":string,"emotion":string,"exemple_phrase":string,"traduction_emotion":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`,
-    faux_amis: `Tu es expert de la langue québécoise. Génère 8 faux amis et pièges linguistiques qui créent des malentendus hilarants ou embarrassants. Inclus OBLIGATOIREMENT ces 3 premiers : 1) S'ennuyer de quelqu'un (I miss you au QC / trouver le temps long en France) ; 2) "J'ai envie de toi" (erreur hispanophone : tener envidia = envier, mais en français = désir amoureux — catastrophique !) ; 3) Gosser (agacer au QC / les gosses = enfants en France). Puis choisis 5 parmi : char, dépanneur, pogner, magasiner, brunante, clavarder, niaiseux, être game, blé d'Inde. Garde les textes COURTS (1-2 phrases max par champ).
-Inclus "annotations": les 8 termes avec leur sens québécois en définition courte.
-JSON: {"titre":string,"intro":string,"faux_amis":[{"mot":string,"scenario":string,"sens_quebec":string,"sens_france_ou_malentendu":string,"astuce":string}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`,
-    valeurs: `Tu es expert de la culture québécoise et des codes sociaux implicites au travail. Génère 7 scénarios de faux pas culturels autour des VALEURS NON DITES du Québec. Choisis parmi ces thèmes :
-1. La modestie obligatoire (ne pas se vanter, ne pas "flasher")
-2. L'égalitarisme (tout le monde se tutoie, le boss mange à la même table)
-3. Le rapport à l'argent ("né pour un petit pain", gêne de parler de salaire)
-4. L'humour autodérisoire comme code de bienvenue
-5. Le débat souverainiste/fédéraliste — esquiver poliment sans prendre position
-6. La laïcité et la religion — sujet sensible post-Révolution tranquille
-7. RESTER TARD AU BUREAU : partir à l'heure n'est PAS un manque d'engagement au Québec — rester tard = mal organisé
-8. Le consensus mou en réunion — "c'est le fun" peut vouloir dire qu'on n'est pas convaincu
-9. Les évaluations indirectes — "c'est correct" peut signifier que c'est loin d'être correct
-Pour chaque scénario : ce que fait l'immigrant (sans mauvaise intention), ce que ça produit chez les collègues québécois (sans qu'ils le disent), ce qui se passe vraiment, et comment s'en sortir. Garde les textes COURTS (2-3 phrases max par champ).
-Inclus "annotations": 8 expressions québécoises clés avec définition courte.
-Inclus "reference": {"titre":"Le Code Québec","auteur":"Jean-Marc Léger, Jacques Nantel et Pierre Duhamel","lien":"https://editionshomme.groupelivre.com/products/le-code-quebec-1?variant=42637639287041","description":"Pour aller plus loin sur les valeurs québécoises"}.
-JSON: {"titre":string,"intro":string,"scenarios":[{"situation":string,"ce_que_fait_immigrant":string,"ce_que_pensent_les_quebecois":string,"ce_qui_se_passe_vraiment":string,"comment_sen_sortir":string,"valeur_en_jeu":string}],"annotations":[{"terme":string,"definition":string}],"reference":{"titre":string,"auteur":string,"lien":string,"description":string}}
-UNIQUEMENT JSON, sans markdown.`,
-    expressions: `Tu es expert de la langue imagée québécoise. Génère 8 expressions imagées québécoises courantes dans les conversations de bureau et de pause café — des expressions métaphoriques ou idiomatiques qu'un francophone de France ou d'ailleurs ne comprend pas au sens littéral.
-Pour chaque expression : un scénario réel où quelqu'un entend cette expression sans la comprendre, ce qu'il pense que ça veut dire (l'interprétation littérale ou erronée), ce que ça veut dire vraiment, et un exemple de comment la réutiliser soi-même.
-Inclus des classiques comme : attacher sa tuque, péter de la broue, avoir le dos large, virer su'l'top, être dans le boutte, avoir du front tout le tour de la tête, se sucrer le bec, lâcher son fou, etc.
-Inclus "annotations": les 8 expressions elles-mêmes avec leur définition courte.
-JSON: {"titre":string,"intro":string,"expressions":[{"expression":string,"scenario":string,"interpretation_erronee":string,"vrai_sens":string,"exemple_reutilisation":string}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.`
-  };
+
 
   async function loadSTModule(mod, forceRegen = false) {
     setActiveSTModule(mod);
@@ -1026,7 +1054,7 @@ UNIQUEMENT JSON, sans markdown.`
     setLoading(true);
     setTimeout(() => contentRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
     try {
-      // Vérifier le cache d'abord
+    
       if (!forceRegen) {
         const cached = await getCached("st", "smalltalk", mod.id);
         if (cached && cached.status === "validated") {
@@ -1040,10 +1068,10 @@ UNIQUEMENT JSON, sans markdown.`
           return;
         }
       }
-      const parsed = await callClaude([{ role: "user", content: PROMPTS[mod.id] }],
+      const parsed = await callClaude([{ role: "user", content: ST_PROMPTS[mod.id] }],
         "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.");
       await setCached("st", "smalltalk", parsed, mod.id);
-      // Pour les expressions imagées : alimenter le lexique avec les expressions elles-mêmes
+    
       if (mod.id === "expressions" && parsed.expressions) {
         const expAnnotations = parsed.expressions.map(e => ({
           terme: e.expression,
@@ -1057,6 +1085,12 @@ UNIQUEMENT JSON, sans markdown.`
     } catch (e) { setError(`Erreur : ${e.message}`); }
     finally { setLoading(false); }
   }
+
+  useEffect(() => {
+    if (activeSTModule && !content && !loading) {
+      loadSTModule(activeSTModule);
+    }
+  }, [activeSTModule?.id]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
@@ -1215,7 +1249,6 @@ function STLunchCard({ data }) {
   );
 }
 
-// ── HISTOIRE & GRAMMAIRE ──────────────────────────────────────────────────────
 function LectureGrammaireCard({ data, color }) {
   const [showNotion, setShowNotion] = useState(true);
   return (
@@ -1293,8 +1326,19 @@ function TrousGrammaireCard({ data, color }) {
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
 
+  if (!data.texte_trous || !data.trous) {
+    return (
+      <div style={{ textAlign: "center", padding: 24 }}>
+        <p style={{ fontSize: 14, color: "#888" }}>Ce contenu doit être régénéré. En mode Enseignante, supprime-le et génère-le à nouveau.</p>
+      </div>
+    );
+  }
+
   const parts = data.texte_trous.split(/(\{\{\d+\}\})/g);
   const score = checked ? data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === t.reponse.toLowerCase()).length : 0;
+
+  // Mélanger les mots si disponibles
+  const mots = data.mots_a_utiliser || [];
 
   return (
     <div>
@@ -1305,6 +1349,20 @@ function TrousGrammaireCard({ data, color }) {
         <p style={{ margin: "0 0 8px", fontWeight: 700, color, fontSize: 15 }}>✏️ Notion : {data.notion_titre}</p>
         <p style={{ margin: 0, fontSize: 15, color: "#444", lineHeight: 1.6 }}>{data.notion_explication}</p>
       </div>
+
+      {/* Liste des mots à utiliser */}
+      {mots.length > 0 && (
+        <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 12, padding: "12px 16px", marginBottom: 16 }}>
+          <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: "#78350F" }}>📝 Mots à utiliser :</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {mots.map((mot, i) => (
+              <span key={i} style={{ background: "white", border: "1px solid #FCD34D", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
+                {mot}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div style={{ background: "white", border: `1px solid ${color}20`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
         <h4 style={{ margin: "0 0 10px", fontSize: 14, color: "#1F2937" }}>📖 {data.texte_titre}</h4>
@@ -1430,7 +1488,6 @@ function HistoireGrammaireScreen({ onBack }) {
     c1c2: "niveau C1-C2 (phrases riches, nuances stylistiques, vocabulaire soutenu)"
   };
 
-  // Récupère la notion et le format pour le niveau actuel
   function getNotionPourNiveau(ep) {
     return ep.notions[niveau] || ep.notions["b1b2"];
   }
@@ -1468,8 +1525,8 @@ UNIQUEMENT JSON, sans markdown.`;
 ${contextePrompt}
 Niveau de langue : ${niveauLabel[niveau]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
-Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte.
-JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"trous":[{"id":number,"reponse":string,"explication":string}]}
+Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.
+JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
@@ -1629,12 +1686,10 @@ UNIQUEMENT JSON, sans markdown.`;
   );
 }
 
-// ── APERÇU ALTERNATIF ─────────────────────────────────────────────────────────
 function AltPreview({ data, cacheKey }) {
   if (!data) return null;
   const [type, , subId] = cacheKey.split("__");
 
-  // Dialogue oral
   if (data.dialogue) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1647,7 +1702,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Vocabulaire
   if (data.expressions) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1662,7 +1716,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Registres
   if (data.versions) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
@@ -1676,7 +1729,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Culture
   if (data.concept) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
@@ -1688,7 +1740,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Quiz
   if (data.questions) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1705,7 +1756,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Small talk — entrees/sorties
   if (data.entrees) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1716,7 +1766,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Small talk — références
   if (data.references) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1729,7 +1778,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Small talk — faux amis
   if (data.faux_amis) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1743,7 +1791,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Small talk — valeurs/faux pas
   if (data.scenarios) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1757,7 +1804,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Small talk — expressions imagées
   if (data.expressions && data.expressions[0]?.vrai_sens) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1770,7 +1816,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Small talk — rythme/situations
   if (data.situations) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1787,7 +1832,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Small talk — lunch / sections
   if (data.sections) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
@@ -1803,7 +1847,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Histoire-grammaire — texte à trous
   if (data.texte_trous) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
@@ -1812,7 +1855,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Histoire-grammaire — lecture
   if (data.texte) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 6 }}>{data.titre}</p>}
@@ -1821,7 +1863,6 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
-  // Fallback — afficher les clés principales
   return (
     <div>
       {Object.entries(data).filter(([k]) => typeof data[k] === "string").slice(0, 5).map(([k, v]) => (
@@ -1831,7 +1872,6 @@ function AltPreview({ data, cacheKey }) {
   );
 }
 
-// ── ÉCRAN PREMIUM ─────────────────────────────────────────────────────────────
 function PremiumWall({ onUnlock, context = "secteur" }) {
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
@@ -1955,7 +1995,6 @@ UNIQUEMENT JSON, sans markdown.`;
   );
 }
 
-// ── MODE ENSEIGNANTE ──────────────────────────────────────────────────────────
 function TeacherMode({ onClose }) {
   const [pwd, setPwd] = useState("");
   const [auth, setAuth] = useState(false);
@@ -1970,8 +2009,19 @@ function TeacherMode({ onClose }) {
 
   async function refresh() {
     setCacheLoading(true);
-    const data = await sbGetAll();
-    setCache(data);
+    if (USE_SUPABASE) {
+      const data = await sbGetAll();
+      setCache(data);
+    } else {
+    
+      const raw = loadCache();
+    
+      const formatted = {};
+      Object.entries(raw).forEach(([key, entry]) => {
+        formatted[key] = { ...entry, id: key };
+      });
+      setCache(formatted);
+    }
     setCacheLoading(false);
   }
 
@@ -1992,17 +2042,7 @@ function TeacherMode({ onClose }) {
         const mod = MODULES.find(m => m.id === subId);
         if (sec && mod) prompt = mod.id === "quiz" ? mod.buildPrompt(sec, "traduction") : mod.buildPrompt(sec);
       } else if (type === "st") {
-        const PROMPTS_ST = {
-          references: `Tu es expert de la culture québécoise et du small talk au bureau. Génère un guide sur 5 sujets de conversation incontournables (hockey, météo, chalet, routes, culture pop). JSON: {"titre":string,"intro":string,"references":[{"emoji":string,"sujet":string,"sous_titre":string,"ce_quil_faut_savoir":string,"phrases_utiles":[string],"piege":string}]} UNIQUEMENT JSON.`,
-          entree_sortie: `Guide pratique: 4 façons d'entrer dans une conversation à la pause café ET 4 façons d'en sortir, en québécois authentique. JSON: {"titre":string,"intro":string,"entrees":[{"formule":string,"quand":string,"effet":string,"variante":string}],"sorties":[{"formule":string,"quand":string,"effet":string,"variante":string}],"conseil_cle":string} UNIQUEMENT JSON.`,
-          rythme: `5 situations où un immigrant casse le rythme. 3 réponses par situation (ideal/correct/mauvais). JSON: {"titre":string,"intro":string,"situations":[{"ce_que_dit_martin":string,"reactions":[{"type":"ideal"|"correct"|"mauvais","reponse":string,"pourquoi":string}],"lecon":string}]} UNIQUEMENT JSON.`,
-          lunch: `Guide complet sur le lunch au bureau québécois. 4 sections. JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]} UNIQUEMENT JSON.`,
-          valeurs: `7 scénarios de faux pas culturels autour des valeurs non dites du Québec : modestie, égalitarisme, rapport à l'argent, humour autodérisoire, débat souverainiste/fédéraliste (comment esquiver poliment), laïcité et religion. Pour chaque scénario: situation, ce_que_fait_immigrant, ce_que_pensent_les_quebecois, ce_qui_se_passe_vraiment, comment_sen_sortir, valeur_en_jeu. JSON: {"titre":string,"intro":string,"scenarios":[{"situation":string,"ce_que_fait_immigrant":string,"ce_que_pensent_les_quebecois":string,"ce_qui_se_passe_vraiment":string,"comment_sen_sortir":string,"valeur_en_jeu":string}],"annotations":[{"terme":string,"definition":string}]} UNIQUEMENT JSON.`,
-          sacres: `Guide complet sur les sacres québécois comme intensificateurs émotionnels. Origine religieuse, gamme d'émotions, formes atténuées, règles sociales, exemples chantier/bureau/pause café. JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"exemples":[{"sacre":string,"forme_attenuation":string,"emotion":string,"exemple_phrase":string,"traduction_emotion":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]} UNIQUEMENT JSON.`,
-          faux_amis: `12 faux amis et pièges linguistiques avec scénario, sens correct, malentendu créé, et astuce mémo. Inclure OBLIGATOIREMENT : s'ennuyer de (I miss you au QC), "j'ai envie de toi" (erreur hispanophone : tener envidia = envier, mais en français = désir amoureux — catastrophique !), gosser, char, dépanneur, pogner, magasiner, brunante, clavarder, niaiseux, être game, blé d'Inde. JSON: {"titre":string,"intro":string,"faux_amis":[{"mot":string,"scenario":string,"sens_quebec":string,"sens_france_ou_malentendu":string,"astuce":string}],"annotations":[{"terme":string,"definition":string}]} UNIQUEMENT JSON.`,
-          expressions: `8 expressions imagées québécoises avec scénario, interprétation erronée, vrai sens et exemple de réutilisation. JSON: {"titre":string,"intro":string,"expressions":[{"expression":string,"scenario":string,"interpretation_erronee":string,"vrai_sens":string,"exemple_reutilisation":string}],"annotations":[{"terme":string,"definition":string}]} UNIQUEMENT JSON.`
-        };
-        prompt = PROMPTS_ST[subId] || "";
+        prompt = ST_PROMPTS[subId] || "";
       } else if (type === "hg") {
         const ep = EPOQUES.find(e => e.id === id);
         // subId format: "contenu_a2" | "contenu_b1b2" | "quiz_c1c2" etc.
@@ -2012,7 +2052,7 @@ function TeacherMode({ onClose }) {
           prompt = modeHG === "quiz"
             ? `Quiz sur "${ep.label}", notion: ${notionData.notion}. JSON: {"titre":string,"questions":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]} UNIQUEMENT JSON.`
             : notionData.format === "trous"
-              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
+              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. Inclus "mots_a_utiliser": liste mélangée des mots à placer dans les trous. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
               : `Texte + exercices sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[string],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`;
         }
       }
@@ -2021,10 +2061,10 @@ function TeacherMode({ onClose }) {
         "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown.");
 
       if (entry.status === "validated") {
-        // Contenu validé → stocker l'alternative séparément pour comparaison
+      
         setAltData(a => ({ ...a, [key]: parsed }));
       } else {
-        // Contenu non validé → remplacer directement
+      
         const c = loadCache();
         c[key] = { data: parsed, status: "pending", createdAt: new Date().toISOString() };
         saveCache(c);
@@ -2035,7 +2075,7 @@ function TeacherMode({ onClose }) {
   }
 
   async function handleKeepAlt(key) {
-    // Remplacer le contenu validé par l'alternative et la valider
+  
     const [type, id, subId] = key.split("__");
     await updateCached(type, id, altData[key], subId);
     setAltData(a => { const n = { ...a }; delete n[key]; return n; });
@@ -2291,7 +2331,7 @@ function TeacherMode({ onClose }) {
           {/* Reset */}
           {entries.length > 0 && (
             <div style={{ textAlign: "center" }}>
-              <button onClick={async () => { if (confirm("Effacer tout le cache ?")) { const ids = Object.keys(cache); for (const id of ids) await sbDelete(id); refresh(); } }}
+              <button onClick={async () => { if (confirm("Effacer tout le cache ?")) { if (USE_SUPABASE) { const ids = Object.keys(cache); for (const id of ids) await sbDelete(id); } else { saveCache({}); } refresh(); } }}
                 style={{ background: "none", border: "1px solid #E5E7EB", borderRadius: 20, padding: "6px 16px", fontSize: 14, color: "#9CA3AF", cursor: "pointer" }}>
                 🗑️ Vider le cache
               </button>
@@ -2303,7 +2343,6 @@ function TeacherMode({ onClose }) {
   );
 }
 
-// ── PROGRESSION SCREEN ────────────────────────────────────────────────────────
 function ProgressionScreen({ onClose }) {
   const [prog, setProg] = useState(loadProgression());
   const [tab, setTab] = useState("apercu");
@@ -2459,95 +2498,156 @@ function ProgressionScreen({ onClose }) {
   );
 }
 
-// ── QUIZ CARD ─────────────────────────────────────────────────────────────────
 function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
+  // Support ancien format (questions) et nouveau format (quiz)
+  const allQuestions = data.quiz || data.questions || [];
+  const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const score = submitted ? data.questions.filter((q,i) => answers[i]===q.bonne_reponse).length : 0;
-  const total = data.questions.length;
-  const pct = Math.round((score/total)*100);
-  const sc = pct===100?"#065F46":pct>=75?"#B45309":"#9B1C1C";
-  const sb = pct===100?"#ECFDF5":pct>=75?"#FEF3E2":"#FEF2F2";
-  const sm = pct===100?"Parfait ! T'as toute compris ! 🎉":pct>=75?"Pas pire ! Encore un p'tit effort ! 💪":pct>=50?"Continue, t'es sur la bonne track ! 📚":"Lâche pas, ça va venir ! 🍁";
-  function cs(q,idx,lettre) {
-    const isSel = answers[idx]===lettre, isOk = lettre===q.bonne_reponse;
-    if(!submitted) return {background:isSel?color+"15":"white",border:`2px solid ${isSel?color:"#E5E7EB"}`,color:"#1F2937"};
-    if(isOk) return {background:"#ECFDF5",border:"2px solid #065F46",color:"#065F46"};
-    if(isSel&&!isOk) return {background:"#FEF2F2",border:"2px solid #DC2626",color:"#DC2626"};
-    return {background:"white",border:"2px solid #E5E7EB",color:"#9CA3AF"};
+  const [submitted, setSubmitted] = useState({});
+  const [completed, setCompleted] = useState(false);
+  const [totalScore, setTotalScore] = useState(0);
+
+  const q = allQuestions[currentIdx];
+  const total = allQuestions.length;
+  const isSubmitted = submitted[currentIdx];
+  const isCorrect = isSubmitted && answers[currentIdx] === q?.bonne_reponse;
+
+  function cs(lettre) {
+    const isSel = answers[currentIdx] === lettre;
+    const isOk = lettre === q?.bonne_reponse;
+    if (!isSubmitted) return { background: isSel ? color+"15" : "white", border: `2px solid ${isSel ? color : "#E5E7EB"}`, color: "#1F2937" };
+    if (isOk) return { background: "#ECFDF5", border: "2px solid #065F46", color: "#065F46" };
+    if (isSel && !isOk) return { background: "#FEF2F2", border: "2px solid #DC2626", color: "#DC2626" };
+    return { background: "white", border: "2px solid #E5E7EB", color: "#9CA3AF" };
   }
+
   function handleSubmit() {
-    setSubmitted(true);
-    const ratees = data.questions.filter((q,i)=>answers[i]!==q.bonne_reponse).map(q=>({
-      expression: q.question.length>60?q.question.substring(0,60)+"…":q.question,
-      explication: q.explication, astuce: q.astuce||"",
-      secteurId: secteur.id, secteurLabel: secteur.label, date: new Date().toISOString()
-    }));
-    onQuizDone({score,total,type:data.type,ratees});
+    const correct = answers[currentIdx] === q.bonne_reponse;
+    setSubmitted(s => ({ ...s, [currentIdx]: true }));
+    if (correct) setTotalScore(s => s + 1);
   }
-  const QT = [{id:"traduction",label:"Traduction",icon:"🔤"},{id:"situation",label:"Mise en situation",icon:"🎭"},{id:"registre",label:"Registres",icon:"🎚️"}];
+
+  function handleNext() {
+    if (currentIdx < total - 1) {
+      setCurrentIdx(i => i + 1);
+    } else {
+      // Tous les quiz terminés
+      const ratees = allQuestions
+        .filter((q, i) => answers[i] !== q.bonne_reponse)
+        .map(q => ({
+          expression: q.question.length > 60 ? q.question.substring(0, 60) + "…" : q.question,
+          explication: q.explication, astuce: q.astuce || "",
+          secteurId: secteur?.id, secteurLabel: secteur?.label, date: new Date().toISOString()
+        }));
+      onQuizDone({ score: totalScore + (answers[currentIdx] === q.bonne_reponse ? 1 : 0), total, type: data.type, ratees });
+      setCompleted(true);
+    }
+  }
+
+  const QT = [{ id: "traduction", label: "Traduction", icon: "🔤" }, { id: "situation", label: "Mise en situation", icon: "🎭" }, { id: "registre", label: "Registres", icon: "🎚️" }];
+
+  // Écran de fin
+  if (completed) {
+    const finalScore = Object.entries(answers).filter(([i, a]) => allQuestions[i]?.bonne_reponse === a).length;
+    const pct = Math.round((finalScore / total) * 100);
+    const sc = pct === 100 ? "#065F46" : pct >= 75 ? "#B45309" : "#9B1C1C";
+    const sb = pct === 100 ? "#ECFDF5" : pct >= 75 ? "#FEF3E2" : "#FEF2F2";
+    return (
+      <div style={{ textAlign: "center", padding: "20px 0" }}>
+        <div style={{ fontSize: 48, marginBottom: 14 }}>🎉</div>
+        <h3 style={{ margin: "0 0 8px", color: "#111" }}>Tous les quiz complétés !</h3>
+        <div style={{ background: sb, border: `1px solid ${sc}40`, borderRadius: 12, padding: "16px 20px", marginBottom: 20, display: "inline-block" }}>
+          <div style={{ fontSize: 32, fontWeight: 800, color: sc }}>{finalScore}/{total}</div>
+          <div style={{ fontSize: 14, color: sc, marginTop: 4 }}>
+            {pct === 100 ? "Parfait ! T'as toute compris ! 🎉" : pct >= 75 ? "Pas pire ! Encore un p'tit effort ! 💪" : pct >= 50 ? "Continue, t'es sur la bonne track ! 📚" : "Lâche pas, ça va venir ! 🍁"}
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={() => { setCurrentIdx(0); setAnswers({}); setSubmitted({}); setCompleted(false); setTotalScore(0); }}
+            style={{ flex: 1, padding: "11px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            ↩ Recommencer ces quiz
+          </button>
+          <button onClick={onRetry}
+            style={{ flex: 1, padding: "11px", borderRadius: 10, border: "none", background: color, color: "white", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            🔄 Nouveaux quiz
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!q) return null;
+
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+      {/* En-tête */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
         <h3 style={{ margin: 0, fontSize: 15, color: "#1F2937" }}>{data.titre}</h3>
-        {data.type&&<span style={{ fontSize: 13, background: color+"20", color, borderRadius: 10, padding: "2px 10px", fontWeight: 600 }}>{data.type}</span>}
+        <span style={{ fontSize: 13, background: color+"20", color, borderRadius: 10, padding: "2px 10px", fontWeight: 600 }}>
+          {currentIdx + 1}/{total}
+        </span>
       </div>
-      <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
-        {QT.map(t=><button key={t.id} onClick={()=>onNewType(t.id)} style={{ fontSize: 13, padding: "4px 10px", borderRadius: 20, cursor: "pointer", fontWeight: 500, background: "white", color, border: `1px solid ${color}40` }}>{t.icon} {t.label}</button>)}
+
+      {/* Barre de progression */}
+      <div style={{ background: "#E5E7EB", borderRadius: 10, height: 6, marginBottom: 14, overflow: "hidden" }}>
+        <div style={{ width: `${((currentIdx) / total) * 100}%`, height: "100%", background: color, transition: "width 0.3s" }} />
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {data.questions.map((q,idx)=>(
-          <div key={idx} style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #E5E7EB" }}>
-            <div style={{ background: "#F9FAFB", padding: "12px 14px", borderBottom: "1px solid #E5E7EB" }}>
-              <div style={{ fontSize: 13, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>QUESTION {idx+1}</div>
-              {q.contexte&&<div style={{ fontSize: 13, color: "#6B7280", fontStyle: "italic", marginBottom: 5 }}>📍 {q.contexte}</div>}
-              <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: "#111827", lineHeight: 1.5 }}>{q.question}</p>
-            </div>
-            <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
-              {q.choix.map(c=>(
-                <button key={c.lettre} onClick={()=>!submitted&&setAnswers(a=>({...a,[idx]:c.lettre}))}
-                  style={{ ...cs(q,idx,c.lettre), borderRadius: 8, padding: "10px 12px", cursor: submitted?"default":"pointer", textAlign: "left", fontSize: 15, display: "flex", gap: 10, alignItems: "flex-start", transition: "all 0.15s", width: "100%" }}>
-                  <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, flexShrink: 0, background: answers[idx]===c.lettre?color:"#E5E7EB", color: answers[idx]===c.lettre?"white":"#6B7280" }}>{c.lettre}</span>
-                  <span style={{ lineHeight: 1.4 }}>{c.texte}</span>
-                  {submitted&&c.lettre===q.bonne_reponse&&<span style={{ marginLeft: "auto", flexShrink: 0 }}>✅</span>}
-                  {submitted&&answers[idx]===c.lettre&&c.lettre!==q.bonne_reponse&&<span style={{ marginLeft: "auto", flexShrink: 0 }}>❌</span>}
-                </button>
-              ))}
-            </div>
-            {submitted&&(
-              <div style={{ padding: "10px 14px 14px", background: answers[idx]===q.bonne_reponse?"#F0FDF4":"#FFF7ED", borderTop: `1px solid ${answers[idx]===q.bonne_reponse?"#BBF7D0":"#FED7AA"}` }}>
-                <p style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 600, color: answers[idx]===q.bonne_reponse?"#065F46":"#92400E" }}>{answers[idx]===q.bonne_reponse?"✅ Bonne réponse !":"✅ Bonne réponse : "+q.bonne_reponse}</p>
-                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#374151" }}>{q.explication}</p>
-                {q.astuce&&<p style={{ margin: 0, fontSize: 14, color: "#6B7280", fontStyle: "italic" }}>💡 {q.astuce}</p>}
-              </div>
-            )}
-          </div>
+
+      {/* Sélecteur de type */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
+        {QT.map(t => (
+          <button key={t.id} onClick={() => onNewType(t.id)}
+            style={{ fontSize: 12, padding: "4px 10px", borderRadius: 20, cursor: "pointer", fontWeight: 500, background: "white", color, border: `1px solid ${color}40` }}>
+            {t.icon} {t.label}
+          </button>
         ))}
       </div>
-      <div style={{ marginTop: 16 }}>
-        {!submitted ? (
-          <button onClick={handleSubmit} disabled={Object.keys(answers).length<total}
-            style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", background: Object.keys(answers).length===total?color:"#D1D5DB", color: "white", fontSize: 14, fontWeight: 700, cursor: Object.keys(answers).length===total?"pointer":"not-allowed" }}>
-            {Object.keys(answers).length<total?`Réponds à toutes les questions (${Object.keys(answers).length}/${total})`:"Corriger mes réponses →"}
-          </button>
-        ) : (
-          <div>
-            <div style={{ background: sb, border: `1px solid ${sc}40`, borderRadius: 12, padding: "14px 18px", marginBottom: 12, textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: sc }}>{score}/{total}</div>
-              <div style={{ fontSize: 14, color: sc, marginTop: 4 }}>{sm}</div>
-            </div>
-            <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={onRetry} style={{ flex: 1, padding: "10px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 15, fontWeight: 600, cursor: "pointer" }}>🔄 Nouveau quiz</button>
-              <button onClick={()=>{setAnswers({});setSubmitted(false);}} style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: color, color: "white", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>↩ Recommencer</button>
-            </div>
+
+      {/* Question */}
+      <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #E5E7EB", marginBottom: 14 }}>
+        <div style={{ background: "#F9FAFB", padding: "12px 14px", borderBottom: "1px solid #E5E7EB" }}>
+          <div style={{ fontSize: 12, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>QUESTION {currentIdx + 1} SUR {total}</div>
+          {q.contexte && <div style={{ fontSize: 13, color: "#6B7280", fontStyle: "italic", marginBottom: 5 }}>📍 {q.contexte}</div>}
+          <p style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "#111827", lineHeight: 1.5 }}>{q.question}</p>
+        </div>
+        <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
+          {q.choix.map(c => (
+            <button key={c.lettre} onClick={() => !isSubmitted && setAnswers(a => ({ ...a, [currentIdx]: c.lettre }))}
+              style={{ ...cs(c.lettre), borderRadius: 8, padding: "10px 12px", cursor: isSubmitted ? "default" : "pointer", textAlign: "left", fontSize: 14, display: "flex", gap: 10, alignItems: "flex-start", transition: "all 0.15s", width: "100%" }}>
+              <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0, background: answers[currentIdx] === c.lettre ? color : "#E5E7EB", color: answers[currentIdx] === c.lettre ? "white" : "#6B7280" }}>{c.lettre}</span>
+              <span style={{ lineHeight: 1.4 }}>{c.texte}</span>
+              {isSubmitted && c.lettre === q.bonne_reponse && <span style={{ marginLeft: "auto" }}>✅</span>}
+              {isSubmitted && answers[currentIdx] === c.lettre && c.lettre !== q.bonne_reponse && <span style={{ marginLeft: "auto" }}>❌</span>}
+            </button>
+          ))}
+        </div>
+        {isSubmitted && (
+          <div style={{ padding: "10px 14px 14px", background: isCorrect ? "#F0FDF4" : "#FFF7ED", borderTop: `1px solid ${isCorrect ? "#BBF7D0" : "#FED7AA"}` }}>
+            <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 600, color: isCorrect ? "#065F46" : "#92400E" }}>
+              {isCorrect ? "✅ Bonne réponse !" : `✅ Bonne réponse : ${q.bonne_reponse}`}
+            </p>
+            <p style={{ margin: "0 0 4px", fontSize: 14, color: "#374151" }}>{q.explication}</p>
+            {q.astuce && <p style={{ margin: 0, fontSize: 13, color: "#6B7280", fontStyle: "italic" }}>💡 {q.astuce}</p>}
           </div>
         )}
       </div>
+
+      {/* Boutons */}
+      {!isSubmitted ? (
+        <button onClick={handleSubmit} disabled={!answers[currentIdx]}
+          style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", background: answers[currentIdx] ? color : "#D1D5DB", color: "white", fontSize: 14, fontWeight: 700, cursor: answers[currentIdx] ? "pointer" : "not-allowed" }}>
+          Vérifier ma réponse →
+        </button>
+      ) : (
+        <button onClick={handleNext}
+          style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", background: color, color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+          {currentIdx < total - 1 ? `Question suivante → (${currentIdx + 2}/${total})` : "Voir mes résultats 🎉"}
+        </button>
+      )}
     </div>
   );
 }
 
-// ── DISPLAY CARDS ─────────────────────────────────────────────────────────────
 function DialogueCard({ data, color }) {
   const [rev, setRev] = useState({});
   const ann = data.annotations || [];
@@ -2656,8 +2756,6 @@ function ResultCard({ moduleId, data, color, secteur, onQuizRetry, onQuizNewType
   return null;
 }
 
-
-// ── DESIGN TOKENS — Option A : Moderne épuré ──────────────────────────────────
 const D = {
   noir:  "#111111",
   blanc: "#FFFFFF",
@@ -2669,7 +2767,6 @@ const D = {
   gris4: "#555555",
 };
 
-// ── LEXIQUE CENTRAL ───────────────────────────────────────────────────────────
 function LexiqueScreen({ onBack }) {
   const [search, setSearch] = useState("");
   const lex = loadLexique();
@@ -2716,7 +2813,6 @@ function LexiqueScreen({ onBack }) {
   );
 }
 
-// ── APP ───────────────────────────────────────────────────────────────────────
 export default function App() {
   const [screen, setScreen] = useState("home");
   const [secteur, setSecteur] = useState(null);
@@ -2727,10 +2823,10 @@ export default function App() {
   const [history, setHistory] = useState({});
   const [quizType, setQuizType] = useState("traduction");
   const [sessionStats, setSessionStats] = useState({ quizDone: 0, modulesDone: 0 });
-  const [fontSize, setFontSize] = useState(1); // 0=petit, 1=normal, 2=grand
+  const [fontSize, setFontSize] = useState(1);
   const resultRef = useRef(null);
 
-  const FS = fontSize === 0 ? 0.85 : fontSize === 2 ? 1.2 : 1; // multiplicateur
+  const FS = fontSize === 0 ? 0.85 : fontSize === 2 ? 1.2 : 1;
 
   async function loadModule(mod, sec=secteur, qType=quizType, forceRegen=false) {
     setActiveModule(mod); setContent(null); setError(null); setLoading(true);
@@ -2770,7 +2866,6 @@ export default function App() {
   function handleSecteur(s) { setSecteur(s); setActiveModule(null); setContent(null); setError(null); setScreen("app"); }
 
   const [premiumState, setPremiumState] = useState(isPremium());
-
   const sessionCount = sessionStats.quizDone + sessionStats.modulesDone;
   const modColor = (mod) => mod?.id === "quiz" ? D.rouge : D.noir;
 
@@ -2782,8 +2877,6 @@ export default function App() {
 
   return (
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${FS}em` }}>
-
-      {/* Header */}
       <div style={{ background: D.noir }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px" }}>
           <div style={{ minWidth: 64 }}>
@@ -2801,23 +2894,18 @@ export default function App() {
             {secteur ? (
               <div style={{ marginTop: 5, display: "inline-flex", alignItems: "center", gap: 5, background: D.rouge, borderRadius: 4, padding: "2px 8px" }}>
                 <span style={{ fontSize: 13 }}>{secteur.icon}</span>
-                <span style={{ color: D.blanc, fontSize: 12, fontWeight: 500, letterSpacing: 0.3 }}>{secteur.label}</span>
+                <span style={{ color: D.blanc, fontSize: 12, fontWeight: 500 }}>{secteur.label}</span>
               </div>
             ) : (
               <p style={{ margin: "3px 0 0", color: D.gris3, fontSize: 12, letterSpacing: 0.5 }}>Le québécois du quotidien · au travail</p>
             )}
           </div>
           <div style={{ minWidth: 64, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 6 }}>
-            {/* Boutons taille de texte A- / A+ */}
             <div style={{ display: "flex", gap: 3 }}>
               <button onClick={() => setFontSize(f => Math.max(0, f-1))}
-                style={{ background: fontSize === 0 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: D.gris3, cursor: "pointer", fontSize: 11, padding: "3px 6px", fontWeight: 700, lineHeight: 1 }}>
-                A-
-              </button>
+                style={{ background: fontSize === 0 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: fontSize === 0 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 11, padding: "3px 6px", fontWeight: 700 }}>A-</button>
               <button onClick={() => setFontSize(f => Math.min(2, f+1))}
-                style={{ background: fontSize === 2 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: D.gris3, cursor: "pointer", fontSize: 15, padding: "3px 6px", fontWeight: 700, lineHeight: 1 }}>
-                A+
-              </button>
+                style={{ background: fontSize === 2 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: fontSize === 2 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 15, padding: "3px 6px", fontWeight: 700 }}>A+</button>
             </div>
             <button onClick={()=>setScreen("progression")}
               style={{ background: "none", border: `1px solid ${D.gris4}`, borderRadius: 6, color: D.gris3, cursor: "pointer", fontSize: 13, padding: "5px 10px", display: "flex", alignItems: "center", gap: 4 }}>
@@ -2827,7 +2915,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* Accueil */}
       {screen==="home" && (
         <div style={{ maxWidth: 680, margin: "0 auto", padding: "20px 14px 60px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 24 }}>
@@ -2842,8 +2929,8 @@ export default function App() {
                 onMouseLeave={e=>e.currentTarget.style.borderColor=D.gris2}>
                 <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 15, fontWeight: 500, color: D.noir }}>{item.label}</div>
-                  <div style={{ fontSize: 13, color: D.gris3, marginTop: 2 }}>{item.sub}</div>
+                  <div style={{ fontSize: 14, fontWeight: 500, color: D.noir }}>{item.label}</div>
+                  <div style={{ fontSize: 12, color: D.gris3, marginTop: 2 }}>{item.sub}</div>
                 </div>
                 <span style={{ color: D.gris2, fontSize: 16 }}>→</span>
               </button>
@@ -2852,7 +2939,7 @@ export default function App() {
 
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
             <div style={{ flex: 1, height: 1, background: D.gris2 }} />
-            <span style={{ fontSize: 12, color: D.gris3, letterSpacing: 0.8, textTransform: "uppercase" }}>Ton milieu de travail</span>
+            <span style={{ fontSize: 11, color: D.gris3, letterSpacing: 0.8, textTransform: "uppercase" }}>Ton milieu de travail</span>
             <div style={{ flex: 1, height: 1, background: D.gris2 }} />
           </div>
 
@@ -2862,12 +2949,12 @@ export default function App() {
                 style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 10, padding: "13px 12px", cursor: "pointer", textAlign: "left", transition: "all 0.15s", position: "relative" }}
                 onMouseEnter={e=>{ e.currentTarget.style.borderColor=D.noir; e.currentTarget.style.background=D.gris0; }}
                 onMouseLeave={e=>{ e.currentTarget.style.borderColor=D.gris2; e.currentTarget.style.background=D.blanc; }}>
-                {!premiumState && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 12 }}>🔒</span>}
+                {!premiumState && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 11 }}>🔒</span>}
                 <div style={{ fontSize: 22, marginBottom: 6 }}>{s.icon}</div>
-                <div style={{ fontSize: 14, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{s.label}</div>
-                <div style={{ fontSize: 12, color: D.gris3, lineHeight: 1.4 }}>{s.desc}</div>
+                <div style={{ fontSize: 13, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{s.label}</div>
+                <div style={{ fontSize: 11, color: D.gris3, lineHeight: 1.4 }}>{s.desc}</div>
                 <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 4 }}>
-                  {s.exemples.slice(0,2).map((ex,i)=><span key={i} style={{ fontSize: 11, background: D.gris1, color: D.gris4, borderRadius: 4, padding: "2px 6px" }}>{ex}</span>)}
+                  {s.exemples.slice(0,2).map((ex,i)=><span key={i} style={{ fontSize: 10, background: D.gris1, color: D.gris4, borderRadius: 4, padding: "2px 6px" }}>{ex}</span>)}
                 </div>
               </button>
             ))}
@@ -2876,64 +2963,45 @@ export default function App() {
           <div style={{ background: D.noir, borderRadius: 10, padding: 18 }}>
             <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
               <div style={{ width: 44, height: 44, borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
-                <img src="data:image/jpeg;base64,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"
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCADIAMgDASIAAhEBAxEB/8QAHAAAAgMBAQEBAAAAAAAAAAAABQYEBwMCAQj/xAA9EAACAQMDAQYEBAUDBAMAAAABAgMABBEFEiExBhNBUWFxIoGRoRQyQrHBI1Ji0fAVouHxBxYzQ3KC/8QAGgEAAwEBAQEAAAAAAAAAAAAAAQIDBAUABv/EACYRAAICAgICAgIDAQAAAAAAAAABAhEhAxIxBBNBIlFhBRSR/9oADAMBAAIRAxEAPwDLooopXJiiijzW+k8VlR3AHJqWiisEGFFFFBQUUUUAFFFFABRRRQBpABJA0cSbFDHknuaHD3e5CgOeMjvTFrHbSXTpFMWYFQdp5reyuFS0kiMe4hsjPeqxjuCT4EttDc2yRhpVZT8O7mrCIRgWsSjHzPkGv2UQy3CRjJG4Ak0/XdpFJKo8MoBcDAxmnK3jzTpfohvLeNllUBSQTjvU+sBHGj0gL+AEbgOO9IrmMMhGeKZLyNVtiCMk0wXYiWBgO5FXSTdIwSVGAR+wRVJIJJAyMVbJKFLHBFVF0Ee7ANXRkIUnPaqvMB3pjfxovmAACqhgWAbPGakpMHFWRqiG7lJGAagCVCT/hXqcb8HvQrnaOcnFaTIy3JJJj8+eaR1V2AXaO54rzgk7Md6lMTHBx0r2HdjGRRJFKQxC7Rmo1UBJIGSe+KYpZj7MAds/SocD1FLMmSQYHFJdCkpJNMslxIjJtXpTZLhLVCrM2CMmgVBWJuuTUiLKDjGaE2yWORq6uEmjYdDxVoMUjbRn40yCJM7u/SrvII2AdagtUd0kGiRSNjYOwp+0ePeQOoFBtlBcEDrU6gqcqeaFbZbjkFN2HHSs2ikTJA7VIwz0+tCt4VXBT3psiCRORg0aWO8JkGO1JB7k84oe8GRk5BqC4cFMdjwKiULQSFYvJUnO7rQreAueVwTQ+0KlcHrT1bsJDkjmq5J7jlHyHbRbWtslvHc3E5UkM0aMQD25rZPbQfqNt2j3NvLFmRIYmyIj/CCO59e3apu2VreB2VSWDAKMY5GelRPR4Ir6J7a4jR4mB3RMm4HPUH6U1T5Yv12YNq+Gec3vQ5htoI7SENGXPqPXvnv2HzqLuoVjT8QKGP1pkl8W0u0h+Ij9NPGLSGZFcx4Kh3G7pkcDPyIz8qjuJSkSqvGT0HPFctPuYvxCQ2l0FkB8N8YIxjHP7+tPemTW9/p2VZ9gJAZOPzFadOqZSVbFDSLWKaOZpJW2lflJ4OKf9Mu4I42tpnSSFGPlYdwfce/FIOnWF1A95cW0OeHMG3c9SeOo/Q1PaZo094kUJlMcRctNcOeTk59h0HaqLb2yO0egJA8EjJjGDwMGrFkVkBKHI7kVJXlhFCpkhO11+XJ4P2qK8yqc5BFUL2CkZ6/wCxVpIl3E0bEA4zn3pkuo4pFGHPJq6J4lC9aVLlyeuKQ6oE9n6msKsN6vn5VSSOMitBNOzJuGTxVbWR5VIGQexrL7I0VC9p4QCdmMnn6UPjdYoyT1HWpo9QEZIJ4NIJ5fMk+g6UxTjFEbi3YTsQ2ABjFRV7NKACM5zyKthEW4E96dLT4uBj/KrVCk6VhVxLy2cY4qSaORkUZyKH3KGdT35qW2mjFqAuSakrr8EPLB4H/9k=" 
                   alt="Caroline Douret" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div>
-                <p style={{ margin: "0 0 1px", fontWeight: 500, fontSize: 14, color: D.blanc }}>Caroline Douret</p>
-                <p style={{ margin: 0, fontSize: 12, color: D.gris3, letterSpacing: 0.3 }}>Enseignante en immersion québécoise</p>
+                <p style={{ margin: "0 0 1px", fontWeight: 500, fontSize: 15, color: D.blanc }}>Caroline Douret</p>
+                <p style={{ margin: 0, fontSize: 11, color: D.gris3, letterSpacing: 0.3 }}>Enseignante en immersion québécoise</p>
               </div>
             </div>
-            <p style={{ margin: "0 0 14px", fontSize: 14, color: D.gris3, lineHeight: 1.7, fontStyle: "italic" }}>
+            <p style={{ margin: "0 0 14px", fontSize: 13, color: D.gris3, lineHeight: 1.7, fontStyle: "italic" }}>
               « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas mes collègues québécois !"</em> Cette application est pour eux. »
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <p style={{ margin: 0, fontSize: 12, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
+              <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
               <a href="https://carolinedouret.com" target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: 4, background: D.rouge, color: D.blanc, borderRadius: 6, padding: "7px 12px", fontSize: 13, fontWeight: 500, textDecoration: "none" }}>
+                style={{ display: "inline-flex", alignItems: "center", gap: 4, background: D.rouge, color: D.blanc, borderRadius: 6, padding: "7px 12px", fontSize: 12, fontWeight: 500, textDecoration: "none" }}>
                 carolinedouret.com →
               </a>
             </div>
           </div>
 
           <div style={{ marginTop: 18, textAlign: "center" }}>
-            <button onClick={() => setScreen("teacher")} style={{ background: "none", border: "none", color: D.gris2, cursor: "pointer", fontSize: 14, padding: "4px 8px" }}>🔑</button>
+            <button onClick={() => setScreen("teacher")} style={{ background: "none", border: "none", color: D.gris2, cursor: "pointer", fontSize: 12, padding: "4px 8px" }}>🔑</button>
           </div>
         </div>
       )}
 
-      {/* Écran secteur */}
       {screen==="app" && secteur && (
         <>
-          {/* Header secteur */}
-          <div style={{ background: D.noir, padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <button onClick={()=>{setSecteur(null);setActiveModule(null);setContent(null);setScreen("home");}}
-              style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>← Accueil</button>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: D.rouge, borderRadius: 4, padding: "2px 8px" }}>
-              <span style={{ fontSize: 13 }}>{secteur.icon}</span>
-              <span style={{ color: D.blanc, fontSize: 12, fontWeight: 500 }}>{secteur.label}</span>
-            </div>
-            <div style={{ width: 60 }} />
-          </div>
-
-          {/* Mur premium si pas abonné */}
-          {!premiumState ? (
-            <div style={{ maxWidth: 680, margin: "0 auto", padding: "20px 14px 60px" }}>
-              <PremiumWall context="secteur" onUnlock={() => setPremiumState(true)} />
-            </div>
-          ) : (
-            <>
           <div style={{ background: D.blanc, borderBottom: `1px solid ${D.gris2}`, overflowX: "auto" }}>
             <div style={{ display: "flex", padding: "0 14px", minWidth: "max-content" }}>
               {MODULES.map(mod => {
                 const isActive = activeModule?.id === mod.id;
                 const mc = modColor(mod);
-                const count = history[`${secteur.id}-${mod.id}`]||0;
+                const count = history[`\${secteur.id}-\${mod.id}`]||0;
                 return (
                   <button key={mod.id} onClick={()=>loadModule(mod)}
-                    style={{ padding: "11px 12px 9px", background: "none", border: "none", borderBottom: isActive ? `2px solid ${mc}` : "2px solid transparent", cursor: "pointer", fontSize: 13, fontWeight: isActive ? 500 : 400, color: isActive ? mc : D.gris3, whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.12s" }}>
-                    <span style={{ fontSize: 15 }}>{mod.icon}</span><span>{mod.label}</span>
-                    {count>0 && <span style={{ background: isActive?mc:D.gris2, color: isActive?D.blanc:D.gris4, borderRadius: 8, fontSize: 11, padding: "1px 5px" }}>{count}</span>}
+                    style={{ padding: "11px 12px 9px", background: "none", border: "none", borderBottom: isActive ? `2px solid \${mc}` : "2px solid transparent", cursor: "pointer", fontSize: 12, fontWeight: isActive ? 500 : 400, color: isActive ? mc : D.gris3, whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.12s" }}>
+                    <span style={{ fontSize: 14 }}>{mod.icon}</span><span>{mod.label}</span>
+                    {count>0 && <span style={{ background: isActive?mc:D.gris2, color: isActive?D.blanc:D.gris4, borderRadius: 8, fontSize: 10, padding: "1px 5px" }}>{count}</span>}
                   </button>
                 );
               })}
@@ -2941,69 +3009,64 @@ export default function App() {
           </div>
 
           <div style={{ maxWidth: 680, margin: "0 auto", padding: "18px 14px 60px" }}>
-            {!activeModule && (
-              <div>
-                <div style={{ marginBottom: 16 }}>
-                  <h2 style={{ margin: "0 0 2px", fontSize: 16, fontWeight: 500, color: D.noir }}>{secteur.icon} {secteur.label}</h2>
-                  <p style={{ margin: 0, fontSize: 13, color: D.gris3 }}>Contenus générés spécifiquement pour ce milieu</p>
-                  <div style={{ height: 1, background: D.gris2, marginTop: 12 }} />
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                  {MODULES.map(mod => {
-                    const mc = modColor(mod);
-                    return (
-                      <button key={mod.id} onClick={()=>loadModule(mod)}
-                        style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 10, padding: 14, cursor: "pointer", textAlign: "left", transition: "all 0.12s" }}
-                        onMouseEnter={e=>{ e.currentTarget.style.borderColor=mc; e.currentTarget.style.background=D.gris0; }}
-                        onMouseLeave={e=>{ e.currentTarget.style.borderColor=D.gris2; e.currentTarget.style.background=D.blanc; }}>
-                        <div style={{ fontSize: 20, marginBottom: 5 }}>{mod.icon}</div>
-                        <div style={{ fontSize: 14, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{mod.label}</div>
-                        <div style={{ fontSize: 12, color: D.gris3 }}>{mod.desc}</div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {activeModule && (
-              <div ref={resultRef}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 16 }}>{activeModule.icon}</span>
-                    <div>
-                      <div style={{ fontSize: 14, fontWeight: 500, color: D.noir }}>{activeModule.label}</div>
-                      <div style={{ fontSize: 12, color: D.gris3 }}>{activeModule.desc}</div>
+            {!premiumState ? (
+              <PremiumWall context="secteur" onUnlock={() => setPremiumState(true)} />
+            ) : (
+              <>
+                {!activeModule && (
+                  <div>
+                    <div style={{ marginBottom: 16 }}>
+                      <h2 style={{ margin: "0 0 2px", fontSize: 17, fontWeight: 500, color: D.noir }}>{secteur.icon} {secteur.label}</h2>
+                      <p style={{ margin: 0, fontSize: 12, color: D.gris3 }}>Contenus générés spécifiquement pour ce milieu</p>
+                      <div style={{ height: 1, background: D.gris2, marginTop: 12 }} />
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                      {MODULES.map(mod => {
+                        const mc = modColor(mod);
+                        return (
+                          <button key={mod.id} onClick={()=>loadModule(mod)}
+                            style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 10, padding: 14, cursor: "pointer", textAlign: "left", transition: "all 0.12s" }}
+                            onMouseEnter={e=>{ e.currentTarget.style.borderColor=mc; e.currentTarget.style.background=D.gris0; }}
+                            onMouseLeave={e=>{ e.currentTarget.style.borderColor=D.gris2; e.currentTarget.style.background=D.blanc; }}>
+                            <div style={{ fontSize: 20, marginBottom: 5 }}>{mod.icon}</div>
+                            <div style={{ fontSize: 13, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{mod.label}</div>
+                            <div style={{ fontSize: 11, color: D.gris3 }}>{mod.desc}</div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
-                </div>
-                <div style={{ background: D.blanc, borderRadius: 10, padding: 16, border: `1px solid ${D.gris2}`, borderTop: `3px solid ${modColor(activeModule)}` }}>
-                  {loading && <div style={{ textAlign: "center", padding: "20px 0" }}><LoadingDots color={D.noir}/><p style={{ color: D.gris3, fontSize: 14, marginTop: 8 }}>Génération en cours…</p></div>}
-                  {error && !loading && <div style={{ textAlign: "center", padding: 18 }}><p style={{ fontSize: 15, color: D.rouge }}>{error}</p></div>}
-                  {!content && !loading && !error && (
-                    <div style={{ textAlign: "center", padding: "28px 16px" }}>
-                      <p style={{ fontSize: 22, marginBottom: 12 }}>🍁</p>
-                      <p style={{ fontWeight: 500, fontSize: 14, color: D.noir, margin: "0 0 6px" }}>Contenu bientôt disponible</p>
-                      <p style={{ fontSize: 14, color: D.gris3, lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi. Reviens dans quelques instants !</p>
+                )}
+
+                {activeModule && (
+                  <div ref={resultRef}>
+                    <div style={{ background: D.blanc, borderRadius: 10, padding: 16, border: `1px solid ${D.gris2}`, borderTop: `3px solid \${modColor(activeModule)}` }}>
+                      {loading && <div style={{ textAlign: "center", padding: "20px 0" }}><LoadingDots color={D.noir}/><p style={{ color: D.gris3, fontSize: 13, marginTop: 8 }}>Génération en cours…</p></div>}
+                      {error && !loading && <p style={{ fontSize: 14, color: D.rouge, textAlign: "center" }}>{error}</p>}
+                      {!content && !loading && !error && (
+                        <div style={{ textAlign: "center", padding: "28px 16px" }}>
+                          <p style={{ fontSize: 28, marginBottom: 12 }}>🍁</p>
+                          <p style={{ fontWeight: 500, fontSize: 15, color: D.noir, margin: "0 0 6px" }}>Contenu bientôt disponible</p>
+                          <p style={{ fontSize: 13, color: D.gris3, lineHeight: 1.6, margin: 0 }}>Caroline prépare ce contenu pour toi. Reviens dans quelques instants !</p>
+                        </div>
+                      )}
+                      {content && !loading && !error && <ResultCard moduleId={activeModule.id} data={content} color={modColor(activeModule)} secteur={secteur} onQuizRetry={()=>loadModule(activeModule)} onQuizNewType={handleNewQuizType} onQuizDone={handleQuizDone}/>}
                     </div>
-                  )}
-                  {content && !loading && !error && <ResultCard moduleId={activeModule.id} data={content} color={modColor(activeModule)} secteur={secteur} onQuizRetry={()=>loadModule(activeModule)} onQuizNewType={handleNewQuizType} onQuizDone={handleQuizDone}/>}
-                </div>
-                <div style={{ marginTop: 12, display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {MODULES.filter(m=>m.id!==activeModule.id).map(m => (
-                    <button key={m.id} onClick={()=>loadModule(m)}
-                      style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "5px 10px", cursor: "pointer", fontSize: 13, color: D.gris4, transition: "border-color 0.12s" }}
-                      onMouseEnter={e=>e.currentTarget.style.borderColor=D.noir}
-                      onMouseLeave={e=>e.currentTarget.style.borderColor=D.gris2}>
-                      {m.icon} {m.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                    <div style={{ marginTop: 12, display: "flex", gap: 6, flexWrap: "wrap" }}>
+                      {MODULES.filter(m=>m.id!==activeModule.id).map(m => (
+                        <button key={m.id} onClick={()=>loadModule(m)}
+                          style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "5px 10px", cursor: "pointer", fontSize: 12, color: D.gris4 }}
+                          onMouseEnter={e=>e.currentTarget.style.borderColor=D.noir}
+                          onMouseLeave={e=>e.currentTarget.style.borderColor=D.gris2}>
+                          {m.icon} {m.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
-          </>
-          )}
         </>
       )}
     </div>
