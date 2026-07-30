@@ -1366,14 +1366,13 @@ function TrousGrammaireCard({ data, color }) {
 
       <div style={{ background: "white", border: `1px solid ${color}20`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
         <h4 style={{ margin: "0 0 10px", fontSize: 14, color: "#1F2937" }}>📖 {data.texte_titre}</h4>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: 2.1, color: "#374151" }}>
+        <div style={{ margin: 0, fontSize: 14, lineHeight: 2.1, color: "#374151" }}>
           {parts.map((part, i) => {
             const match = part.match(/\{\{(\d+)\}\}/);
             if (!match) return <span key={i}>{part}</span>;
             const id = match[1];
             const trou = data.trous.find(t => String(t.id) === id);
             const isCorrect = checked && (answers[id] || "").trim().toLowerCase() === trou?.reponse.toLowerCase();
-            const isWrong = checked && !isCorrect;
             return (
               <input key={i} value={answers[id] || ""} disabled={checked}
                 onChange={e => setAnswers(a => ({ ...a, [id]: e.target.value }))}
@@ -1387,7 +1386,7 @@ function TrousGrammaireCard({ data, color }) {
                 }} />
             );
           })}
-        </p>
+        </div>
       </div>
 
       {!checked ? (
