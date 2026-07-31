@@ -89,8 +89,8 @@ const EPOQUES = [
     contexte: "la vie quotidienne en Nouvelle-France : colons, coureurs des bois, vie dans les seigneuries, relations avec les nations autochtones, le commerce des fourrures",
     notions: {
       a2:    { notion: "Le présent de l'indicatif", notionDesc: "Conjuguer être et avoir + verbes courants au présent", format: "trous" },
-      b1b2:  { notion: "L'imparfait", notionDesc: "Décrire des habitudes et des situations passées", format: "lecture" },
-      c1c2:  { notion: "Imparfait vs passé simple", notionDesc: "Distinguer le récit littéraire (passé simple) du contexte descriptif (imparfait)", format: "lecture" }
+      b1b2:  { notion: "L'imparfait", notionDesc: "Décrire des habitudes et des situations passées", format: "trous" },
+      c1c2:  { notion: "Imparfait vs passé simple", notionDesc: "Distinguer le récit littéraire (passé simple) du contexte descriptif (imparfait)", format: "trous" }
     }
   },
   {
@@ -99,7 +99,7 @@ const EPOQUES = [
     notions: {
       a2:    { notion: "Accords dans le groupe du nom", notionDesc: "Accorder déterminants, noms et adjectifs en genre (masculin/féminin) et en nombre", format: "trous" },
       b1b2:  { notion: "Passé composé vs imparfait", notionDesc: "Distinguer l'événement ponctuel du contexte ou de la description", format: "trous" },
-      c1c2:  { notion: "Concordance des temps au passé", notionDesc: "Maîtriser passé composé, imparfait et plus-que-parfait dans un même texte", format: "lecture" }
+      c1c2:  { notion: "Concordance des temps au passé", notionDesc: "Maîtriser passé composé, imparfait et plus-que-parfait dans un même texte", format: "trous" }
     }
   },
   {
@@ -107,8 +107,8 @@ const EPOQUES = [
     contexte: "l'Acte d'Union, la Confédération de 1867, l'industrialisation, l'exode rural vers les villes et vers les États-Unis",
     notions: {
       a2:    { notion: "Le passé composé", notionDesc: "Former et utiliser le passé composé pour raconter des événements simples", format: "trous" },
-      b1b2:  { notion: "Futur simple et futur proche", notionDesc: "Exprimer et distinguer projets, prédictions et intentions", format: "lecture" },
-      c1c2:  { notion: "Subordonnées complexes et connecteurs", notionDesc: "Articuler causes, conséquences et oppositions avec des structures avancées", format: "lecture" }
+      b1b2:  { notion: "Futur simple et futur proche", notionDesc: "Exprimer et distinguer projets, prédictions et intentions", format: "trous" },
+      c1c2:  { notion: "Subordonnées complexes et connecteurs", notionDesc: "Articuler causes, conséquences et oppositions avec des structures avancées", format: "trous" }
     }
   },
   {
@@ -116,7 +116,7 @@ const EPOQUES = [
     contexte: "la Grande Noirceur, la Révolution tranquille des années 1960, la nationalisation de l'électricité, les revendications nationalistes, les référendums",
     notions: {
       a2:    { notion: "Les verbes modaux", notionDesc: "Utiliser vouloir, pouvoir et devoir au présent pour exprimer une intention ou une obligation", format: "trous" },
-      b1b2:  { notion: "La syntaxe et l'ordre des mots", notionDesc: "Construire des phrases complexes : place de l'adverbe, de la négation, de l'interrogation", format: "lecture" },
+      b1b2:  { notion: "La syntaxe et l'ordre des mots", notionDesc: "Construire des phrases complexes : place de l'adverbe, de la négation, de l'interrogation", format: "trous" },
       c1c2:  { notion: "Conditionnel et subjonctif", notionDesc: "Exprimer hypothèses, souhaits, doutes et revendications politiques", format: "trous" }
     }
   },
@@ -125,8 +125,8 @@ const EPOQUES = [
     contexte: "le Québec moderne, l'immigration récente, les enjeux linguistiques actuels, la diversité culturelle, les grands débats de société",
     notions: {
       a2:    { notion: "La phrase nominale et l'ellipse", notionDesc: "Comprendre et utiliser les formules courtes sans verbe très fréquentes au Québec : 'Pas de problème.', 'Correct.', 'Bonne journée.', 'Aucun souci.'", format: "trous" },
-      b1b2:  { notion: "Le discours rapporté au présent", notionDesc: "Rapporter les paroles et les positions de quelqu'un avec les verbes déclaratifs", format: "lecture" },
-      c1c2:  { notion: "Discours rapporté avec concordance complète", notionDesc: "Maîtriser les changements de temps, de pronoms et d'indicateurs temporels dans le discours indirect", format: "lecture" }
+      b1b2:  { notion: "Le discours rapporté au présent", notionDesc: "Rapporter les paroles et les positions de quelqu'un avec les verbes déclaratifs", format: "trous" },
+      c1c2:  { notion: "Discours rapporté avec concordance complète", notionDesc: "Maîtriser les changements de temps, de pronoms et d'indicateurs temporels dans le discours indirect", format: "trous" }
     }
   },
   {
@@ -134,8 +134,8 @@ const EPOQUES = [
     contexte: "la littérature québécoise moderne : Michel Tremblay, Réjean Ducharme, Victor-Lévy Beaulieu, Marie-Claire Blais, Gaston Miron — le joual comme revendication culturelle et artistique",
     notions: {
       a2:    { notion: "Les adjectifs et la description littéraire", notionDesc: "Utiliser des adjectifs variés pour décrire des personnages et des lieux dans un texte simple", format: "trous" },
-      b1b2:  { notion: "Registres de langue : littéraire vs parlé", notionDesc: "Distinguer et analyser le registre soutenu (français standard) et le registre familier (québécois parlé) dans un même extrait", format: "lecture" },
-      c1c2:  { notion: "Le joual comme langue littéraire", notionDesc: "Analyser les caractéristiques linguistiques du joual (phonologie, syntaxe, lexique) chez les auteurs québécois — sans reproduire d'œuvres protégées", format: "lecture" }
+      b1b2:  { notion: "Registres de langue : littéraire vs parlé", notionDesc: "Distinguer et analyser le registre soutenu (français standard) et le registre familier (québécois parlé) dans un même extrait", format: "trous" },
+      c1c2:  { notion: "Le joual comme langue littéraire", notionDesc: "Analyser les caractéristiques linguistiques du joual (phonologie, syntaxe, lexique) chez les auteurs québécois — sans reproduire d'œuvres protégées", format: "trous" }
     }
   },
   {
@@ -143,8 +143,8 @@ const EPOQUES = [
     contexte: "les particularités grammaticales du français québécois parlé au quotidien : négation sans 'ne', gallicismes temporels, phrases elliptiques, anglicismes grammaticaux, emploi de 'on' vs 'nous', voix passive évitée",
     notions: {
       a2:    { notion: "La négation à l'oral", notionDesc: "Comprendre que le 'ne' disparaît à l'oral québécois : 'je sais pas', 'c'est pas grave', 'y'a pas de problème'", format: "trous" },
-      b1b2:  { notion: "Les gallicismes temporels", notionDesc: "Maîtriser venir de (passé récent), être en train de (présent progressif) et aller + infinitif (futur proche) — très fréquents à l'oral québécois", format: "lecture" },
-      c1c2:  { notion: "Anglicismes grammaticaux et calques syntaxiques", notionDesc: "Identifier et corriger les calques de l'anglais fréquents chez les immigrants : 'être capable à', 'faire du sens', 'prendre pour acquis', 'c'est correct'", format: "lecture" }
+      b1b2:  { notion: "Les gallicismes temporels", notionDesc: "Maîtriser venir de (passé récent), être en train de (présent progressif) et aller + infinitif (futur proche) — très fréquents à l'oral québécois", format: "trous" },
+      c1c2:  { notion: "Anglicismes grammaticaux et calques syntaxiques", notionDesc: "Identifier et corriger les calques de l'anglais fréquents chez les immigrants : 'être capable à', 'faire du sens', 'prendre pour acquis', 'c'est correct'", format: "trous" }
     }
   }
 ];
@@ -1277,12 +1277,33 @@ function LectureGrammaireCard({ data, color }) {
       {/* Texte historique */}
       <div style={{ background: "white", border: `1px solid ${color}20`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
         <h4 style={{ margin: "0 0 10px", fontSize: 14, color: "#1F2937" }}>📖 {data.texte_titre}</h4>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: 1.8, color: "#374151" }}>
-          {data.texte.split(new RegExp(`(${data.mots_cles?.map(m => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi')).map((part, i) => {
-            const isKey = data.mots_cles?.some(m => m.toLowerCase() === part.toLowerCase());
-            return isKey ? <strong key={i} style={{ color, background: HG_BG, padding: "1px 4px", borderRadius: 4 }}>{part}</strong> : <span key={i}>{part}</span>;
-          })}
-        </p>
+        {data.mots_cles?.length > 0 && (
+          <p style={{ margin: "0 0 10px", fontSize: 11, color: "#9CA3AF", fontStyle: "italic" }}>
+            💡 Survole les mots <span style={{ borderBottom: "2px dotted " + color, paddingBottom: 1 }}>surlignés</span> pour voir leur définition
+          </p>
+        )}
+        <div style={{ fontSize: 14, lineHeight: 1.8, color: "#374151" }}>
+          {(() => {
+            // Support ancien format (string[]) et nouveau format ({terme, definition}[])
+            const motsCles = (data.mots_cles || []).map(m =>
+              typeof m === "string" ? { terme: m, definition: null } : m
+            );
+            if (!motsCles.length) return <span>{data.texte}</span>;
+            const regex = new RegExp(`(${motsCles.map(m => m.terme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+            return data.texte.split(regex).map((part, i) => {
+              const mc = motsCles.find(m => m.terme.toLowerCase() === part.toLowerCase());
+              if (!mc) return <span key={i}>{part}</span>;
+              if (mc.definition) {
+                return (
+                  <Tooltip key={i} terme={mc.terme} definition={mc.definition}>
+                    <strong style={{ color, background: color + "15", padding: "1px 4px", borderRadius: 4, borderBottom: `2px dotted ${color}` }}>{part}</strong>
+                  </Tooltip>
+                );
+              }
+              return <strong key={i} style={{ color, background: color + "15", padding: "1px 4px", borderRadius: 4 }}>{part}</strong>;
+            });
+          })()}
+        </div>
       </div>
 
       {/* Repère historique */}
@@ -1293,29 +1314,73 @@ function LectureGrammaireCard({ data, color }) {
       )}
 
       {/* Exercices d'application */}
-      <h4 style={{ color, marginBottom: 10, fontSize: 15 }}>✏️ À toi de jouer :</h4>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {data.exercices.map((ex, i) => (
-          <ExerciceItem key={i} exercice={ex} color={color} />
-        ))}
+      <div style={{ marginTop: 8, marginBottom: 8 }}>
+        <h4 style={{ color, marginBottom: 14, fontSize: 15, display: "flex", alignItems: "center", gap: 8 }}>
+          ✏️ À toi de jouer :
+          <span style={{ fontSize: 12, fontWeight: 400, color: "#9CA3AF" }}>{data.exercices.length} exercice{data.exercices.length > 1 ? "s" : ""}</span>
+        </h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {data.exercices.map((ex, i) => (
+            <ExerciceItem key={i} exercice={ex} color={color} />
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
 function ExerciceItem({ exercice, color }) {
+  const [response, setResponse] = useState("");
   const [revealed, setRevealed] = useState(false);
+
   return (
-    <div style={{ background: "white", border: `1px solid ${color}25`, borderRadius: 10, padding: 12 }}>
-      <p style={{ margin: "0 0 8px", fontSize: 15, color: "#1F2937" }}>{exercice.consigne}</p>
+    <div style={{ background: "white", border: `1px solid ${color}25`, borderRadius: 12, overflow: "hidden" }}>
+      {/* Consigne */}
+      <div style={{ padding: "14px 16px", borderBottom: `1px solid ${color}15` }}>
+        <p style={{ margin: 0, fontSize: 14, color: "#1F2937", lineHeight: 1.6 }}>{exercice.consigne}</p>
+      </div>
+
+      {/* Zone de réponse */}
+      <div style={{ padding: "12px 16px", background: "#FAFAFA" }}>
+        <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 600, color: "#6B7280", textTransform: "uppercase", letterSpacing: 0.5 }}>Ta réponse :</p>
+        <textarea
+          value={response}
+          onChange={e => setResponse(e.target.value)}
+          disabled={revealed}
+          placeholder="Écris ta réponse ici…"
+          rows={3}
+          style={{
+            width: "100%", padding: "10px 12px", borderRadius: 8, fontSize: 14, lineHeight: 1.6,
+            border: `1.5px solid ${revealed ? "#E5E7EB" : color + "50"}`,
+            background: revealed ? "#F9FAFB" : "white",
+            color: "#1F2937", resize: "vertical", outline: "none",
+            fontFamily: "inherit", boxSizing: "border-box",
+            opacity: revealed ? 0.7 : 1
+          }}
+        />
+      </div>
+
+      {/* Bouton ou correction */}
       {!revealed ? (
-        <button onClick={() => setRevealed(true)} style={{ fontSize: 14, color, background: "none", border: `1px solid ${color}40`, borderRadius: 16, padding: "4px 12px", cursor: "pointer" }}>
-          Voir la réponse
-        </button>
+        <div style={{ padding: "0 16px 14px", background: "#FAFAFA" }}>
+          <button onClick={() => setRevealed(true)}
+            style={{ fontSize: 13, color: "white", background: color, border: "none", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontWeight: 600 }}>
+            ✓ Voir la correction
+          </button>
+        </div>
       ) : (
-        <div style={{ background: HG_BG, borderRadius: 8, padding: "8px 12px" }}>
-          <p style={{ margin: "0 0 4px", fontSize: 15, color, fontWeight: 600 }}>✓ {exercice.reponse}</p>
-          {exercice.explication && <p style={{ margin: 0, fontSize: 14, color: "#666" }}>{exercice.explication}</p>}
+        <div style={{ padding: "12px 16px 14px", background: "#F0FDF4", borderTop: "1px solid #BBF7D0" }}>
+          <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 600, color: "#065F46", textTransform: "uppercase", letterSpacing: 0.5 }}>Correction :</p>
+          <p style={{ margin: "0 0 6px", fontSize: 14, color: "#065F46", fontWeight: 600, lineHeight: 1.6 }}>{exercice.reponse}</p>
+          {exercice.explication && (
+            <p style={{ margin: 0, fontSize: 13, color: "#555", fontStyle: "italic", lineHeight: 1.5 }}>
+              💡 {exercice.explication}
+            </p>
+          )}
+          <button onClick={() => { setRevealed(false); }}
+            style={{ marginTop: 8, fontSize: 12, color: "#6B7280", background: "none", border: "1px solid #E5E7EB", borderRadius: 6, padding: "4px 10px", cursor: "pointer" }}>
+            ↩ Modifier ma réponse
+          </button>
         </div>
       )}
     </div>
@@ -1415,59 +1480,105 @@ function TrousGrammaireCard({ data, color }) {
 }
 
 function HGQuizCard({ data, color, onRetry }) {
+  const allQuestions = data.quiz || data.questions || [];
+  const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const score = submitted ? data.questions.filter((q, i) => answers[i] === q.bonne_reponse).length : 0;
-  const total = data.questions.length;
-  function cs(q, idx, lettre) {
-    const sel = answers[idx] === lettre, ok = lettre === q.bonne_reponse;
-    if (!submitted) return { background: sel ? color + "15" : "white", border: `2px solid ${sel ? color : "#E5E7EB"}`, color: "#1F2937" };
-    if (ok) return { background: "#ECFDF5", border: "2px solid #065F46", color: "#065F46" };
-    if (sel && !ok) return { background: "#FEF2F2", border: "2px solid #DC2626", color: "#DC2626" };
+  const [submitted, setSubmitted] = useState({});
+  const [completed, setCompleted] = useState(false);
+
+  const q = allQuestions[currentIdx];
+  const total = allQuestions.length;
+  const isSubmitted = submitted[currentIdx];
+  const isCorrect = isSubmitted && answers[currentIdx] === q?.bonne_reponse;
+
+  function cs(lettre) {
+    const isSel = answers[currentIdx] === lettre;
+    const isOk = lettre === q?.bonne_reponse;
+    if (!isSubmitted) return { background: isSel ? color + "15" : "white", border: `2px solid ${isSel ? color : "#E5E7EB"}`, color: "#1F2937" };
+    if (isOk) return { background: "#ECFDF5", border: "2px solid #065F46", color: "#065F46" };
+    if (isSel && !isOk) return { background: "#FEF2F2", border: "2px solid #DC2626", color: "#DC2626" };
     return { background: "white", border: "2px solid #E5E7EB", color: "#9CA3AF" };
   }
+
+  if (completed) {
+    const finalScore = Object.entries(answers).filter(([i, a]) => allQuestions[i]?.bonne_reponse === a).length;
+    const pct = Math.round((finalScore / total) * 100);
+    const sc = pct === 100 ? "#065F46" : pct >= 75 ? "#B45309" : "#9B1C1C";
+    const sb = pct === 100 ? "#ECFDF5" : pct >= 75 ? "#FEF3E2" : "#FEF2F2";
+    return (
+      <div style={{ textAlign: "center", padding: "20px 0" }}>
+        <div style={{ fontSize: 48, marginBottom: 14 }}>🎉</div>
+        <h3 style={{ margin: "0 0 8px", color: "#111" }}>Tous les quiz complétés !</h3>
+        <div style={{ background: sb, border: `1px solid ${sc}40`, borderRadius: 12, padding: "16px 20px", marginBottom: 20, display: "inline-block" }}>
+          <div style={{ fontSize: 32, fontWeight: 800, color: sc }}>{finalScore}/{total}</div>
+          <div style={{ fontSize: 14, color: sc, marginTop: 4 }}>
+            {pct === 100 ? "Parfait ! 🎉" : pct >= 75 ? "Pas pire ! 💪" : pct >= 50 ? "Continue ! 📚" : "Lâche pas ! 🍁"}
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={() => { setCurrentIdx(0); setAnswers({}); setSubmitted({}); setCompleted(false); }}
+            style={{ flex: 1, padding: "11px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            ↩ Recommencer
+          </button>
+          <button onClick={onRetry}
+            style={{ flex: 1, padding: "11px", borderRadius: 10, border: "none", background: color, color: "white", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            🔄 Nouveau quiz
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!q) return null;
+
   return (
     <div>
-      <h3 style={{ margin: "0 0 14px", fontSize: 15, color: "#1F2937" }}>{data.titre}</h3>
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {data.questions.map((q, idx) => (
-          <div key={idx} style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #E5E7EB" }}>
-            <div style={{ background: "#F9FAFB", padding: "12px 14px", borderBottom: "1px solid #E5E7EB" }}>
-              <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: "#111827" }}>{q.question}</p>
-            </div>
-            <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
-              {q.choix.map(c => (
-                <button key={c.lettre} onClick={() => !submitted && setAnswers(a => ({ ...a, [idx]: c.lettre }))}
-                  style={{ ...cs(q, idx, c.lettre), borderRadius: 8, padding: "10px 12px", cursor: submitted ? "default" : "pointer", textAlign: "left", fontSize: 15, display: "flex", gap: 10, alignItems: "flex-start", width: "100%" }}>
-                  <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, flexShrink: 0, background: answers[idx] === c.lettre ? color : "#E5E7EB", color: answers[idx] === c.lettre ? "white" : "#6B7280" }}>{c.lettre}</span>
-                  <span>{c.texte}</span>
-                  {submitted && c.lettre === q.bonne_reponse && <span style={{ marginLeft: "auto" }}>✅</span>}
-                </button>
-              ))}
-            </div>
-            {submitted && (
-              <div style={{ padding: "10px 14px 14px", background: answers[idx] === q.bonne_reponse ? "#F0FDF4" : "#FFF7ED" }}>
-                <p style={{ margin: 0, fontSize: 15, color: "#374151" }}>{q.explication}</p>
-              </div>
-            )}
-          </div>
-        ))}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <h3 style={{ margin: 0, fontSize: 15, color: "#1F2937" }}>{data.titre}</h3>
+        <span style={{ fontSize: 13, background: color + "20", color, borderRadius: 10, padding: "2px 10px", fontWeight: 600 }}>{currentIdx + 1}/{total}</span>
       </div>
-      <div style={{ marginTop: 16 }}>
-        {!submitted ? (
-          <button onClick={() => setSubmitted(true)} disabled={Object.keys(answers).length < total}
-            style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", background: Object.keys(answers).length === total ? color : "#D1D5DB", color: "white", fontSize: 14, fontWeight: 700, cursor: Object.keys(answers).length === total ? "pointer" : "not-allowed" }}>
-            {Object.keys(answers).length < total ? `Réponds à toutes les questions (${Object.keys(answers).length}/${total})` : "Corriger →"}
-          </button>
-        ) : (
-          <div>
-            <div style={{ background: HG_BG, border: `1px solid ${color}40`, borderRadius: 12, padding: "14px 18px", marginBottom: 12, textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color }}>{score}/{total}</div>
-            </div>
-            <button onClick={onRetry} style={{ width: "100%", padding: "10px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 15, fontWeight: 600, cursor: "pointer" }}>🔄 Nouveau quiz</button>
+
+      <div style={{ background: "#E5E7EB", borderRadius: 10, height: 6, marginBottom: 16, overflow: "hidden" }}>
+        <div style={{ width: `${(currentIdx / total) * 100}%`, height: "100%", background: color, transition: "width 0.3s" }} />
+      </div>
+
+      <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #E5E7EB", marginBottom: 14 }}>
+        <div style={{ background: "#F9FAFB", padding: "12px 14px", borderBottom: "1px solid #E5E7EB" }}>
+          <div style={{ fontSize: 12, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>QUESTION {currentIdx + 1} SUR {total}</div>
+          <p style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "#111827", lineHeight: 1.5 }}>{q.question}</p>
+        </div>
+        <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
+          {q.choix.map(c => (
+            <button key={c.lettre} onClick={() => !isSubmitted && setAnswers(a => ({ ...a, [currentIdx]: c.lettre }))}
+              style={{ ...cs(c.lettre), borderRadius: 8, padding: "10px 12px", cursor: isSubmitted ? "default" : "pointer", textAlign: "left", fontSize: 14, display: "flex", gap: 10, alignItems: "flex-start", width: "100%" }}>
+              <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0, background: answers[currentIdx] === c.lettre ? color : "#E5E7EB", color: answers[currentIdx] === c.lettre ? "white" : "#6B7280" }}>{c.lettre}</span>
+              <span style={{ lineHeight: 1.4 }}>{c.texte}</span>
+              {isSubmitted && c.lettre === q.bonne_reponse && <span style={{ marginLeft: "auto" }}>✅</span>}
+              {isSubmitted && answers[currentIdx] === c.lettre && c.lettre !== q.bonne_reponse && <span style={{ marginLeft: "auto" }}>❌</span>}
+            </button>
+          ))}
+        </div>
+        {isSubmitted && (
+          <div style={{ padding: "10px 14px 14px", background: isCorrect ? "#F0FDF4" : "#FFF7ED", borderTop: `1px solid ${isCorrect ? "#BBF7D0" : "#FED7AA"}` }}>
+            <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 600, color: isCorrect ? "#065F46" : "#92400E" }}>
+              {isCorrect ? "✅ Bonne réponse !" : `✅ Bonne réponse : ${q.bonne_reponse}`}
+            </p>
+            <p style={{ margin: 0, fontSize: 14, color: "#374151" }}>{q.explication}</p>
           </div>
         )}
       </div>
+
+      {!isSubmitted ? (
+        <button onClick={() => setSubmitted(s => ({ ...s, [currentIdx]: true }))} disabled={!answers[currentIdx]}
+          style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", background: answers[currentIdx] ? color : "#D1D5DB", color: "white", fontSize: 14, fontWeight: 700, cursor: answers[currentIdx] ? "pointer" : "not-allowed" }}>
+          Vérifier ma réponse →
+        </button>
+      ) : (
+        <button onClick={() => currentIdx < total - 1 ? setCurrentIdx(i => i + 1) : setCompleted(true)}
+          style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", background: color, color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+          {currentIdx < total - 1 ? `Question suivante → (${currentIdx + 2}/${total})` : "Voir mes résultats 🎉"}
+        </button>
+      )}
     </div>
   );
 }
@@ -1502,14 +1613,14 @@ function HistoireGrammaireScreen({ onBack }) {
     } else if (isOralQC) {
       consigne = `Crée un exercice sur les particularités grammaticales du français québécois parlé. Utilise des exemples de conversations réelles au bureau ou dans la vie quotidienne au Québec. Le texte doit montrer clairement la différence entre le français standard écrit et le québécois parlé. Inclus des exemples concrets et des contre-exemples. Crée 3 exercices pratiques de reconnaissance et de transformation.`;
     } else {
-      consigne = `Crée un exercice combinant histoire et grammaire pour l'époque "${ep.label}" (${ep.periode}), contexte : ${ep.contexte}. Le texte historique doit être factuel, intéressant, et illustrer naturellement la notion grammaticale ciblée. Identifie 4-6 mots-clés historiques dans "mots_cles". Crée 3 exercices d'application.`;
+      consigne = `Crée un exercice combinant histoire et grammaire pour l'époque "${ep.label}" (${ep.periode}), contexte : ${ep.contexte}. Le texte historique doit être factuel, intéressant, et illustrer naturellement la notion grammaticale ciblée. Identifie 4-6 mots-clés historiques importants et donne une définition courte (1 phrase) pour chacun dans "mots_cles". Crée 3 exercices d'application.`;
     }
 
     return `Tu es expert en histoire du Québec et du Canada (inspiré de Récitus) ET en grammaire française.
 ${consigne}
 Niveau de langue : ${niveauLabel[niveau]}.
 Notion de grammaire : ${notion} — ${notionDesc}.
-JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[string],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]}
+JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
@@ -1537,9 +1648,9 @@ UNIQUEMENT JSON, sans markdown.`;
       : `à travers le contexte historique "${ep.label}" (${ep.contexte})`;
 
     return `Tu es expert en grammaire française et en québécois parlé.
-Génère 4 questions QCM testant la notion "${notion}" (${notionDesc}) ${contexteQuiz}.
-Niveau : ${niveauLabel[niveau]}. Mélange reconnaissance, transformation et application pratique.
-JSON: {"titre":string,"questions":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]}
+Génère 5 questions QCM DISTINCTES testant la notion "${notion}" (${notionDesc}) ${contexteQuiz}.
+Niveau : ${niveauLabel[niveau]}. Mélange reconnaissance, transformation et application pratique. Chaque question doit tester un aspect DIFFÉRENT de la notion.
+JSON: {"titre":string,"quiz":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
@@ -2052,7 +2163,7 @@ function TeacherMode({ onClose }) {
             ? `Quiz sur "${ep.label}", notion: ${notionData.notion}. JSON: {"titre":string,"questions":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]} UNIQUEMENT JSON.`
             : notionData.format === "trous"
               ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. Inclus "mots_a_utiliser": liste mélangée des mots à placer dans les trous. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
-              : `Texte + exercices sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[string],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`;
+              : `Texte + exercices sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`;
         }
       }
       if (!prompt) throw new Error("Prompt introuvable");
