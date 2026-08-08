@@ -1598,17 +1598,17 @@ function HistoireGrammaireScreen({ onBack }) {
     c1c2: "niveau C1-C2 (phrases riches, nuances stylistiques, vocabulaire soutenu)"
   };
 
-  function getNotionPourNiveau(ep) {
-    return ep.notions[niveau] || ep.notions["b1b2"];
+  function getNotionPourNiveau(ep, niv = niveau) {
+    return ep.notions[niv] || ep.notions["b1b2"];
   }
 
-  function buildLecturePrompt(ep) {
-    const { notion, notionDesc } = getNotionPourNiveau(ep);
+  function buildLecturePrompt(ep, niv = niveau) {
+    const { notion, notionDesc } = getNotionPourNiveau(ep, niv);
     const isLitterature = ep.id === "litterature";
     const isOralQC = ep.id === "oral_qc";
 
     let consigne;
-    if (isLitterature && niveau === "c1c2") {
+    if (isLitterature && niv === "c1c2") {
       consigne = `Pour le niveau C1-C2 sur "${ep.label}", crée un exercice d'analyse du joual comme langue littéraire québécoise. IMPORTANT : ne reproduis AUCUN extrait réel des œuvres protégées (Tremblay, Ducharme, etc.). À la place : 1) Décris les caractéristiques linguistiques du joual (phonologie : moé, toé, chu, y'a ; syntaxe : interrogation par intonation, négation sans 'ne' ; lexique : anglicismes, sacres comme intensificateurs) ; 2) Crée des dialogues ORIGINAUX inspirés du style joual, sans copier aucune œuvre existante ; 3) Propose des exercices d'analyse stylistique comparant joual et français standard. Mentionne les auteurs comme contexte historique seulement.`;
     } else if (isOralQC) {
       consigne = `Crée un exercice sur les particularités grammaticales du français québécois parlé. Utilise des exemples de conversations réelles au bureau ou dans la vie quotidienne au Québec. Le texte doit montrer clairement la différence entre le français standard écrit et le québécois parlé. Inclus des exemples concrets et des contre-exemples. Crée 3 exercices pratiques de reconnaissance et de transformation.`;
@@ -1618,14 +1618,14 @@ function HistoireGrammaireScreen({ onBack }) {
 
     return `Tu es expert en histoire du Québec et du Canada (inspiré de Récitus) ET en grammaire française.
 ${consigne}
-Niveau de langue : ${niveauLabel[niveau]}.
+Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire : ${notion} — ${notionDesc}.
 JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
-  function buildTrousPrompt(ep) {
-    const { notion, notionDesc } = getNotionPourNiveau(ep);
+  function buildTrousPrompt(ep, niv = niveau) {
+    const { notion, notionDesc } = getNotionPourNiveau(ep, niv);
     const isOralQC = ep.id === "oral_qc";
     const contextePrompt = isOralQC
       ? `Crée un texte sur une situation quotidienne au Québec (conversation au bureau, à l'épicerie, entre collègues) illustrant les particularités grammaticales du québécois parlé.`
@@ -1633,15 +1633,16 @@ UNIQUEMENT JSON, sans markdown.`;
 
     return `Tu es expert en grammaire française et en québécois parlé.
 ${contextePrompt}
-Niveau de langue : ${niveauLabel[niveau]}.
+Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
+IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante").
 Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.
 JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
-  function buildQuizPrompt(ep) {
-    const { notion, notionDesc } = getNotionPourNiveau(ep);
+  function buildQuizPrompt(ep, niv = niveau) {
+    const { notion, notionDesc } = getNotionPourNiveau(ep, niv);
     const isOralQC = ep.id === "oral_qc";
     const contexteQuiz = isOralQC
       ? `dans des situations de communication quotidienne au Québec (bureau, commerces, conversations entre collègues)`
@@ -1649,12 +1650,12 @@ UNIQUEMENT JSON, sans markdown.`;
 
     return `Tu es expert en grammaire française et en québécois parlé.
 Génère 5 questions QCM DISTINCTES testant la notion "${notion}" (${notionDesc}) ${contexteQuiz}.
-Niveau : ${niveauLabel[niveau]}. Mélange reconnaissance, transformation et application pratique. Chaque question doit tester un aspect DIFFÉRENT de la notion.
+Niveau : ${niveauLabel[niv]}. Mélange reconnaissance, transformation et application pratique. Chaque question doit tester un aspect DIFFÉRENT de la notion.
 JSON: {"titre":string,"quiz":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
-  async function loadContenu(ep, forcedMode = "contenu", forceRegen = false) {
+  async function loadContenu(ep, forcedMode = "contenu", forceRegen = false, niv = niveau) {
     setEpoque(ep);
     setMode(forcedMode);
     setContent(null);
@@ -1662,16 +1663,16 @@ UNIQUEMENT JSON, sans markdown.`;
     setLoading(true);
     setTimeout(() => contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     try {
-      const subId = `${forcedMode}_${niveau}`;
+      const subId = `${forcedMode}_${niv}`;
       if (!forceRegen) {
         const cached = await getCached("hg", ep.id, subId);
         if (cached && cached.status === "validated") { setContent(cached.data); setLoading(false); return; }
         if (cached && cached.status === "pending") { setContent(cached.data); setLoading(false); return; }
       }
-      const { format } = getNotionPourNiveau(ep);
+      const { format } = getNotionPourNiveau(ep, niv);
       let prompt;
-      if (forcedMode === "quiz") prompt = buildQuizPrompt(ep);
-      else prompt = format === "trous" ? buildTrousPrompt(ep) : buildLecturePrompt(ep);
+      if (forcedMode === "quiz") prompt = buildQuizPrompt(ep, niv);
+      else prompt = format === "trous" ? buildTrousPrompt(ep, niv) : buildLecturePrompt(ep, niv);
       const parsed = await callClaude([{ role: "user", content: prompt }],
         "Tu es expert en histoire du Québec et du Canada et en grammaire française, dans l'esprit pédagogique de Récitus (histoire.recitus.qc.ca). Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.");
       await setCached("hg", ep.id, parsed, subId);
@@ -1691,8 +1692,11 @@ UNIQUEMENT JSON, sans markdown.`;
       {/* Sélecteur de niveau */}
       <div style={{ background: "white", borderBottom: "1px solid #E0E0E0", padding: "10px 16px", display: "flex", justifyContent: "center", gap: 6 }}>
         {NIVEAUX.map(n => (
-          <button key={n.id} onClick={() => setNiveau(n.id)}
-            style={{ padding: "6px 14px", borderRadius: 20, border: `1.5px solid ${niveau === n.id ? HG_COLOR : "#E5E7EB"}`, background: niveau === n.id ? HG_COLOR : "white", color: niveau === n.id ? "white" : "#666", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+          <button key={n.id} disabled={loading} onClick={() => {
+              setNiveau(n.id);
+              if (epoque) loadContenu(epoque, mode || "contenu", false, n.id);
+            }}
+            style={{ padding: "6px 14px", borderRadius: 20, border: `1.5px solid ${niveau === n.id ? HG_COLOR : "#E5E7EB"}`, background: niveau === n.id ? HG_COLOR : "white", color: niveau === n.id ? "white" : "#666", fontSize: 14, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer" }}>
             {n.label}
           </button>
         ))}
