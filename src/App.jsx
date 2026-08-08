@@ -1412,10 +1412,10 @@ function NoisetteReward({ show, gold }) {
   if (!show) return null;
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, background: gold ? "#FFFBE6" : "#F3E4D0", border: `1px solid ${gold ? "#FCD34D" : "#D8C4A0"}`, borderRadius: 12, padding: "10px 14px", marginBottom: 14, animation: "noisettePop 0.4s cubic-bezier(.3,1.4,.6,1)" }}>
-      <span style={{ fontSize: 24 }}>🐿️</span>
+      <span style={{ fontSize: 24, display: "inline-block", transform: "scaleX(-1)" }}>🐿️</span>
       <span style={{ fontSize: 20 }}>{gold ? "🌟" : "🌰"}</span>
       <span style={{ fontSize: 14, fontWeight: 600, color: gold ? "#92400E" : "#5F4A2E" }}>
-        {gold ? "Noisette dorée — sans faute !" : "Noisette gagnée"}
+        {gold ? "Noisette dorée — sans faute !" : "Noisette gagnée !"}
       </span>
       <style>{`@keyframes noisettePop { 0% { transform: scale(0.8); opacity: 0; } 60% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }`}</style>
     </div>
@@ -1447,7 +1447,7 @@ function TrousGrammaireCard({ data, color }) {
   const score = checked ? data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === (t.reponse || "").toLowerCase()).length : 0;
 
   // Mélanger les mots si disponibles
-  const mots = data.mots_a_utiliser || [];
+  const mots = data.mots_a_utiliser || data["mots_à_utiliser"] || [];
 
   return (
     <div>
