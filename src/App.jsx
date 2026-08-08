@@ -1400,7 +1400,7 @@ function TrousGrammaireCard({ data, color }) {
   }
 
   const parts = data.texte_trous.split(/(\{\{\d+\}\})/g);
-  const score = checked ? data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === t.reponse.toLowerCase()).length : 0;
+  const score = checked ? data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === (t.reponse || "").toLowerCase()).length : 0;
 
   // Mélanger les mots si disponibles
   const mots = data.mots_a_utiliser || [];
@@ -1437,13 +1437,14 @@ function TrousGrammaireCard({ data, color }) {
             if (!match) return <span key={i}>{part}</span>;
             const id = match[1];
             const trou = data.trous.find(t => String(t.id) === id);
-            const isCorrect = checked && (answers[id] || "").trim().toLowerCase() === trou?.reponse.toLowerCase();
+            const reponse = trou?.reponse || "";
+            const isCorrect = checked && (answers[id] || "").trim().toLowerCase() === reponse.toLowerCase();
             return (
               <input key={i} value={answers[id] || ""} disabled={checked}
                 onChange={e => setAnswers(a => ({ ...a, [id]: e.target.value }))}
                 placeholder="..."
                 style={{
-                  width: Math.max(60, (trou?.reponse.length || 6) * 11), display: "inline-block",
+                  width: Math.max(60, (reponse.length || 6) * 11), display: "inline-block",
                   margin: "0 3px", padding: "2px 6px", borderRadius: 6, fontSize: 14, textAlign: "center",
                   border: `2px solid ${checked ? (isCorrect ? "#065F46" : "#DC2626") : color + "50"}`,
                   background: checked ? (isCorrect ? "#ECFDF5" : "#FEF2F2") : "white",
@@ -1466,7 +1467,7 @@ function TrousGrammaireCard({ data, color }) {
             <span style={{ fontSize: 15, color: "#555", marginLeft: 8 }}>bonnes réponses</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
-            {data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() !== t.reponse.toLowerCase()).map(t => (
+            {data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() !== (t.reponse || "").toLowerCase()).map(t => (
               <div key={t.id} style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "8px 12px", fontSize: 14 }}>
                 <strong style={{ color: "#92400E" }}>Réponse attendue : {t.reponse}</strong>
                 {t.explication && <p style={{ margin: "3px 0 0", color: "#78350F" }}>{t.explication}</p>}
