@@ -1506,9 +1506,11 @@ function TrousGrammaireCard({ data, color }) {
         </button>
       ) : (
         <div>
-          <PawTrail total={data.trous.length} filled={score} />
           <NoisetteReward show={checked} gold={score === data.trous.length} />
           <div style={{ background: score === data.trous.length ? "#ECFDF5" : "#FEF3E2", border: `1px solid ${score === data.trous.length ? "#065F46" : color}40`, borderRadius: 12, padding: "12px 16px", marginBottom: 14, textAlign: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <PawTrail total={data.trous.length} filled={score} />
+            </div>
             <span style={{ fontSize: 20, fontWeight: 800, color: score === data.trous.length ? "#065F46" : color }}>{score}/{data.trous.length}</span>
             <span style={{ fontSize: 15, color: "#555", marginLeft: 8 }}>bonnes réponses</span>
           </div>
