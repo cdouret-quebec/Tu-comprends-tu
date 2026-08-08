@@ -241,10 +241,17 @@ function addToLexique(annotations, source) {
 }
 
 function loadProgression() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || { quizScores: [], modulesVus: {}, expressionsRatees: [] }; }
-  catch { return { quizScores: [], modulesVus: {}, expressionsRatees: [] }; }
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || { quizScores: [], modulesVus: {}, expressionsRatees: [], noisettes: 0, noisettesOr: 0 }; }
+  catch { return { quizScores: [], modulesVus: {}, expressionsRatees: [], noisettes: 0, noisettesOr: 0 }; }
 }
 function saveProgression(d) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch {} }
+function awardNoisette(sansFaute) {
+  const p = loadProgression();
+  p.noisettes = (p.noisettes || 0) + 1;
+  if (sansFaute) p.noisettesOr = (p.noisettesOr || 0) + 1;
+  saveProgression(p);
+  return p;
+}
 
 // Cache des contenus — localStorage dans l'artifact/dev, Supabase sur Vercel
 const CACHE_KEY = "qc_pro_cache";
@@ -1387,9 +1394,46 @@ function ExerciceItem({ exercice, color }) {
   );
 }
 
+function PawTrail({ total, filled }) {
+  return (
+    <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 10 }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <span key={i} style={{
+          fontSize: 16, opacity: i < filled ? 1 : 0.2,
+          transform: i < filled ? "scale(1.15)" : "scale(1)",
+          transition: "all 0.3s cubic-bezier(.3,1.4,.6,1)"
+        }}>🐾</span>
+      ))}
+    </div>
+  );
+}
+
+function NoisetteReward({ show, gold }) {
+  if (!show) return null;
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, background: gold ? "#FFFBE6" : "#F3E4D0", border: `1px solid ${gold ? "#FCD34D" : "#D8C4A0"}`, borderRadius: 12, padding: "10px 14px", marginBottom: 14, animation: "noisettePop 0.4s cubic-bezier(.3,1.4,.6,1)" }}>
+      <span style={{ fontSize: 24 }}>🐿️</span>
+      <span style={{ fontSize: 20 }}>{gold ? "🌟" : "🌰"}</span>
+      <span style={{ fontSize: 14, fontWeight: 600, color: gold ? "#92400E" : "#5F4A2E" }}>
+        {gold ? "Noisette dorée — sans faute !" : "Noisette gagnée"}
+      </span>
+      <style>{`@keyframes noisettePop { 0% { transform: scale(0.8); opacity: 0; } 60% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }`}</style>
+    </div>
+  );
+}
+
 function TrousGrammaireCard({ data, color }) {
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
+  const awardedRef = useRef(false);
+
+  useEffect(() => {
+    if (checked && !awardedRef.current && data?.trous) {
+      awardedRef.current = true;
+      const sc = data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === (t.reponse || "").toLowerCase()).length;
+      awardNoisette(sc === data.trous.length);
+    }
+  }, [checked]);
 
   if (!data.texte_trous || !data.trous) {
     return (
@@ -1462,6 +1506,8 @@ function TrousGrammaireCard({ data, color }) {
         </button>
       ) : (
         <div>
+          <PawTrail total={data.trous.length} filled={score} />
+          <NoisetteReward show={checked} gold={score === data.trous.length} />
           <div style={{ background: score === data.trous.length ? "#ECFDF5" : "#FEF3E2", border: `1px solid ${score === data.trous.length ? "#065F46" : color}40`, borderRadius: 12, padding: "12px 16px", marginBottom: 14, textAlign: "center" }}>
             <span style={{ fontSize: 20, fontWeight: 800, color: score === data.trous.length ? "#065F46" : color }}>{score}/{data.trous.length}</span>
             <span style={{ fontSize: 15, color: "#555", marginLeft: 8 }}>bonnes réponses</span>
@@ -1486,11 +1532,13 @@ function HGQuizCard({ data, color, onRetry }) {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState({});
   const [completed, setCompleted] = useState(false);
+  const awardedRef = useRef(false);
 
   const q = allQuestions[currentIdx];
   const total = allQuestions.length;
   const isSubmitted = submitted[currentIdx];
   const isCorrect = isSubmitted && answers[currentIdx] === q?.bonne_reponse;
+  const nbCorrect = Object.keys(submitted).filter(i => allQuestions[i]?.bonne_reponse === answers[i]).length;
 
   function cs(lettre) {
     const isSel = answers[currentIdx] === lettre;
@@ -1506,6 +1554,10 @@ function HGQuizCard({ data, color, onRetry }) {
     const pct = Math.round((finalScore / total) * 100);
     const sc = pct === 100 ? "#065F46" : pct >= 75 ? "#B45309" : "#9B1C1C";
     const sb = pct === 100 ? "#ECFDF5" : pct >= 75 ? "#FEF3E2" : "#FEF2F2";
+    if (!awardedRef.current) {
+      awardedRef.current = true;
+      awardNoisette(finalScore === total);
+    }
     return (
       <div style={{ textAlign: "center", padding: "20px 0" }}>
         <div style={{ fontSize: 48, marginBottom: 14 }}>🎉</div>
@@ -1515,6 +1567,9 @@ function HGQuizCard({ data, color, onRetry }) {
           <div style={{ fontSize: 14, color: sc, marginTop: 4 }}>
             {pct === 100 ? "Parfait ! 🎉" : pct >= 75 ? "Pas pire ! 💪" : pct >= 50 ? "Continue ! 📚" : "Lâche pas ! 🍁"}
           </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <NoisetteReward show={true} gold={finalScore === total} />
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <button onClick={() => { setCurrentIdx(0); setAnswers({}); setSubmitted({}); setCompleted(false); }}
@@ -1539,9 +1594,11 @@ function HGQuizCard({ data, color, onRetry }) {
         <span style={{ fontSize: 13, background: color + "20", color, borderRadius: 10, padding: "2px 10px", fontWeight: 600 }}>{currentIdx + 1}/{total}</span>
       </div>
 
-      <div style={{ background: "#E5E7EB", borderRadius: 10, height: 6, marginBottom: 16, overflow: "hidden" }}>
+      <div style={{ background: "#E5E7EB", borderRadius: 10, height: 6, marginBottom: 10, overflow: "hidden" }}>
         <div style={{ width: `${(currentIdx / total) * 100}%`, height: "100%", background: color, transition: "width 0.3s" }} />
       </div>
+
+      <PawTrail total={total} filled={nbCorrect} />
 
       <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #E5E7EB", marginBottom: 14 }}>
         <div style={{ background: "#F9FAFB", padding: "12px 14px", borderBottom: "1px solid #E5E7EB" }}>
@@ -2880,6 +2937,7 @@ const D = {
   gris2: "#E5E4E1",
   gris3: "#999999",
   gris4: "#555555",
+  gris5: "#555555",
 };
 
 function LexiqueScreen({ onBack }) {
@@ -3018,12 +3076,12 @@ export default function App() {
           <div style={{ minWidth: 64, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 6 }}>
             <div style={{ display: "flex", gap: 3 }}>
               <button onClick={() => setFontSize(f => Math.max(0, f-1))}
-                style={{ background: fontSize === 0 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: fontSize === 0 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 11, padding: "3px 6px", fontWeight: 700 }}>A-</button>
+                style={{ background: fontSize === 0 ? D.rouge : "none", border: `1px solid ${D.gris5}`, borderRadius: 4, color: fontSize === 0 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 11, padding: "3px 6px", fontWeight: 700 }}>A-</button>
               <button onClick={() => setFontSize(f => Math.min(2, f+1))}
-                style={{ background: fontSize === 2 ? D.rouge : "none", border: `1px solid ${D.gris4}`, borderRadius: 4, color: fontSize === 2 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 15, padding: "3px 6px", fontWeight: 700 }}>A+</button>
+                style={{ background: fontSize === 2 ? D.rouge : "none", border: `1px solid ${D.gris5}`, borderRadius: 4, color: fontSize === 2 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 15, padding: "3px 6px", fontWeight: 700 }}>A+</button>
             </div>
             <button onClick={()=>setScreen("progression")}
-              style={{ background: "none", border: `1px solid ${D.gris4}`, borderRadius: 6, color: D.gris3, cursor: "pointer", fontSize: 13, padding: "5px 10px", display: "flex", alignItems: "center", gap: 4 }}>
+              style={{ background: "none", border: `1px solid ${D.gris5}`, borderRadius: 6, color: D.gris3, cursor: "pointer", fontSize: 13, padding: "5px 10px", display: "flex", alignItems: "center", gap: 4 }}>
               ↗{sessionCount > 0 && <span style={{ background: D.rouge, color: D.blanc, borderRadius: 8, fontSize: 11, padding: "0 4px", fontWeight: 500, marginLeft: 2 }}>{sessionCount}</span>}
             </button>
           </div>
