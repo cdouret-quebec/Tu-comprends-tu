@@ -45,10 +45,15 @@ Inclus aussi "annotations": 4-6 expressions québécoises des textes avec défin
 JSON: {"titre":string,"situation":string,"versions":[{"registre":string,"texte":string,"quand_utiliser":string,"signes_distinctifs":[string]}],"conseil":string,"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.` },
   { id: "culture", label: "Culture du milieu", icon: "🍁", color: "#8B0000", desc: "Codes sociaux propres à ce secteur",
-    buildPrompt: (s) => `Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants dans CE secteur.
+    buildPrompt: (s) => {
+      const isFinance = s.id === "finance";
+      const vouvoiementNote = isFinance ? `
+IMPORTANT pour Finance & Banque : ne présente PAS le tutoiement comme la norme entre un conseiller et son client. Le vouvoiement reste la norme professionnelle par défaut dans ce contexte ; si un passage au tutoiement se produit, précise que c'est généralement une initiative du CLIENT, pas une pratique automatique ou généralisée.` : "";
+      return `Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants dans CE secteur.${vouvoiementNote}
 Inclus aussi "annotations": 4-6 termes culturels québécois du texte avec définition courte.
 JSON: {"titre":string,"concept":string,"pourquoi_ca_surprend":string,"comment_ca_marche":string,"exemples":[{"situation":string,"reaction_typique_quebecoise":string,"interpretation_possible":string}],"conseil_pratique":string,"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.` },
+UNIQUEMENT JSON, sans markdown.`;
+    } },
   { id: "quiz", label: "Quiz", icon: "🧩", color: "#0369A1", desc: "Teste tes connaissances",
     buildPrompt: (s, type) => {
       const types = {
@@ -332,7 +337,7 @@ async function callClaude(messages, system, json = true, retries = 3) {
     try {
       const body = {
         model: "claude-sonnet-4-6",
-        max_tokens: 4000,
+        max_tokens: 8000,
         messages: allMessages
       };
 
