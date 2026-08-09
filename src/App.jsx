@@ -2767,11 +2767,13 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
   const [submitted, setSubmitted] = useState({});
   const [completed, setCompleted] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
+  const awardedRef = useRef(false);
 
   const q = allQuestions[currentIdx];
   const total = allQuestions.length;
   const isSubmitted = submitted[currentIdx];
   const isCorrect = isSubmitted && answers[currentIdx] === q?.bonne_reponse;
+  const nbCorrect = Object.keys(submitted).filter(i => allQuestions[i]?.bonne_reponse === answers[i]).length;
 
   function cs(lettre) {
     const isSel = answers[currentIdx] === lettre;
@@ -2813,15 +2815,25 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
     const pct = Math.round((finalScore / total) * 100);
     const sc = pct === 100 ? "#065F46" : pct >= 75 ? "#B45309" : "#9B1C1C";
     const sb = pct === 100 ? "#ECFDF5" : pct >= 75 ? "#FEF3E2" : "#FEF2F2";
+    if (!awardedRef.current) {
+      awardedRef.current = true;
+      awardNoisette(finalScore === total);
+    }
     return (
       <div style={{ textAlign: "center", padding: "20px 0" }}>
         <div style={{ fontSize: 48, marginBottom: 14 }}>🎉</div>
         <h3 style={{ margin: "0 0 8px", color: "#111" }}>Tous les quiz complétés !</h3>
         <div style={{ background: sb, border: `1px solid ${sc}40`, borderRadius: 12, padding: "16px 20px", marginBottom: 20, display: "inline-block" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <PawTrail total={total} filled={finalScore} />
+          </div>
           <div style={{ fontSize: 32, fontWeight: 800, color: sc }}>{finalScore}/{total}</div>
           <div style={{ fontSize: 14, color: sc, marginTop: 4 }}>
             {pct === 100 ? "Parfait ! T'as toute compris ! 🎉" : pct >= 75 ? "Pas pire ! Encore un p'tit effort ! 💪" : pct >= 50 ? "Continue, t'es sur la bonne track ! 📚" : "Lâche pas, ça va venir ! 🍁"}
           </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <NoisetteReward show={true} gold={finalScore === total} />
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <button onClick={() => { setCurrentIdx(0); setAnswers({}); setSubmitted({}); setCompleted(false); setTotalScore(0); }}
@@ -2850,9 +2862,11 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
       </div>
 
       {/* Barre de progression */}
-      <div style={{ background: "#E5E7EB", borderRadius: 10, height: 6, marginBottom: 14, overflow: "hidden" }}>
+      <div style={{ background: "#E5E7EB", borderRadius: 10, height: 6, marginBottom: 10, overflow: "hidden" }}>
         <div style={{ width: `${((currentIdx) / total) * 100}%`, height: "100%", background: color, transition: "width 0.3s" }} />
       </div>
+
+      <PawTrail total={total} filled={nbCorrect} />
 
       {/* Sélecteur de type */}
       <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
