@@ -2802,7 +2802,7 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
           explication: q.explication, astuce: q.astuce || "",
           secteurId: secteur?.id, secteurLabel: secteur?.label, date: new Date().toISOString()
         }));
-      onQuizDone({ score: totalScore + (answers[currentIdx] === q.bonne_reponse ? 1 : 0), total, type: data.type, ratees });
+      onQuizDone({ score: totalScore, total, type: data.type, ratees });
       setCompleted(true);
     }
   }
