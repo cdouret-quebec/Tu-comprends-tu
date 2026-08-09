@@ -1453,6 +1453,7 @@ function NoisetteReward({ show, gold }) {
 function TrousGrammaireCard({ data, color }) {
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
+  const [showEn, setShowEn] = useState(false);
   const awardedRef = useRef(false);
 
   useEffect(() => {
@@ -1502,7 +1503,20 @@ function TrousGrammaireCard({ data, color }) {
       )}
 
       <div style={{ background: "white", border: `1px solid ${color}20`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
-        <h4 style={{ margin: "0 0 10px", fontSize: 14, color: "#1F2937" }}>📖 {data.texte_titre}</h4>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+          <h4 style={{ margin: 0, fontSize: 14, color: "#1F2937" }}>📖 {data.texte_titre}</h4>
+          {data.texte_en && (
+            <button onClick={() => setShowEn(v => !v)}
+              style={{ background: "none", border: `1px solid ${color}40`, borderRadius: 20, padding: "4px 10px", fontSize: 12, color, cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap" }}>
+              🇬🇧 {showEn ? "Cacher l'anglais" : "Voir en anglais"}
+            </button>
+          )}
+        </div>
+        {showEn && data.texte_en && (
+          <div style={{ background: "#F8F8F8", borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 13, color: "#555", fontStyle: "italic", lineHeight: 1.6 }}>
+            {data.texte_en}
+          </div>
+        )}
         <div style={{ margin: 0, fontSize: 14, lineHeight: 2.1, color: "#374151" }}>
           {parts.map((part, i) => {
             const match = part.match(/\{\{(\d+)\}\}/);
@@ -1718,14 +1732,16 @@ UNIQUEMENT JSON, sans markdown.`;
     const contextePrompt = isOralQC
       ? `Crée un texte sur une situation quotidienne au Québec (conversation au bureau, à l'épicerie, entre collègues) illustrant les particularités grammaticales du québécois parlé.`
       : `Crée un texte historique factuel sur l'époque "${ep.label}" (${ep.periode}), contexte : ${ep.contexte}.`;
+    const traductionNote = niv === "a2"
+      ? `\nInclus aussi "texte_en" : une traduction anglaise fidèle et naturelle du texte complet (avec les mots à trous déjà remplis par leur bonne réponse), pour aider les débutants qui bloquent sur le sens général.` : "";
 
     return `Tu es expert en grammaire française et en québécois parlé.
 ${contextePrompt}
 Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
 IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante").
-Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.
-JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]}
+Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.${traductionNote}
+JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]${niv === "a2" ? ',"texte_en":string' : ""}}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
@@ -2751,7 +2767,7 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
     }
   }
 
-  const QT = [{ id: "traduction", label: "Traduction", icon: "🔤" }, { id: "situation", label: "Mise en situation", icon: "🎭" }, { id: "registre", label: "Registres", icon: "🎚️" }];
+  const QT = [{ id: "traduction", label: "Compréhension", icon: "🔤" }, { id: "situation", label: "Mise en situation", icon: "🎭" }, { id: "registre", label: "Registres", icon: "🎚️" }];
 
   // Écran de fin
   if (completed) {
