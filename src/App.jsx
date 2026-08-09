@@ -47,10 +47,10 @@ UNIQUEMENT JSON, sans markdown.` },
   { id: "culture", label: "Culture du milieu", icon: "🍁", color: "#8B0000", desc: "Codes sociaux propres à ce secteur",
     buildPrompt: (s) => {
       const isFinance = s.id === "finance";
-      const vouvoiementNote = isFinance ? `
-IMPORTANT pour Finance & Banque : ne présente PAS le tutoiement comme la norme entre un conseiller et son client. Le vouvoiement reste la norme professionnelle par défaut dans ce contexte ; si un passage au tutoiement se produit, précise que c'est généralement une initiative du CLIENT, pas une pratique automatique ou généralisée.` : "";
-      return `Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants dans CE secteur.
-IMPORTANT : l'apprenant est un professionnel qui TRAVAILLE dans ce secteur (employé, conseiller, soignant, enseignant, etc.), pas une personne qui reçoit le service. Écris toujours du point de vue de la personne qui exerce ce métier, pas de son client/patient/élève.${vouvoiementNote}
+      const vouvoiementNote = isFinance ? ` Concernant le tutoiement/vouvoiement en milieu bancaire : le vouvoiement est la norme professionnelle par défaut entre conseiller et client au Québec. NE PRÉSENTE JAMAIS le tutoiement comme la norme. S'il en est question, précise que le passage au tutoiement, quand il survient, est presque toujours à l'initiative du CLIENT — jamais du conseiller.` : "";
+      return `RÈGLE ABSOLUE À RESPECTER AVANT TOUT : l'apprenant qui va lire ce texte est un professionnel qui TRAVAILLE dans le secteur "${s.label}" (employé, conseiller, soignant, enseignant, etc.) — PAS une personne qui reçoit le service. Le texte doit être écrit du point de vue de la personne qui exerce ce métier, jamais du point de vue de son client/patient/élève.${vouvoiementNote}
+
+Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants qui TRAVAILLENT dans CE secteur (rappel : point de vue du professionnel, pas du client).
 Inclus aussi "annotations": 4-6 termes culturels québécois du texte avec définition courte.
 JSON: {"titre":string,"concept":string,"pourquoi_ca_surprend":string,"comment_ca_marche":string,"exemples":[{"situation":string,"reaction_typique_quebecoise":string,"interpretation_possible":string}],"conseil_pratique":string,"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
