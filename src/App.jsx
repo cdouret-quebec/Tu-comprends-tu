@@ -42,10 +42,15 @@ const CONTENU_FIXE = {
 
 const MODULES = [
   { id: "oral", label: "Comprendre l'oral", icon: "🎙️", color: "#1B4332", desc: "Accent, rythme, syllabes avalées",
-    buildPrompt: (s) => `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec contractions typiques (t'as, j'sais, c'est-tu, y'a, là là, faque, asteure, pantoute...) ET vocabulaire du secteur. Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
+    buildPrompt: (s) => {
+      const isConstruction = s.id === "construction";
+      const registreNote = isConstruction ? "" : `
+IMPORTANT sur le registre : ce secteur (${s.label}) appelle un registre professionnel et plutôt formel entre collègues, même en québécois authentique. Évite les contractions très familières (comme "t'as", "j'sais", "faque", "pantoute") sauf si le contexte s'y prête vraiment (ex: une pause-café informelle). Garde des traits distinctifs du québécois (accent, rythme, quelques expressions typiques du secteur) sans tomber dans un registre familier de rue.`;
+      return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote} Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
 Inclus aussi "annotations": liste de 5-8 termes québécois du texte avec leur définition courte en français standard, pour les survols interactifs.
 JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"specifique_au_secteur":boolean}],"annotations":[{"terme":string,"definition":string}]}
-UNIQUEMENT JSON, sans markdown.` },
+UNIQUEMENT JSON, sans markdown.`;
+    } },
   { id: "vocab", label: "Vocabulaire du secteur", icon: "💬", color: "#7B2D8B", desc: "Jargon, expressions et argot professionnel",
     buildPrompt: (s) => {
       const isConstruction = s.id === "construction";
