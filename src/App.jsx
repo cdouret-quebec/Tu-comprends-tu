@@ -1732,8 +1732,7 @@ UNIQUEMENT JSON, sans markdown.`;
     const contextePrompt = isOralQC
       ? `Crée un texte sur une situation quotidienne au Québec (conversation au bureau, à l'épicerie, entre collègues) illustrant les particularités grammaticales du québécois parlé.`
       : `Crée un texte historique factuel sur l'époque "${ep.label}" (${ep.periode}), contexte : ${ep.contexte}.`;
-    const traductionNote = niv === "a2"
-      ? `\nInclus aussi "texte_en" : une traduction anglaise fidèle et naturelle du texte complet (avec les mots à trous déjà remplis par leur bonne réponse), pour aider les débutants qui bloquent sur le sens général.` : "";
+    const traductionNote = `\nInclus aussi "texte_en" : une traduction anglaise fidèle et naturelle du texte complet (avec les mots à trous déjà remplis par leur bonne réponse), pour aider les élèves qui bloquent sur le sens général — l'effort demandé doit porter sur la grammaire, pas sur la compréhension du texte.`;
 
     return `Tu es expert en grammaire française et en québécois parlé.
 ${contextePrompt}
@@ -1741,7 +1740,7 @@ Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
 IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante").
 Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.${traductionNote}
-JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]${niv === "a2" ? ',"texte_en":string' : ""}}
+JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}],"texte_en":string}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
