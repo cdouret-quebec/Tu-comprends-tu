@@ -280,6 +280,20 @@ function awardNoisette(sansFaute) {
   saveProgression(p);
   return p;
 }
+const FONTSIZE_KEY = "qc_pro_fontsize";
+function loadFontSize() { try { const v = parseInt(localStorage.getItem(FONTSIZE_KEY), 10); return [0,1,2].includes(v) ? v : 1; } catch { return 1; } }
+function saveFontSize(f) { try { localStorage.setItem(FONTSIZE_KEY, String(f)); } catch {} }
+function fsEm(fontSize) { return fontSize === 0 ? 0.85 : fontSize === 2 ? 1.2 : 1; }
+function FontSizeControl({ fontSize, setFontSize, color = "#555", border = "#E5E7EB", activeBg = "#173404" }) {
+  return (
+    <div style={{ display: "flex", gap: 3 }}>
+      <button onClick={() => setFontSize(f => { const n = Math.max(0, f - 1); saveFontSize(n); return n; })}
+        style={{ background: fontSize === 0 ? activeBg : "none", border: `1px solid ${border}`, borderRadius: 4, color: fontSize === 0 ? "white" : color, cursor: "pointer", fontSize: 11, padding: "3px 6px", fontWeight: 700 }}>A-</button>
+      <button onClick={() => setFontSize(f => { const n = Math.min(2, f + 1); saveFontSize(n); return n; })}
+        style={{ background: fontSize === 2 ? activeBg : "none", border: `1px solid ${border}`, borderRadius: 4, color: fontSize === 2 ? "white" : color, cursor: "pointer", fontSize: 15, padding: "3px 6px", fontWeight: 700 }}>A+</button>
+    </div>
+  );
+}
 
 // Cache des contenus — localStorage dans l'artifact/dev, Supabase sur Vercel
 const CACHE_KEY = "qc_pro_cache";
@@ -1070,6 +1084,7 @@ function STFauxAmisCard({ data }) {
 }
 
 function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
+  const [fontSize, setFontSize] = useState(loadFontSize());
   const [activeSTModule, setActiveSTModule] = useState(
     initialModule && initialModule !== "smalltalk"
       ? ST_MODULES.find(m => m.id === initialModule) || null
@@ -1128,10 +1143,13 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
   }, [activeSTModule?.id]);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
       {/* Header */}
       <div style={{ background: "#2D1B5E", padding: "18px 16px", position: "relative", textAlign: "center" }}>
         <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
+        <div style={{ position: "absolute", top: 14, right: 16 }}>
+          <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color="#C4B5FD" border="#C4B5FD" activeBg="#C4B5FD" />
+        </div>
         <h1 style={{ margin: 0, color: "white", fontSize: 20, fontWeight: 800 }}>☕ Small talk québécois</h1>
         <p style={{ margin: "5px 0 0", color: "#C4B5FD", fontSize: 14 }}>Pause café, lunch, ascenseur, couloir… ne sois jamais mal pris !</p>
       </div>
@@ -1704,6 +1722,7 @@ function HistoireGrammaireScreen({ onBack }) {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [fontSize, setFontSize] = useState(loadFontSize());
   const contentRef = useRef(null);
 
   const niveauLabel = {
@@ -1798,9 +1817,12 @@ UNIQUEMENT JSON, sans markdown.`;
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
       <div style={{ background: "#3D1F0F", padding: "18px 16px", position: "relative", textAlign: "center" }}>
         <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#D4A574", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
+        <div style={{ position: "absolute", top: 14, right: 16 }}>
+          <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color="#D4A574" border="#D4A574" activeBg="#D4A574" />
+        </div>
         <h1 style={{ margin: 0, color: "white", fontSize: 20, fontWeight: 800 }}>📜 Histoire & Grammaire</h1>
         <p style={{ margin: "5px 0 0", color: "#D4A574", fontSize: 14 }}>Apprendre la grammaire à travers l'histoire du Québec</p>
       </div>
@@ -2581,6 +2603,7 @@ function TeacherMode({ onClose }) {
 function ProgressionScreen({ onClose }) {
   const [prog, setProg] = useState(loadProgression());
   const [tab, setTab] = useState("apercu");
+  const [fontSize, setFontSize] = useState(loadFontSize());
   const totalQuiz = prog.quizScores.length;
   const avgScore = totalQuiz > 0 ? Math.round(prog.quizScores.reduce((a, s) => a + (s.score / s.total) * 100, 0) / totalQuiz) : null;
   const totalModules = Object.values(prog.modulesVus).reduce((a, m) => a + Object.values(m).reduce((b, c) => b + c, 0), 0);
@@ -2591,10 +2614,13 @@ function ProgressionScreen({ onClose }) {
   const TS = (a) => ({ padding: "8px 14px", background: "none", border: "none", borderBottom: a ? "2px solid #0369A1" : "2px solid transparent", color: a ? "#0369A1" : "#666", fontWeight: a ? 700 : 500, fontSize: 15, cursor: "pointer", whiteSpace: "nowrap" });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <div style={{ background: "#1B2B1E", padding: "18px 16px", display: "flex", alignItems: "center", gap: 12 }}>
-        <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 15, padding: 0 }}>← Retour</button>
-        <h2 style={{ margin: 0, color: "white", fontSize: 18, fontWeight: 800 }}>📊 Ma progression</h2>
+    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
+      <div style={{ background: "#1B2B1E", padding: "18px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 15, padding: 0 }}>← Retour</button>
+          <h2 style={{ margin: 0, color: "white", fontSize: 18, fontWeight: 800 }}>📊 Ma progression</h2>
+        </div>
+        <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color="#aaa" border="#aaa" activeBg="#0369A1" />
       </div>
       <div style={{ background: "white", borderBottom: "1px solid #E0E0E0", display: "flex", padding: "0 12px", overflowX: "auto" }}>
         {[["apercu","Aperçu"],["quiz","Résultats quiz"],["ratees",`À réviser${ratees.length > 0 ? ` (${ratees.length})` : ""}`],["modules","Modules explorés"]].map(([id,label]) => (
@@ -3005,20 +3031,24 @@ const D = {
 
 function LexiqueScreen({ onBack }) {
   const [search, setSearch] = useState("");
+  const [fontSize, setFontSize] = useState(loadFontSize());
   const lex = loadLexique();
   const entries = Object.values(lex).sort((a, b) => a.terme.localeCompare(b.terme, "fr"));
   const filtered = entries.filter(e =>
     !search || e.terme.toLowerCase().includes(search.toLowerCase()) || e.definition.toLowerCase().includes(search.toLowerCase())
   );
   return (
-    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
       <div style={{ background: D.noir, padding: "16px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <button onClick={onBack} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>←</button>
-          <div>
-            <h2 style={{ margin: 0, color: D.blanc, fontSize: 17, fontWeight: 500, letterSpacing: -0.3 }}>Lexique québécois</h2>
-            <p style={{ margin: "2px 0 0", color: D.gris3, fontSize: 13 }}>{entries.length} expression{entries.length > 1 ? "s" : ""} · se remplit au fil des sessions</p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <button onClick={onBack} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>←</button>
+            <div>
+              <h2 style={{ margin: 0, color: D.blanc, fontSize: 17, fontWeight: 500, letterSpacing: -0.3 }}>Lexique québécois</h2>
+              <p style={{ margin: "2px 0 0", color: D.gris3, fontSize: 13 }}>{entries.length} expression{entries.length > 1 ? "s" : ""} · se remplit au fil des sessions</p>
+            </div>
           </div>
+          <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color={D.gris3} border={D.gris5} activeBg={D.rouge} />
         </div>
       </div>
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "16px 14px 60px" }}>
@@ -3059,10 +3089,10 @@ export default function App() {
   const [history, setHistory] = useState({});
   const [quizType, setQuizType] = useState("traduction");
   const [sessionStats, setSessionStats] = useState({ quizDone: 0, modulesDone: 0 });
-  const [fontSize, setFontSize] = useState(1);
+  const [fontSize, setFontSize] = useState(loadFontSize());
   const resultRef = useRef(null);
 
-  const FS = fontSize === 0 ? 0.85 : fontSize === 2 ? 1.2 : 1;
+  const FS = fsEm(fontSize);
 
   async function loadModule(mod, sec=secteur, qType=quizType, forceRegen=false) {
     setActiveModule(mod); setContent(null); setError(null); setLoading(true);
@@ -3144,12 +3174,7 @@ export default function App() {
             )}
           </div>
           <div style={{ minWidth: 64, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 6 }}>
-            <div style={{ display: "flex", gap: 3 }}>
-              <button onClick={() => setFontSize(f => Math.max(0, f-1))}
-                style={{ background: fontSize === 0 ? D.rouge : "none", border: `1px solid ${D.gris5}`, borderRadius: 4, color: fontSize === 0 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 11, padding: "3px 6px", fontWeight: 700 }}>A-</button>
-              <button onClick={() => setFontSize(f => Math.min(2, f+1))}
-                style={{ background: fontSize === 2 ? D.rouge : "none", border: `1px solid ${D.gris5}`, borderRadius: 4, color: fontSize === 2 ? D.blanc : D.gris3, cursor: "pointer", fontSize: 15, padding: "3px 6px", fontWeight: 700 }}>A+</button>
-            </div>
+            <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color={D.gris3} border={D.gris5} activeBg={D.rouge} />
             <button onClick={()=>setScreen("progression")}
               style={{ background: "none", border: `1px solid ${D.gris5}`, borderRadius: 6, color: D.gris3, cursor: "pointer", fontSize: 13, padding: "5px 10px", display: "flex", alignItems: "center", gap: 4 }}>
               ↗{sessionCount > 0 && <span style={{ background: D.rouge, color: D.blanc, borderRadius: 8, fontSize: 11, padding: "0 4px", fontWeight: 500, marginLeft: 2 }}>{sessionCount}</span>}
