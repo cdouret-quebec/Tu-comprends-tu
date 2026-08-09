@@ -1576,6 +1576,7 @@ function HGQuizCard({ data, color, onRetry }) {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState({});
   const [completed, setCompleted] = useState(false);
+  const [showEn, setShowEn] = useState(false);
   const awardedRef = useRef(false);
 
   const q = allQuestions[currentIdx];
@@ -1646,8 +1647,19 @@ function HGQuizCard({ data, color, onRetry }) {
 
       <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #E5E7EB", marginBottom: 14 }}>
         <div style={{ background: "#F9FAFB", padding: "12px 14px", borderBottom: "1px solid #E5E7EB" }}>
-          <div style={{ fontSize: 12, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>QUESTION {currentIdx + 1} SUR {total}</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 4 }}>
+            <div style={{ fontSize: 12, color: "#6B7280", fontWeight: 600 }}>QUESTION {currentIdx + 1} SUR {total}</div>
+            {q.question_en && (
+              <button onClick={() => setShowEn(v => !v)}
+                style={{ background: "none", border: `1px solid ${color}40`, borderRadius: 20, padding: "2px 8px", fontSize: 11, color, cursor: "pointer", fontWeight: 600, whiteSpace: "nowrap" }}>
+                🇬🇧 {showEn ? "Cacher" : "Anglais"}
+              </button>
+            )}
+          </div>
           <p style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "#111827", lineHeight: 1.5 }}>{q.question}</p>
+          {showEn && q.question_en && (
+            <p style={{ margin: "6px 0 0", fontSize: 13, color: "#6B7280", fontStyle: "italic", lineHeight: 1.5 }}>{q.question_en}</p>
+          )}
         </div>
         <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
           {q.choix.map(c => (
@@ -1676,7 +1688,7 @@ function HGQuizCard({ data, color, onRetry }) {
           Vérifier ma réponse →
         </button>
       ) : (
-        <button onClick={() => currentIdx < total - 1 ? setCurrentIdx(i => i + 1) : setCompleted(true)}
+        <button onClick={() => { setShowEn(false); currentIdx < total - 1 ? setCurrentIdx(i => i + 1) : setCompleted(true); }}
           style={{ width: "100%", padding: "12px", borderRadius: 12, border: "none", background: color, color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
           {currentIdx < total - 1 ? `Question suivante → (${currentIdx + 2}/${total})` : "Voir mes résultats 🎉"}
         </button>
@@ -1754,7 +1766,8 @@ UNIQUEMENT JSON, sans markdown.`;
     return `Tu es expert en grammaire française et en québécois parlé.
 Génère 5 questions QCM DISTINCTES testant la notion "${notion}" (${notionDesc}) ${contexteQuiz}.
 Niveau : ${niveauLabel[niv]}. Mélange reconnaissance, transformation et application pratique. Chaque question doit tester un aspect DIFFÉRENT de la notion.
-JSON: {"titre":string,"quiz":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]}
+Inclus aussi "question_en" pour chaque question : une traduction anglaise fidèle de la question (pas des choix de réponse, qui sont la grammaire à tester), pour aider les élèves qui bloquent sur le sens plutôt que sur la grammaire elle-même.
+JSON: {"titre":string,"quiz":[{"question":string,"question_en":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
