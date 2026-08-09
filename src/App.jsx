@@ -22,6 +22,24 @@ const SECTEURS = [
   { id: "ti", label: "Technologies (TI)", icon: "💻", color: "#0F766E", bg: "#CCFBF1", desc: "Développement, réunions agiles, startups", exemples: ["pitcher une idée", "le backlog", "ça fait du sens", "on se revire de bord"], contexte: "startup ou département TI québécois, standup, réunion d'équipe agile" }
 ];
 
+const CONTENU_FIXE = {
+  "finance_culture": {
+    titre: "Le vouvoiement, norme professionnelle en finance",
+    concept: "Contrairement à la vie courante au Québec, le vouvoiement reste la norme entre un conseiller et son client en milieu bancaire.",
+    pourquoi_ca_surprend: "Au Québec, le tutoiement s'installe très vite dans les commerces, entre collègues et dans la vie de tous les jours — ce qui peut laisser croire à un nouvel arrivant que c'est aussi la norme partout, y compris avec un client à la banque.",
+    comment_ca_marche: "En réalité, dans une relation professionnelle formelle comme celle entre un conseiller financier et son client, le vouvoiement reste le point de départ attendu. Un conseiller n'initie normalement pas le tutoiement de lui-même. Si un passage au \"tu\" se produit, c'est presque toujours à l'initiative du CLIENT — jamais du conseiller — souvent après plusieurs rencontres ou une relation de confiance déjà établie.",
+    exemples: [
+      { situation: "Première rencontre pour ouvrir un compte ou discuter d'un prêt hypothécaire.", reaction_typique_quebecoise: "Bonjour, moi c'est Mathieu. Comment puis-je vous aider aujourd'hui ?", interpretation_possible: "Le conseiller garde le vouvoiement par défaut, même avec un ton chaleureux et détendu — les deux ne sont pas contradictoires au Québec." },
+      { situation: "Après plusieurs rencontres, le client propose de se tutoyer.", reaction_typique_quebecoise: "On peut se tutoyer si tu veux, ça va être plus simple.", interpretation_possible: "C'est le client qui ouvre la porte au tutoiement. Le conseiller peut accepter, mais ne le propose pas de lui-même en général." }
+    ],
+    conseil_pratique: "Garde le vouvoiement par défaut avec tes clients, même si l'ambiance est amicale et détendue. Le ton chaleureux québécois ne veut pas dire que le \"tu\" est automatique dans une relation professionnelle formelle — laisse le client faire ce choix.",
+    annotations: [
+      { terme: "vouvoiement", definition: "Utiliser \"vous\" pour s'adresser à quelqu'un, par respect ou dans un contexte formel." },
+      { terme: "tutoiement", definition: "Utiliser \"tu\" pour s'adresser à quelqu'un, signe de familiarité ou de proximité." }
+    ]
+  }
+};
+
 const MODULES = [
   { id: "oral", label: "Comprendre l'oral", icon: "🎙️", color: "#1B4332", desc: "Accent, rythme, syllabes avalées",
     buildPrompt: (s) => `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec contractions typiques (t'as, j'sais, c'est-tu, y'a, là là, faque, asteure, pantoute...) ET vocabulaire du secteur. Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
@@ -2220,6 +2238,11 @@ function TeacherMode({ onClose }) {
     setRegenLoading(key);
     const [type, id, subId] = key.split("__");
     try {
+      if (type === "secteur" && CONTENU_FIXE[`${id}_${subId}`]) {
+        setAltData(a => ({ ...a, [key]: CONTENU_FIXE[`${id}_${subId}`] }));
+        setRegenLoading(null);
+        return;
+      }
       let prompt = "";
       if (type === "secteur") {
         const sec = SECTEURS.find(s => s.id === id);
@@ -3018,6 +3041,13 @@ export default function App() {
     setTimeout(()=>resultRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),100);
     try {
       const subId = mod.id==="quiz" ? `${mod.id}_${qType}` : mod.id;
+      const fixeKey = `${sec.id}_${mod.id}`;
+      if (CONTENU_FIXE[fixeKey]) {
+        setContent(CONTENU_FIXE[fixeKey]);
+        setHistory(h=>({...h,[`${sec.id}-${mod.id}`]:(h[`${sec.id}-${mod.id}`]||0)+1}));
+        setLoading(false);
+        return;
+      }
       if (!forceRegen) {
         const cached = await getCached("secteur", sec.id, subId);
         if (cached) { setContent(cached.data); setHistory(h=>({...h,[`${sec.id}-${mod.id}`]:(h[`${sec.id}-${mod.id}`]||0)+1})); setLoading(false); return; }
