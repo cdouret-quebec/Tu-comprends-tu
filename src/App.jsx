@@ -1143,7 +1143,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
   }, [activeSTModule?.id]);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
+    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       {/* Header */}
       <div style={{ background: "#2D1B5E", padding: "18px 16px", position: "relative", textAlign: "center" }}>
         <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
@@ -1817,7 +1817,7 @@ UNIQUEMENT JSON, sans markdown.`;
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
+    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       <div style={{ background: "#3D1F0F", padding: "18px 16px", position: "relative", textAlign: "center" }}>
         <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#D4A574", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
         <div style={{ position: "absolute", top: 14, right: 16 }}>
@@ -2614,7 +2614,7 @@ function ProgressionScreen({ onClose }) {
   const TS = (a) => ({ padding: "8px 14px", background: "none", border: "none", borderBottom: a ? "2px solid #0369A1" : "2px solid transparent", color: a ? "#0369A1" : "#666", fontWeight: a ? 700 : 500, fontSize: 15, cursor: "pointer", whiteSpace: "nowrap" });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
+    <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       <div style={{ background: "#1B2B1E", padding: "18px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button onClick={onClose} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 15, padding: 0 }}>← Retour</button>
@@ -3038,7 +3038,7 @@ function LexiqueScreen({ onBack }) {
     !search || e.terme.toLowerCase().includes(search.toLowerCase()) || e.definition.toLowerCase().includes(search.toLowerCase())
   );
   return (
-    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${fsEm(fontSize)}em` }}>
+    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       <div style={{ background: D.noir, padding: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -3149,7 +3149,7 @@ export default function App() {
   if(screen==="lexique") return <LexiqueScreen onBack={()=>setScreen("home")} />;
 
   return (
-    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", fontSize: `${FS}em` }}>
+    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: FS }}>
       <div style={{ background: D.noir }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px" }}>
           <div style={{ minWidth: 64 }}>
