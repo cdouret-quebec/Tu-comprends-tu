@@ -47,10 +47,14 @@ UNIQUEMENT JSON, sans markdown.` },
   { id: "culture", label: "Culture du milieu", icon: "🍁", color: "#8B0000", desc: "Codes sociaux propres à ce secteur",
     buildPrompt: (s) => {
       const isFinance = s.id === "finance";
-      const vouvoiementNote = isFinance ? ` Concernant le tutoiement/vouvoiement en milieu bancaire : le vouvoiement est la norme professionnelle par défaut entre conseiller et client au Québec. NE PRÉSENTE JAMAIS le tutoiement comme la norme. S'il en est question, précise que le passage au tutoiement, quand il survient, est presque toujours à l'initiative du CLIENT — jamais du conseiller.` : "";
-      return `RÈGLE ABSOLUE À RESPECTER AVANT TOUT : l'apprenant qui va lire ce texte est un professionnel qui TRAVAILLE dans le secteur "${s.label}" (employé, conseiller, soignant, enseignant, etc.) — PAS une personne qui reçoit le service. Le texte doit être écrit du point de vue de la personne qui exerce ce métier, jamais du point de vue de son client/patient/élève.${vouvoiementNote}
+      const sujetImpose = isFinance ? `
 
-Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants qui TRAVAILLENT dans CE secteur (rappel : point de vue du professionnel, pas du client).
+Le sujet du guide DOIT être : les codes de politesse entre conseiller et client (tutoiement/vouvoiement) en milieu bancaire québécois. Base-toi EXACTEMENT sur ces faits, ne les invente pas autrement :
+- Le vouvoiement est la norme professionnelle par défaut entre un conseiller et son client au Québec, y compris en banque.
+- Le passage au tutoiement, quand il survient, est presque toujours à l'initiative du CLIENT — jamais du conseiller.
+- Le Québec tutoie beaucoup plus vite qu'en France dans la vie de tous les jours (commerces, collègues), ce qui peut faire croire à tort que c'est aussi la norme en relation client formelle — précise cette nuance, car c'est justement ce qui surprend les immigrants.
+Écris le guide du point de vue du CONSEILLER (le professionnel), pas du client.` : "";
+      return `Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants qui TRAVAILLENT dans CE secteur (point de vue du professionnel, pas du client/patient/élève).${sujetImpose}
 Inclus aussi "annotations": 4-6 termes culturels québécois du texte avec définition courte.
 JSON: {"titre":string,"concept":string,"pourquoi_ca_surprend":string,"comment_ca_marche":string,"exemples":[{"situation":string,"reaction_typique_quebecoise":string,"interpretation_possible":string}],"conseil_pratique":string,"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
