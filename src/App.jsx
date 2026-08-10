@@ -1855,7 +1855,7 @@ UNIQUEMENT JSON, sans markdown.`;
             </p>
             {!isPremium() && (
               <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: "10px 14px", marginBottom: 14, fontSize: 14, color: "#92400E" }}>
-                🎁 La première section est gratuite. Les 6 autres font partie de l'<strong>accès complet à 19 $</strong>.
+                🎁 La première section est gratuite. Les 6 autres font partie de l'<strong>accès complet à 7,99 $</strong>.
               </div>
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -2164,9 +2164,16 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
         </p>
       </div>
 
+      {/* Message personnel */}
+      <div style={{ background: D.gris0, borderRadius: 8, padding: "14px 16px", marginBottom: 20, borderLeft: `3px solid ${D.rouge}` }}>
+        <p style={{ margin: 0, fontSize: 14, color: D.gris4, lineHeight: 1.6, fontStyle: "italic" }}>
+          Je suis Caroline, enseignante en francisation à Québec. J'ai créé cette section parce que mes élèves — même après avoir complété leurs cours de francisation — se retrouvaient encore perdus une fois en emploi : personne ne leur avait enseigné le vrai français parlé sur un chantier, dans une banque ou en santé. Ces quelques dollars m'aident à continuer à créer et améliorer ce contenu, pour eux et pour toi.
+        </p>
+      </div>
+
       {/* Ce qui est inclus */}
       <div style={{ background: D.gris0, borderRadius: 8, padding: 14, marginBottom: 20 }}>
-        <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 500, color: D.gris3, textTransform: "uppercase", letterSpacing: 0.5 }}>Accès complet à 19 $ — une seule fois</p>
+        <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 500, color: D.gris3, textTransform: "uppercase", letterSpacing: 0.5 }}>Accès complet à 7,99 $ — une seule fois</p>
         {[
           "6 secteurs professionnels (Construction, Finance, Santé, Éducation, Commerce, TI)",
           "5 modules par secteur : oral, vocabulaire, registres, culture, quiz",
@@ -2202,9 +2209,9 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
           </div>
           {error && <p style={{ margin: "6px 0 0", fontSize: 14, color: D.rouge }}>Code invalide — vérifie et réessaie.</p>}
           <div style={{ height: 1, background: D.gris2, margin: "16px 0" }} />
-          <a href="https://carolinedouret.com" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.paypal.com/ncp/payment/2FYGEKDA3DVZ2" target="_blank" rel="noopener noreferrer"
             style={{ display: "block", textAlign: "center", background: D.rouge, color: D.blanc, borderRadius: 8, padding: "12px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>
-            Obtenir l'accès complet — 19 $ →
+            Obtenir l'accès complet — 7,99 $ →
           </a>
           <p style={{ margin: "8px 0 0", fontSize: 13, color: D.gris3, textAlign: "center" }}>
             Paiement unique · Accès illimité · Aucun abonnement
