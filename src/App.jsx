@@ -3262,7 +3262,7 @@ export default function App() {
               </div>
               <div>
                 <p style={{ margin: "0 0 1px", fontWeight: 500, fontSize: 15, color: D.blanc }}>Caroline Douret</p>
-                <p style={{ margin: 0, fontSize: 11, color: D.gris3, letterSpacing: 0.3 }}>Enseignante en immersion québécoise</p>
+                <p style={{ margin: 0, fontSize: 11, color: D.gris3, letterSpacing: 0.3 }}>Enseignante en français langue étrangère</p>
               </div>
             </div>
             <p style={{ margin: "0 0 14px", fontSize: 13, color: D.gris3, lineHeight: 1.7, fontStyle: "italic" }}>
