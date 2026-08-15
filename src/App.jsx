@@ -77,6 +77,7 @@ UNIQUEMENT JSON, sans markdown.` },
   { id: "culture", label: "Culture du milieu", icon: "🍁", color: "#8B0000", desc: "Codes sociaux propres à ce secteur",
     buildPrompt: (s) => {
       const isFinance = s.id === "finance";
+      const isSante = s.id === "sante";
       const sujetImpose = isFinance ? `
 
 Le sujet du guide DOIT être : les codes de politesse entre conseiller et client (tutoiement/vouvoiement) en milieu bancaire québécois. Base-toi EXACTEMENT sur ces faits, ne les invente pas autrement :
@@ -84,7 +85,9 @@ Le sujet du guide DOIT être : les codes de politesse entre conseiller et client
 - Le passage au tutoiement, quand il survient, est presque toujours à l'initiative du CLIENT — jamais du conseiller.
 - Le Québec tutoie beaucoup plus vite qu'en France dans la vie de tous les jours (commerces, collègues), ce qui peut faire croire à tort que c'est aussi la norme en relation client formelle — précise cette nuance, car c'est justement ce qui surprend les immigrants.
 Écris le guide du point de vue du CONSEILLER (le professionnel), pas du client.` : "";
-      return `Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants qui TRAVAILLENT dans CE secteur (point de vue du professionnel, pas du client/patient/élève).${sujetImpose}
+      const santeNote = isSante ? `
+Si le sujet du guide touche au tutoiement/vouvoiement avec les patients : le vouvoiement est le point de départ par défaut avec un patient qu'on ne connaît pas, surtout à la première rencontre — ce n'est pas une règle rigide, ça peut évoluer selon le contexte (patients de longue date, personnes âgées avec qui certains soignants tutoient par proximité, enfants et adolescents où le vouvoiement peut sembler distant). Ne présente pas le tutoiement comme la norme générale d'emblée.` : "";
+      return `Tu es expert de la culture professionnelle québécoise dans le secteur "${s.label}" (${s.contexte}). Génère un mini-guide sur UN aspect culturel qui surprend les immigrants qui TRAVAILLENT dans CE secteur (point de vue du professionnel, pas du client/patient/élève).${sujetImpose}${santeNote}
 Inclus aussi "annotations": 4-6 termes culturels québécois du texte avec définition courte.
 JSON: {"titre":string,"concept":string,"pourquoi_ca_surprend":string,"comment_ca_marche":string,"exemples":[{"situation":string,"reaction_typique_quebecoise":string,"interpretation_possible":string}],"conseil_pratique":string,"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
