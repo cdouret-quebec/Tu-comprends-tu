@@ -48,9 +48,12 @@ const MODULES = [
   { id: "oral", label: "Comprendre l'oral", icon: "🎙️", color: "#1B4332", desc: "Accent, rythme, syllabes avalées",
     buildPrompt: (s) => {
       const isConstruction = s.id === "construction";
+      const isFinance = s.id === "finance";
       const registreNote = isConstruction ? "" : `
 IMPORTANT sur le registre : ce secteur (${s.label}) appelle un registre professionnel et plutôt formel entre collègues, même en québécois authentique. Évite les contractions très familières (comme "t'as", "j'sais", "faque", "pantoute") sauf si le contexte s'y prête vraiment (ex: une pause-café informelle). Garde des traits distinctifs du québécois (accent, rythme, quelques expressions typiques du secteur) sans tomber dans un registre familier de rue.`;
-      return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote} Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
+      const financeExemple = isFinance ? `
+Exemple du registre attendu (à ne PAS recopier, juste pour calibrer le ton) : "Bonjour madame Tremblay, merci d'être venue. On va regarder ensemble vos options de placement pour votre REER — j'ai préparé deux scénarios selon votre tolérance au risque." — noter : vouvoiement, phrases complètes, accent et rythme québécois présents dans la prononciation suggérée, mais AUCUNE contraction familière du type "t'as", "j'sais", "faque".` : "";
+      return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote}${financeExemple} Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
 Inclus aussi "annotations": liste de 5-8 termes québécois du texte avec leur définition courte en français standard, pour les survols interactifs.
 JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"specifique_au_secteur":boolean}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
@@ -3193,7 +3196,6 @@ export default function App() {
               <span style={{ color: D.blanc, fontSize: 21, fontWeight: 500 }}> comprends-</span>
               <span style={{ color: D.rouge, fontSize: 21, fontWeight: 500 }}>tu</span>
               <span style={{ color: D.blanc, fontSize: 21, fontWeight: 500 }}> ? </span>
-              <span style={{ color: D.gris3, fontSize: 12, fontWeight: 400, verticalAlign: "super" }}>™</span>
               <span style={{ fontSize: 18 }}>🐿️</span>
             </h1>
             {secteur ? (
