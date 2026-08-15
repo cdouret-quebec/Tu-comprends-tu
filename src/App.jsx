@@ -2179,7 +2179,7 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
       {/* Message personnel */}
       <div style={{ background: D.gris0, borderRadius: 8, padding: "14px 16px", marginBottom: 20, borderLeft: `3px solid ${D.rouge}` }}>
         <p style={{ margin: 0, fontSize: 14, color: D.gris4, lineHeight: 1.6, fontStyle: "italic" }}>
-          Je suis Caroline, enseignante en francisation à Québec. J'ai créé cette section parce que mes élèves — même après avoir complété leurs cours de francisation — se retrouvaient encore perdus une fois en emploi : personne ne leur avait enseigné le vrai français parlé sur un chantier, dans une banque ou en santé. Ces quelques dollars m'aident à continuer à créer et améliorer ce contenu, pour eux et pour toi.
+          Je suis Caroline, enseignante en français langue étrangère à Québec. J'ai créé cette section parce que mes élèves — même après avoir complété leurs cours de francisation — se retrouvaient perdus une fois en emploi : personne ne leur avait enseigné le vrai français parlé sur un chantier, dans une banque ou en santé. Ces quelques dollars m'aident à continuer à créer et améliorer ce contenu, pour eux et pour toi.
         </p>
       </div>
 
