@@ -2145,15 +2145,43 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [checking, setChecking] = useState(false);
 
-  function handleSubmit() {
-    if (code.trim().toUpperCase() === ACCESS_CODE) {
+  async function handleSubmit() {
+    const entered = code.trim().toUpperCase();
+    if (!entered || checking) return;
+
+    if (entered === ACCESS_CODE) {
       activatePremium();
       setSuccess(true);
       setTimeout(() => onUnlock(), 800);
-    } else {
+      return;
+    }
+
+    setChecking(true);
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(entered)}&used=eq.false&select=*`, {
+        headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+      });
+      const rows = await res.json();
+      if (rows && rows.length > 0) {
+        await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(entered)}`, {
+          method: "PATCH",
+          headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json", "Prefer": "return=minimal" },
+          body: JSON.stringify({ used: true, used_at: new Date().toISOString() })
+        });
+        activatePremium();
+        setSuccess(true);
+        setTimeout(() => onUnlock(), 800);
+      } else {
+        setError(true);
+        setTimeout(() => setError(false), 2000);
+      }
+    } catch (e) {
       setError(true);
       setTimeout(() => setError(false), 2000);
+    } finally {
+      setChecking(false);
     }
   }
 
@@ -2214,14 +2242,14 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
               onKeyDown={e => e.key === "Enter" && handleSubmit()}
               placeholder="Entre ton code ici"
               style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: `1.5px solid ${error ? D.rouge : D.gris2}`, fontSize: 15, outline: "none", color: D.noir, background: D.blanc, transition: "border-color 0.15s" }} />
-            <button onClick={handleSubmit}
-              style={{ background: D.noir, color: D.blanc, border: "none", borderRadius: 8, padding: "10px 16px", fontSize: 15, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
-              Activer →
+            <button onClick={handleSubmit} disabled={checking}
+              style={{ background: D.noir, color: D.blanc, border: "none", borderRadius: 8, padding: "10px 16px", fontSize: 15, fontWeight: 500, cursor: checking ? "not-allowed" : "pointer", whiteSpace: "nowrap", opacity: checking ? 0.6 : 1 }}>
+              {checking ? "Vérification…" : "Activer →"}
             </button>
           </div>
           {error && <p style={{ margin: "6px 0 0", fontSize: 14, color: D.rouge }}>Code invalide — vérifie et réessaie.</p>}
           <div style={{ height: 1, background: D.gris2, margin: "16px 0" }} />
-          <a href="https://www.paypal.com/ncp/payment/2FYGEKDA3DVZ2" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.paypal.com/ncp/payment/U7WHHC5GRTTW2" target="_blank" rel="noopener noreferrer"
             style={{ display: "block", textAlign: "center", background: D.rouge, color: D.blanc, borderRadius: 8, padding: "12px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>
             Obtenir l'accès complet — 7,99 $ →
           </a>
