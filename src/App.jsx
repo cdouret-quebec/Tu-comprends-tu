@@ -258,6 +258,7 @@ const TEACHER_PWD = "Simple";
 const LEXIQUE_KEY = "qc_pro_lexique";
 const PREMIUM_KEY = "qc_pro_premium";
 const ACCESS_CODE = "QUEBEC2024";
+const PAYPAL_CLIENT_ID = "BAA5a3gLh6Q-kmYA3W-1vS1XyjIEsYPieiVoqd2_c5B7TxEeQOpOM5CnD_Ad-8mMtMElb0yLhAwb1U0e3M";
 
 function isPremium() {
   try { return localStorage.getItem(PREMIUM_KEY) === "true"; } catch { return false; }
@@ -2141,11 +2142,56 @@ function AltPreview({ data, cacheKey }) {
   );
 }
 
+function PayPalButton({ onPaid }) {
+  const containerRef = useRef(null);
+  const [sdkReady, setSdkReady] = useState(false);
+  const [payError, setPayError] = useState(false);
+
+  useEffect(() => {
+    if (window.paypal) { setSdkReady(true); return; }
+    const existing = document.getElementById("paypal-sdk-script");
+    if (existing) { existing.addEventListener("load", () => setSdkReady(true)); return; }
+    const script = document.createElement("script");
+    script.id = "paypal-sdk-script";
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=CAD&intent=capture`;
+    script.onload = () => setSdkReady(true);
+    script.onerror = () => setPayError(true);
+    document.body.appendChild(script);
+  }, []);
+
+  useEffect(() => {
+    if (!sdkReady || !window.paypal || !containerRef.current) return;
+    containerRef.current.innerHTML = "";
+    try {
+      window.paypal.Buttons({
+        style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 45 },
+        createOrder: (data, actions) => actions.order.create({
+          purchase_units: [{
+            description: "Accès complet — Tu comprends-tu ?",
+            amount: { currency_code: "CAD", value: "7.99" }
+          }]
+        }),
+        onApprove: (data, actions) => actions.order.capture().then(() => { onPaid(); }),
+        onError: () => setPayError(true)
+      }).render(containerRef.current);
+    } catch (e) { setPayError(true); }
+  }, [sdkReady]);
+
+  return (
+    <div>
+      <div ref={containerRef} style={{ minHeight: sdkReady ? 45 : 0 }} />
+      {!sdkReady && !payError && <p style={{ fontSize: 13, color: D.gris3, textAlign: "center", margin: "8px 0" }}>Chargement du module de paiement…</p>}
+      {payError && <p style={{ fontSize: 13, color: D.rouge, textAlign: "center", margin: "8px 0" }}>Le module de paiement n'a pas pu se charger. Réessaie dans un instant.</p>}
+    </div>
+  );
+}
+
 function PremiumWall({ onUnlock, context = "secteur" }) {
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [checking, setChecking] = useState(false);
+  const [paid, setPaid] = useState(false);
 
   async function handleSubmit() {
     const entered = code.trim().toUpperCase();
@@ -2249,10 +2295,17 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
           </div>
           {error && <p style={{ margin: "6px 0 0", fontSize: 14, color: D.rouge }}>Code invalide — vérifie et réessaie.</p>}
           <div style={{ height: 1, background: D.gris2, margin: "16px 0" }} />
-          <a href="https://www.paypal.com/ncp/payment/U7WHHC5GRTTW2" target="_blank" rel="noopener noreferrer"
-            style={{ display: "block", textAlign: "center", background: D.rouge, color: D.blanc, borderRadius: 8, padding: "12px", fontSize: 15, fontWeight: 500, textDecoration: "none" }}>
-            Obtenir l'accès complet — 7,99 $ →
-          </a>
+          {paid ? (
+            <div style={{ background: "#ECFDF5", border: "1px solid #06594640", borderRadius: 8, padding: "14px 16px", textAlign: "center" }}>
+              <p style={{ margin: 0, fontSize: 14, color: "#065F46", fontWeight: 500 }}>✅ Paiement reçu !</p>
+              <p style={{ margin: "4px 0 0", fontSize: 13, color: "#065F46" }}>Ton code d'accès s'en vient par courriel dans quelques instants — entre-le ci-dessus dès que tu le reçois.</p>
+            </div>
+          ) : (
+            <>
+              <p style={{ margin: "0 0 8px", fontSize: 13, color: D.gris3, textAlign: "center" }}>Ou paie directement avec PayPal, carte de crédit ou débit :</p>
+              <PayPalButton onPaid={() => setPaid(true)} />
+            </>
+          )}
           <p style={{ margin: "8px 0 0", fontSize: 13, color: D.gris3, textAlign: "center" }}>
             Paiement unique · Accès illimité · Aucun abonnement
           </p>
