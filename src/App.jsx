@@ -2206,15 +2206,16 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
 
     setChecking(true);
     try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(entered)}&used=eq.false&select=*`, {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(entered)}&select=*`, {
         headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
       });
       const rows = await res.json();
-      if (rows && rows.length > 0) {
+      const MAX_USES = 3;
+      if (rows && rows.length > 0 && (rows[0].use_count || 0) < MAX_USES) {
         await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(entered)}`, {
           method: "PATCH",
           headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json", "Prefer": "return=minimal" },
-          body: JSON.stringify({ used: true, used_at: new Date().toISOString() })
+          body: JSON.stringify({ use_count: (rows[0].use_count || 0) + 1, used: true, used_at: new Date().toISOString() })
         });
         activatePremium();
         setSuccess(true);
@@ -2308,6 +2309,9 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
           )}
           <p style={{ margin: "8px 0 0", fontSize: 13, color: D.gris3, textAlign: "center" }}>
             Paiement unique · Accès illimité · Aucun abonnement
+          </p>
+          <p style={{ margin: "4px 0 0", fontSize: 12, color: D.gris3, textAlign: "center" }}>
+            Ton code d'accès fonctionne sur jusqu'à 3 appareils (téléphone, ordinateur, tablette).
           </p>
         </div>
       ) : (
