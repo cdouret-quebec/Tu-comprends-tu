@@ -2206,17 +2206,13 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
 
     setChecking(true);
     try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(entered)}&select=*`, {
-        headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+      const res = await fetch("/api/redeem-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: entered })
       });
-      const rows = await res.json();
-      const MAX_USES = 3;
-      if (rows && rows.length > 0 && (rows[0].use_count || 0) < MAX_USES) {
-        await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(entered)}`, {
-          method: "PATCH",
-          headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json", "Prefer": "return=minimal" },
-          body: JSON.stringify({ use_count: (rows[0].use_count || 0) + 1, used: true, used_at: new Date().toISOString() })
-        });
+      const data = await res.json();
+      if (data.valid) {
         activatePremium();
         setSuccess(true);
         setTimeout(() => onUnlock(), 800);
@@ -3152,6 +3148,222 @@ const D = {
   gris5: "#555555",
 };
 
+function PolitiqueScreen({ onBack }) {
+  const [fontSize, setFontSize] = useState(loadFontSize());
+  const Section = ({ title, children }) => (
+    <div style={{ marginBottom: 20 }}>
+      <h3 style={{ fontSize: 15, color: "#111827", margin: "0 0 8px" }}>{title}</h3>
+      <div style={{ fontSize: 14, color: "#374151", lineHeight: 1.7 }}>{children}</div>
+    </div>
+  );
+  return (
+    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
+      <div style={{ background: D.noir, padding: "16px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <button onClick={onBack} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>←</button>
+            <h2 style={{ margin: 0, color: D.blanc, fontSize: 17, fontWeight: 500, letterSpacing: -0.3 }}>Politique de confidentialité</h2>
+          </div>
+          <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color={D.gris3} border={D.gris5} activeBg={D.rouge} />
+        </div>
+      </div>
+      <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 16px 60px" }}>
+        <div style={{ background: "white", borderRadius: 12, padding: 24 }}>
+          <p style={{ fontSize: 14, color: "#374151", lineHeight: 1.7, marginBottom: 20 }}>
+            Cette politique de confidentialité décrit la manière dont Caroline Douret collecte, utilise et protège vos renseignements personnels dans le cadre de l'application <em>Tu comprends-tu ?</em>
+          </p>
+
+          <Section title="1. Navigation et contenu gratuit">
+            Vous pouvez utiliser gratuitement plusieurs sections de l'application (le lexique, le Small Talk, une section d'Histoire & Grammaire) sans nous transmettre aucun renseignement personnel.
+          </Section>
+
+          <Section title="2. Renseignements recueillis lors d'un achat">
+            Pour débloquer l'accès complet, un paiement est requis. Ce paiement est traité entièrement par PayPal — nous n'avons jamais accès à vos informations bancaires ou à votre numéro de carte.<br/><br/>
+            Lors de cette transaction, PayPal nous transmet votre adresse courriel, que nous utilisons uniquement pour vous envoyer votre code d'accès personnel.
+          </Section>
+
+          <Section title="3. Durée de conservation">
+            Votre adresse courriel et votre code d'accès sont conservés aussi longtemps que nécessaire pour vous permettre de réutiliser votre accès et pour répondre à vos demandes de soutien. Vous pouvez en demander la suppression en tout temps (voir section 8).
+          </Section>
+
+          <Section title="4. Renseignements stockés sur votre appareil">
+            L'application enregistre certaines informations directement dans la mémoire de votre navigateur (jamais sur nos serveurs) : votre statut d'accès, votre progression, vos résultats de quiz, et vos préférences d'affichage.<br/><br/>
+            Ces renseignements restent sur votre appareil et sont automatiquement effacés si vous videz les données de navigation.
+          </Section>
+
+          <Section title="5. Fournisseurs de services">
+            Nous faisons appel à des fournisseurs externes pour faire fonctionner l'application : Vercel (hébergement), Supabase (base de données), PayPal (paiements) et Resend (envoi de courriels).<br/><br/>
+            Certains de ces fournisseurs hébergent leurs serveurs à l'extérieur du Québec, notamment aux États-Unis. Ils ne sont autorisés à utiliser vos renseignements que pour nous fournir leurs services, selon leurs propres politiques et les lois applicables.
+          </Section>
+
+          <Section title="6. Communication des renseignements personnels">
+            Nous nous engageons à ne jamais vendre, louer ou échanger vos renseignements personnels à des fins commerciales.<br/><br/>
+            Nous pourrions être contraints de les communiquer dans le cadre d'une obligation légale ou d'une ordonnance d'un tribunal.
+          </Section>
+
+          <Section title="7. Utilisateurs mineurs">
+            Cette application s'adresse principalement à un public adulte. Si vous êtes âgé de moins de 14 ans, l'achat de l'accès complet doit être effectué par un parent ou un tuteur en votre nom.
+          </Section>
+
+          <Section title="8. Vos droits">
+            Vous avez le droit d'accéder à vos renseignements, de les faire corriger, ou d'en demander la suppression, sous réserve des restrictions légales applicables.<br/><br/>
+            Vous avez également le droit de porter plainte auprès de la <strong>Commission d'accès à l'information du Québec (CAI)</strong> si vous estimez que vos renseignements personnels n'ont pas été traités adéquatement.
+          </Section>
+
+          <Section title="9. Sécurité">
+            Nous prenons des mesures raisonnables pour protéger vos renseignements. Aucune transmission sur Internet ne peut cependant être considérée comme absolument sûre.
+          </Section>
+
+          <Section title="10. Responsable de la protection des renseignements personnels">
+            Caroline Douret est responsable de la protection des renseignements personnels pour cette application. Vous pouvez la joindre à : <strong>cdouret@gmail.com</strong>
+          </Section>
+
+          <Section title="11. Modifications">
+            Cette politique peut être mise à jour périodiquement. La version la plus récente est toujours disponible dans l'application.
+          </Section>
+
+          <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 24 }}>Dernière mise à jour : 26 août 2026</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TermesScreen({ onBack }) {
+  const [fontSize, setFontSize] = useState(loadFontSize());
+  const Section = ({ title, children }) => (
+    <div style={{ marginBottom: 20 }}>
+      <h3 style={{ fontSize: 15, color: "#111827", margin: "0 0 8px" }}>{title}</h3>
+      <div style={{ fontSize: 14, color: "#374151", lineHeight: 1.7 }}>{children}</div>
+    </div>
+  );
+  return (
+    <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
+      <div style={{ background: D.noir, padding: "16px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <button onClick={onBack} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 0 }}>←</button>
+            <h2 style={{ margin: 0, color: D.blanc, fontSize: 17, fontWeight: 500, letterSpacing: -0.3 }}>Termes et conditions</h2>
+          </div>
+          <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color={D.gris3} border={D.gris5} activeBg={D.rouge} />
+        </div>
+      </div>
+      <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 16px 60px" }}>
+        <div style={{ background: "white", borderRadius: 12, padding: 24 }}>
+          <p style={{ fontSize: 14, color: "#374151", lineHeight: 1.7, marginBottom: 8 }}>
+            Les conditions générales qui suivent gouvernent et s'appliquent à votre utilisation de l'application <em>Tu comprends-tu ?</em>, maintenue par Caroline Douret.
+          </p>
+          <p style={{ fontSize: 14, color: "#374151", lineHeight: 1.7, marginBottom: 20 }}>
+            En accédant à l'application ou en y naviguant, vous déclarez avoir lu et compris les conditions générales d'utilisation et déclarez être liés par ces conditions. Nous pouvons modifier les conditions d'utilisation à tout moment et sans préavis. Votre utilisation continue de l'application sera considérée comme votre acceptation des conditions générales révisées.<br/><br/>
+            <strong>Personne responsable :</strong> Caroline Douret<br/>
+            <strong>Courriel :</strong> cdouret@gmail.com<br/>
+            <strong>Téléphone :</strong> 514-688-3780
+          </p>
+
+          <Section title="1. Propriété intellectuelle">
+            Toute propriété intellectuelle sur l'application est possédée par nous ou nos concédants et inclut tout élément protégé par droits d'auteur, marque de commerce ou brevet. Tout le contenu de l'application, y compris, mais sans s'y limiter, le texte, le logiciel, le code, la conception, les graphiques, les exercices, les questions de quiz et les guides culturels, est une œuvre sous le droit canadien et est la propriété de Caroline Douret. Les éléments de l'application ne peuvent être copiés, reproduits, publiés de nouveau, téléchargés, distribués, ni modifiés, en totalité ou en partie, sans notre autorisation écrite. Tous droits réservés.
+          </Section>
+
+          <Section title="2. Utilisation du contenu de l'application">
+            Le contenu offert dans l'application (exercices, textes, quiz, guides) ne peut être utilisé pour aucun autre objet que votre propre apprentissage personnel. Rien dans les présentes ne peut être interprété comme vous attribuant une licence ou des droits de propriété intellectuelle sur ce contenu.
+          </Section>
+
+          <Section title="3. Contenu généré par l'application">
+            Votre progression, vos résultats de quiz et vos réponses sont générés automatiquement pendant votre utilisation et demeurent stockés uniquement sur votre appareil (voir notre Politique de confidentialité).
+          </Section>
+
+          <Section title="4. Accès à l'application">
+            Votre utilisation de l'application ne requiert pas la création d'un compte d'utilisateur traditionnel. L'accès complet est débloqué au moyen d'un code d'accès personnel, obtenu après votre achat.<br/><br/>
+            1. Vous êtes responsable de la confidentialité de votre code d'accès.<br/>
+            2. Votre code d'accès est valide sur un maximum de trois (3) appareils.<br/>
+            3. Vous acceptez de ne pas partager, revendre ou distribuer votre code d'accès à des tiers.
+          </Section>
+
+          <Section title="5. Paiement">
+            L'accès complet à l'application s'obtient par un paiement unique, traité de façon sécurisée par PayPal (carte de crédit, débit ou solde PayPal). Nous n'avons accès à aucune information bancaire ou de carte de crédit — celles-ci sont traitées exclusivement par PayPal. Une fois le paiement confirmé, un code d'accès vous est automatiquement envoyé par courriel.
+          </Section>
+
+          <Section title="6. Politique de remboursement">
+            Si vous n'êtes pas satisfait de votre achat, vous disposez d'un délai de 48 heures suivant le paiement pour nous écrire à cdouret@gmail.com afin de demander un remboursement.
+          </Section>
+
+          <Section title="7. Utilisation acceptable de l'application">
+            Vous acceptez de ne pas utiliser l'application pour des fins illicites. Vous acceptez de ne pas :<br/><br/>
+            1. harceler, abuser ou menacer autrui ;<br/>
+            2. violer notre propriété intellectuelle ou celle d'un tiers ;<br/>
+            3. télécharger ou transmettre des virus informatiques ou tout logiciel malveillant ;<br/>
+            4. commettre une fraude, notamment en partageant ou en tentant de contourner les limites de votre code d'accès ;<br/>
+            5. publier ou distribuer du matériel obscène, diffamatoire ou haineux ;<br/>
+            6. recueillir illicitement des informations sur autrui.
+          </Section>
+
+          <Section title="8. Vie privée">
+            L'utilisation de l'application implique la collecte de certains renseignements, décrits en détail dans notre <strong>Politique de confidentialité</strong>, accessible directement dans l'application.
+          </Section>
+
+          <Section title="9. Dégagement de responsabilité">
+            Cette application existe à des fins éducatives. Vous reconnaissez que le contenu n'est pas destiné à remplacer un cours de français formel ou un avis professionnel, et que votre utilisation de l'application est à vos propres risques.
+          </Section>
+
+          <Section title="10. Ingénierie inverse et sécurité">
+            Vous ne pouvez pas utiliser l'ingénierie inverse ou désassembler le code de l'application, ni tenter de violer sa sécurité par un accès non autorisé ou l'exploitation de ses données.
+          </Section>
+
+          <Section title="11. Perte de données">
+            Nous ne sommes pas responsables de la sécurité de votre ordinateur ou de votre navigateur. L'utilisation de l'application est à vos risques.
+          </Section>
+
+          <Section title="12. Indemnisation">
+            Vous acceptez de nous indemniser et de nous tenir à l'abri de toute réclamation, perte ou dépense (y compris les frais juridiques raisonnables) découlant de votre utilisation abusive de l'application, de votre partage non autorisé de votre code d'accès, ou de votre violation des présentes conditions.
+          </Section>
+
+          <Section title="13. Politique concernant les pourriels">
+            Il vous est strictement interdit d'utiliser l'application à des fins d'activités illégales reliées aux pourriels, incluant la collecte d'adresses et d'informations personnelles d'autrui.
+          </Section>
+
+          <Section title="14. Liens et contenu de tiers">
+            Nous ne sommes aucunement responsables de dommages ou pertes liés à l'utilisation de services de tiers dont le lien se trouve dans l'application.
+          </Section>
+
+          <Section title="15. Indépendance des clauses">
+            Si une des présentes clauses est reconnue comme illégale, déclarée nulle ou inapplicable, en tout ou en partie, la portion inapplicable n'affectera pas la validité et l'applicabilité des autres clauses des présentes conditions d'utilisation.
+          </Section>
+
+          <Section title="16. Interruptions de service">
+            Il se peut que nous ayons à interrompre votre accès à l'application afin d'effectuer des travaux de maintenance. Vous convenez que votre accès peut être affecté par une indisponibilité non planifiée, pour quelque raison que ce soit, et que nous ne serons en aucun cas tenus responsables de dommages ou de pertes découlant de cette indisponibilité.
+          </Section>
+
+          <Section title="17. Résiliation d'accès">
+            Nous n'aurons aucune responsabilité vis-à-vis des tiers pour toute suspension, limite ou résiliation de votre accès à l'application.
+          </Section>
+
+          <Section title="18. Aucune garantie">
+            Bien que nous ayons déployé des efforts raisonnables pour nous assurer que le contenu de l'application est exact, nous ne pouvons garantir que ledit contenu soit exempt d'erreurs, à jour ou exhaustif. L'application et son contenu sont fournis « tels quels » et « selon la disponibilité » sans garantie de quelque nature que ce soit, expresse ou implicite.
+          </Section>
+
+          <Section title="19. Confidentialité">
+            En plus des présentes conditions générales, notre Politique de confidentialité décrit la manière dont les renseignements personnels sont traités. En utilisant l'application, vous déclarez avoir également pris connaissance de la politique de confidentialité.
+          </Section>
+
+          <Section title="20. Limitation de la responsabilité">
+            La responsabilité maximale de Caroline Douret découlant de votre utilisation de l'application est limitée à cent (100) dollars canadiens ou le montant payé pour votre accès, en retenant le montant le plus élevé. Cette limite ne s'applique pas dans les cas où la loi applicable en empêche l'exécution.
+          </Section>
+
+          <Section title="21. Utilisateurs mineurs">
+            En cas d'incompatibilité avec les dispositions de notre Politique de confidentialité concernant les utilisateurs mineurs, cette dernière prévaut.
+          </Section>
+
+          <Section title="22. Questions">
+            Pour toute question : cdouret@gmail.com
+          </Section>
+
+          <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 24 }}>Dernière mise à jour : 26 août 2026</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LexiqueScreen({ onBack }) {
   const [search, setSearch] = useState("");
   const [fontSize, setFontSize] = useState(loadFontSize());
@@ -3270,6 +3482,8 @@ export default function App() {
   if(screen==="histoiregrammaire") return <HistoireGrammaireScreen onBack={()=>setScreen("home")} />;
   if(screen==="teacher") return <TeacherMode onClose={()=>setScreen("home")} />;
   if(screen==="lexique") return <LexiqueScreen onBack={()=>setScreen("home")} />;
+  if(screen==="politique") return <PolitiqueScreen onBack={()=>setScreen(secteur?"app":"home")} />;
+  if(screen==="termes") return <TermesScreen onBack={()=>setScreen(secteur?"app":"home")} />;
 
   return (
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: FS }}>
@@ -3374,6 +3588,10 @@ export default function App() {
           </div>
 
           <div style={{ marginTop: 18, textAlign: "center" }}>
+            <button onClick={() => setScreen("politique")} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 12, padding: "4px 8px", textDecoration: "underline" }}>Politique de confidentialité</button>
+            <span style={{ color: D.gris2, fontSize: 12 }}> · </span>
+            <button onClick={() => setScreen("termes")} style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 12, padding: "4px 8px", textDecoration: "underline" }}>Termes et conditions</button>
+            <span style={{ color: D.gris2, fontSize: 12 }}> · </span>
             <button onClick={() => setScreen("teacher")} style={{ background: "none", border: "none", color: D.gris2, cursor: "pointer", fontSize: 12, padding: "4px 8px" }}>🔑</button>
           </div>
         </div>
