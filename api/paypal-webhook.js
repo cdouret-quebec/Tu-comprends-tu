@@ -1,5 +1,4 @@
 const SUPABASE_URL = "https://wdgoksaepdbxevzoootz.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkZ29rc2FlcGRieGV2em9vb3R6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzMDM0MjIsImV4cCI6MjA5OTg3OTQyMn0.m6_PaZkqfxvC-2ipX5-9nUPVbxgZ_qMXN-gUr_v9_sM";
 
 function generateCode() {
   const part = () => Math.random().toString(36).slice(2, 6).toUpperCase();
@@ -24,10 +23,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
   try {
     const event = req.body;
 
-    // 1. Vérifier que ce webhook vient vraiment de PayPal (pas un faux appel)
     const accessToken = await getPayPalAccessToken();
     const verifyRes = await fetch("https://api-m.paypal.com/v1/notifications/verify-webhook-signature", {
       method: "POST",
@@ -49,10 +49,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Signature invalide" });
     }
 
-    // Log complet pour debug lors du premier vrai test — à surveiller dans les logs Vercel
     console.log("Webhook PayPal reçu:", event.event_type, JSON.stringify(event.resource));
 
-    // 2. Ne traiter que les paiements réellement complétés
     if (event.event_type !== "PAYMENT.CAPTURE.COMPLETED") {
       return res.status(200).json({ received: true, ignored: event.event_type });
     }
@@ -60,20 +58,17 @@ export default async function handler(req, res) {
     const resource = event.resource;
     const email = resource?.payer?.email_address || resource?.payee?.email_address || null;
 
-    // 3. Générer un code unique
     const code = generateCode();
 
-    // 4. Enregistrer dans Supabase
     await fetch(`${SUPABASE_URL}/rest/v1/access_codes`, {
       method: "POST",
       headers: {
-        "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "apikey": SERVICE_KEY, "Authorization": `Bearer ${SERVICE_KEY}`,
         "Content-Type": "application/json", "Prefer": "return=minimal"
       },
       body: JSON.stringify({ code, email })
     });
 
-    // 5. Envoyer le code par courriel via Resend
     if (email) {
       await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -82,7 +77,7 @@ export default async function handler(req, res) {
           from: "Tu comprends-tu ? <onboarding@resend.dev>",
           to: email,
           subject: "Ton code d'accès — Tu comprends-tu ?",
-          html: `<p>Merci pour ton achat !</p><p>Voici ton code d'accès complet à l'application :</p><h2 style="letter-spacing:2px;">${code}</h2><p>Entre-le dans l'application (bouton 🔒 accès complet) pour débloquer tout le contenu.</p>`
+          html: `<p>Merci pour ton achat !</p><p>Voici ton code d'accès complet à l'application :</p><h2 style="letter-spacing:2px;">${code}</h2><p>Entre-le dans l'application (bouton 🔒 accès complet) pour débloquer tout le contenu. Il fonctionne sur jusqu'à 3 appareils.</p>`
         })
       });
     } else {
