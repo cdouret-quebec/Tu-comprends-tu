@@ -112,6 +112,7 @@ const ST_MODULES = [
   { id: "entree_sortie", label: "Entrer & sortir", icon: "🚪", desc: "Amorces naturelles et façons de clore poliment" },
   { id: "rythme", label: "Rythme & rebond", icon: "🎭", desc: "Réagir, relancer, ne pas tuer la conversation" },
   { id: "lunch", label: "Le lunch", icon: "🍱", desc: "Dîner au bureau, boîte à lunch, commandes collectives" },
+  { id: "en_route", label: "En route", icon: "🚗", desc: "Char, bouchons, covoiturage — se rendre au travail comme un vrai Québécois" },
   { id: "valeurs", label: "Valeurs & argent", icon: "🌿", desc: "Ce qui ne se dit pas mais se sent : modestie, égalité, rapport à l'argent" },
   { id: "sacres", label: "Les sacres", icon: "🤬", desc: "Comprendre les sacres comme code émotionnel et social québécois" },
   { id: "faux_amis", label: "Faux amis", icon: "😂", desc: "Les mots qui n'ont pas le même sens qu'en France — et qui peuvent surprendre !" }
@@ -946,6 +947,15 @@ lunch: `Tu es expert de la culture québécoise au bureau. Génère un guide com
 Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
+en_route: `Tu es expert de la culture québécoise et du vocabulaire routier au Québec. Génère un guide complet sur le trajet vers le travail — un vrai univers linguistique à part pour un immigrant qui se déplace en auto au Québec. Couvre exactement 4 sections :
+1. Le char lui-même : les mots québécois pour désigner et décrire une auto et ses parties (char, minoune, bazou, la switch, embrayer, freiner sec, char automatique vs à bras, etc.) — inclus aussi le vocabulaire des voitures électriques, très courantes au Québec (char électrique, borne de recharge, "faire le plein" adapté à l'électrique, hybride, autonomie, Hydro-Québec et les incitatifs gouvernementaux)
+2. La route et les bouchons : le vocabulaire de la circulation (ça bouchonne, l'heure de pointe, un accrochage, un détour, la 20/la 40 pour désigner les autoroutes, un viaduc, une bretelle, tourner à droite au feu rouge, etc.)
+3. Le covoiturage : les expressions et codes sociaux pour partager un trajet avec des collègues (embarquer/débarquer quelqu'un, faire du pouce n'est PAS la même chose que covoiturer, qui paie l'essence, la place du passager avant, les règles de politesse dans le char d'un collègue)
+4. Stationnement et hiver : les réalités pratiques (le stationnement incitatif, la vignette de stationnement, gratter le pare-brise, la remorqueuse en cas de tempête, les journées de déneigement où il faut déplacer son char)
+Pour chaque section : un contenu explicatif clair, 3-5 expressions avec leur explication, et un conseil pratique.
+Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
+JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
 sacres: `Tu es expert de la langue québécoise. Génère un guide sur les sacres québécois comme intensificateurs émotionnels. IMPORTANT : traite-les comme un phénomène linguistique fascinant. Génère exactement 3 sections courtes : 1) Origine et formes (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime) avec forme atténuée et 2 exemples courts chacun ; 2) Émotions exprimées selon le ton (admiration, frustration, surprise) avec 2 exemples courts ; 3) Règles sociales (avec qui, quand s'abstenir) avec conseil. Garde TOUS les textes très courts (1-2 phrases max).
 Inclus "annotations": 6 formes atténuées avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"exemples":[{"sacre":string,"forme_attenuation":string,"emotion":string,"exemple_phrase":string,"traduction_emotion":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
@@ -1249,6 +1259,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
                   {activeSTModule.id === "entree_sortie" && <STEntreeSortieCard data={content} />}
                   {activeSTModule.id === "rythme" && <STRythmeCard data={content} />}
                   {activeSTModule.id === "lunch" && <STLunchCard data={content} />}
+                  {activeSTModule.id === "en_route" && <STLunchCard data={content} />}
                   {activeSTModule.id === "valeurs" && <STValeursCard data={content} />}
                   {activeSTModule.id === "sacres" && <STSacresCard data={content} />}
                   {activeSTModule.id === "faux_amis" && <STFauxAmisCard data={content} />}
