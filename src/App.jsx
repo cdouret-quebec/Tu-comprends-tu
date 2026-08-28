@@ -114,6 +114,7 @@ const ST_MODULES = [
   { id: "lunch", label: "Le lunch", icon: "🍱", desc: "Dîner au bureau, boîte à lunch, commandes collectives" },
   { id: "en_route", label: "En route", icon: "🚗", desc: "Char, bouchons, covoiturage — se rendre au travail comme un vrai Québécois" },
   { id: "mesures", label: "Les unités de mesure", icon: "📏", desc: "Pieds, pouces, livres, onces — un mélange qui surprend même les Français" },
+  { id: "vacances_fetes", label: "Vacances et fêtes", icon: "🎃", desc: "Halloween, cabane à sucre, Saint-Jean — les rituels annuels à connaître" },
   { id: "valeurs", label: "Valeurs & argent", icon: "🌿", desc: "Ce qui ne se dit pas mais se sent : modestie, égalité, rapport à l'argent" },
   { id: "sacres", label: "Les sacres", icon: "🤬", desc: "Comprendre les sacres comme code émotionnel et social québécois" },
   { id: "faux_amis", label: "Faux amis", icon: "😂", desc: "Les mots qui n'ont pas le même sens qu'en France — et qui peuvent surprendre !" }
@@ -944,7 +945,7 @@ simulation: `Tu es expert du small talk québécois à la pause café. Génère 
 Inclus "annotations": 5 expressions québécoises avec définition courte.
 JSON: {"titre":string,"intro":string,"scenarios":[{"ce_que_dit_martin":string,"contexte":string,"choix":[{"lettre":"A"|"B"|"C","texte":string}],"bonne_reponse":"A"|"B"|"C","explication":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-lunch: `Tu es expert de la culture québécoise au bureau. Génère un guide complet sur le lunch (dîner) au bureau québécois — un univers social à part entière pour un immigrant. Couvre : la boîte à lunch et ce qu'on y met typiquement, les commandes collectives (sushis, pho, sandwichs), les conversations de table, les expressions autour de la nourriture, et les codes sociaux (on s'invite, on partage, on commente ce que l'autre mange...). Inclus aussi un lexique des mots québécois liés au lunch (dîner vs lunch, le boss paie la traite, commander en masse, le popote roulante, etc.). Inclus OBLIGATOIREMENT une section sur le "pot luck" (repas-partage) : quand ça arrive (party de Noël, anniversaires, dernière journée avant les vacances), les codes tacites (qui apporte quoi, ne jamais venir les mains vides, le tableau de signature pour éviter que tout le monde apporte des chips), et le vocabulaire relié (pot luck, apporter un plat, la feuille de sign-up). 5 sections distinctes au total.
+lunch: `Tu es expert de la culture québécoise au bureau. Génère un guide complet sur le lunch (dîner) au bureau québécois — un univers social à part entière pour un immigrant. Couvre : la boîte à lunch et ce qu'on y met typiquement, les commandes collectives (sushis, pho, sandwichs), les conversations de table, les expressions autour de la nourriture, et les codes sociaux (on s'invite, on partage, on commente ce que l'autre mange...). Inclus aussi un lexique des mots québécois liés au lunch (dîner vs lunch, le boss paie la traite, commander en masse, le popote roulante, etc.). Mentionne aussi la poutine et le pâté chinois comme plats emblématiques qui reviennent souvent dans les conversations et les commandes de groupe — des repères culturels autant qu'alimentaires pour un immigrant. Inclus OBLIGATOIREMENT une section sur le "pot luck" (repas-partage) : quand ça arrive (party de Noël, anniversaires, dernière journée avant les vacances), les codes tacites (qui apporte quoi, ne jamais venir les mains vides, le tableau de signature pour éviter que tout le monde apporte des chips), et le vocabulaire relié (pot luck, apporter un plat, la feuille de sign-up). 5 sections distinctes au total.
 Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
@@ -965,6 +966,16 @@ mesures: `Tu es expert de la culture québécoise et du système de mesures util
 5. Les écrans et électronique : les pouces pour la taille des télévisions et des écrans, comme partout en Amérique du Nord
 Pour chaque section : un contenu explicatif clair, 3-5 expressions ou exemples concrets avec leur explication (inclus des équivalences approximatives utiles, ex: "5 pieds 10 pouces ≈ 178 cm"), et un conseil pratique.
 Inclus "annotations": 8-12 termes de mesure avec leur définition courte.
+JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
+vacances_fetes: `Tu es expert de la culture québécoise et de son calendrier annuel de fêtes et de vacances. Génère un guide complet sur les rituels annuels québécois qui reviennent chaque année et dont tout le monde parle au bureau — un immigrant qui ne les connaît pas se sent vite exclu des conversations de la salle de pause. Couvre exactement 5 sections :
+1. Halloween (fin octobre) : beaucoup plus célébrée au Québec qu'en France — costumes au bureau, cabane décorée, enfants qui cognent aux portes, "la guignolée" n'est pas la même chose, vocabulaire (se déguiser, des bonbons, cogner aux portes)
+2. La cabane à sucre (mars-avril, le "temps des sucres") : sortie sociale et rituel de printemps typiquement québécois, ce qu'on y mange (oreilles de crisse, tire sur la neige, fèves au lard), le vocabulaire (l'érable, la tire, une cabane), et pourquoi c'est souvent une sortie d'équipe ou de famille
+3. Les vacances de la construction (fin juillet, deux semaines fixes) : une bonne partie du Québec ferme en même temps, ce qui surprend un immigrant qui ne comprend pas pourquoi son entrepreneur, son mécanicien ou certains services disparaissent soudainement
+4. La Fête nationale du Québec / la Saint-Jean (24 juin) : différente de la fête du Canada, ce qu'elle représente, les festivités typiques (feux d'artifice, spectacles, drapeaux fleurdelisés)
+5. Le temps des Fêtes à la québécoise (décembre) : le réveillon, les traditions de famille (tourtière, bûche de Noël), la période entre Noël et le jour de l'An souvent prise en congé par plusieurs bureaux
+Pour chaque section : un contenu explicatif clair, 3-5 expressions ou éléments concrets avec leur explication, et un conseil pratique pour un immigrant qui vit cette période au travail.
+Inclus "annotations": 8-12 termes de ce guide avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
 sacres: `Tu es expert de la langue québécoise. Génère un guide sur les sacres québécois comme intensificateurs émotionnels. IMPORTANT : traite-les comme un phénomène linguistique fascinant. Génère exactement 3 sections courtes : 1) Origine et formes (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime) avec forme atténuée et 2 exemples courts chacun ; 2) Émotions exprimées selon le ton (admiration, frustration, surprise) avec 2 exemples courts ; 3) Règles sociales (avec qui, quand s'abstenir) avec conseil. Garde TOUS les textes très courts (1-2 phrases max).
@@ -1272,6 +1283,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
                   {activeSTModule.id === "lunch" && <STLunchCard data={content} />}
                   {activeSTModule.id === "en_route" && <STLunchCard data={content} />}
                   {activeSTModule.id === "mesures" && <STLunchCard data={content} />}
+                  {activeSTModule.id === "vacances_fetes" && <STLunchCard data={content} />}
                   {activeSTModule.id === "valeurs" && <STValeursCard data={content} />}
                   {activeSTModule.id === "sacres" && <STSacresCard data={content} />}
                   {activeSTModule.id === "faux_amis" && <STFauxAmisCard data={content} />}
@@ -3599,7 +3611,7 @@ export default function App() {
               </div>
             </div>
             <p style={{ margin: "0 0 14px", fontSize: 13, color: D.gris3, lineHeight: 1.7, fontStyle: "italic" }}>
-              « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas mes collègues québécois !"</em> Cette application est pour eux. »
+              « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas toujours mes collègues québécois !"</em> Cette application est pour eux. »
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
               <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
