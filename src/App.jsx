@@ -113,6 +113,7 @@ const ST_MODULES = [
   { id: "rythme", label: "Rythme & rebond", icon: "🎭", desc: "Réagir, relancer, ne pas tuer la conversation" },
   { id: "lunch", label: "Le lunch", icon: "🍱", desc: "Dîner au bureau, boîte à lunch, commandes collectives" },
   { id: "en_route", label: "En route", icon: "🚗", desc: "Char, bouchons, covoiturage — se rendre au travail comme un vrai Québécois" },
+  { id: "mesures", label: "Les unités de mesure", icon: "📏", desc: "Pieds, pouces, livres, onces — un mélange qui surprend même les Français" },
   { id: "valeurs", label: "Valeurs & argent", icon: "🌿", desc: "Ce qui ne se dit pas mais se sent : modestie, égalité, rapport à l'argent" },
   { id: "sacres", label: "Les sacres", icon: "🤬", desc: "Comprendre les sacres comme code émotionnel et social québécois" },
   { id: "faux_amis", label: "Faux amis", icon: "😂", desc: "Les mots qui n'ont pas le même sens qu'en France — et qui peuvent surprendre !" }
@@ -956,7 +957,16 @@ Pour chaque section : un contenu explicatif clair, 3-5 expressions avec leur exp
 Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-sacres: `Tu es expert de la langue québécoise. Génère un guide sur les sacres québécois comme intensificateurs émotionnels. IMPORTANT : traite-les comme un phénomène linguistique fascinant. Génère exactement 3 sections courtes : 1) Origine et formes (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime) avec forme atténuée et 2 exemples courts chacun ; 2) Émotions exprimées selon le ton (admiration, frustration, surprise) avec 2 exemples courts ; 3) Règles sociales (avec qui, quand s'abstenir) avec conseil. Garde TOUS les textes très courts (1-2 phrases max).
+mesures: `Tu es expert de la culture québécoise et du système de mesures utilisé au Québec. Génère un guide complet sur les unités de mesure, un vrai piège pour un immigrant — même francophone — puisque le Québec mélange le système métrique et le système impérial d'une façon qui ne ressemble NI à la France (100% métrique) NI complètement aux États-Unis. Couvre exactement 5 sections :
+1. Le corps humain : la taille se dit presque toujours en pieds et pouces (ex: "il mesure 5 pieds 10"), le poids en livres (ex: "je pèse 150 livres") — jamais en centimètres ou en kilos dans une conversation courante, contrairement à la France
+2. La maison et la construction : les pieds, les pouces et les pieds carrés pour tout ce qui touche à l'immobilier, la rénovation et la construction (ex: "un 2x4", "la maison fait 1500 pieds carrés", "8 pieds de plafond") — précise que c'est très différent de la France qui utilise les mètres carrés
+3. La cuisine : les tasses, les cuillères à thé/à table, les onces, et parfois les degrés Fahrenheit dans les recettes plus anciennes — alors que les degrés Celsius sont aussi couramment utilisés pour la cuisson au four aujourd'hui
+4. Ce qui reste 100% métrique (comme en France) : la météo se dit en degrés Celsius, les distances et vitesses en kilomètres et km/h — ici le Québec ressemble à la France et PAS aux États-Unis, ce qui peut semer la confusion puisque tout le reste est en système impérial
+5. Les écrans et électronique : les pouces pour la taille des télévisions et des écrans, comme partout en Amérique du Nord
+Pour chaque section : un contenu explicatif clair, 3-5 expressions ou exemples concrets avec leur explication (inclus des équivalences approximatives utiles, ex: "5 pieds 10 pouces ≈ 178 cm"), et un conseil pratique.
+Inclus "annotations": 8-12 termes de mesure avec leur définition courte.
+JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`, Génère un guide sur les sacres québécois comme intensificateurs émotionnels. IMPORTANT : traite-les comme un phénomène linguistique fascinant. Génère exactement 3 sections courtes : 1) Origine et formes (ostie/estie, câlice/câline, tabarnak/tabarnouche, crisse/crime) avec forme atténuée et 2 exemples courts chacun ; 2) Émotions exprimées selon le ton (admiration, frustration, surprise) avec 2 exemples courts ; 3) Règles sociales (avec qui, quand s'abstenir) avec conseil. Garde TOUS les textes très courts (1-2 phrases max).
 Inclus "annotations": 6 formes atténuées avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"exemples":[{"sacre":string,"forme_attenuation":string,"emotion":string,"exemple_phrase":string,"traduction_emotion":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
@@ -1260,6 +1270,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
                   {activeSTModule.id === "rythme" && <STRythmeCard data={content} />}
                   {activeSTModule.id === "lunch" && <STLunchCard data={content} />}
                   {activeSTModule.id === "en_route" && <STLunchCard data={content} />}
+                  {activeSTModule.id === "mesures" && <STLunchCard data={content} />}
                   {activeSTModule.id === "valeurs" && <STValeursCard data={content} />}
                   {activeSTModule.id === "sacres" && <STSacresCard data={content} />}
                   {activeSTModule.id === "faux_amis" && <STFauxAmisCard data={content} />}
