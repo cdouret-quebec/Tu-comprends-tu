@@ -24,6 +24,10 @@ export default async function handler(req, res) {
   }
 
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!SERVICE_KEY) {
+    console.error("SUPABASE_SERVICE_ROLE_KEY est manquante dans les variables d'environnement Vercel");
+    return res.status(500).json({ error: "Configuration serveur incomplète" });
+  }
 
   try {
     const event = req.body;
@@ -60,7 +64,7 @@ export default async function handler(req, res) {
 
     const code = generateCode();
 
-    await fetch(`${SUPABASE_URL}/rest/v1/access_codes`, {
+    const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/access_codes`, {
       method: "POST",
       headers: {
         "apikey": SERVICE_KEY, "Authorization": `Bearer ${SERVICE_KEY}`,
@@ -68,6 +72,12 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({ code, email })
     });
+
+    if (!insertRes.ok) {
+      const errText = await insertRes.text();
+      console.error("Échec de l'enregistrement du code dans Supabase:", insertRes.status, errText);
+      return res.status(500).json({ error: "Échec enregistrement Supabase", details: errText });
+    }
 
     if (email) {
       await fetch("https://api.resend.com/emails", {
