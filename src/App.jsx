@@ -194,8 +194,8 @@ const EPOQUES = [
   }
 ];
 
-const SUPABASE_URL = "https://wdgoksaepdbxevzoootz.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkZ29rc2FlcGRieGV2em9vb3R6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzMDM0MjIsImV4cCI6MjA5OTg3OTQyMn0.m6_PaZkqfxvC-2ipX5-9nUPVbxgZ_qMXN-gUr_v9_sM";
+const SUPABASE_URL = "https://phiqzfrybptqobbdgrbn.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoaXF6ZnJ5YnB0cW9iYmRncmJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc5MzgzMjQsImV4cCI6MjEwMzUxNDMyNH0.JHvSAJt4CvG-9qMO284Nwx1RXzhviA1JcAc5Oi2bxVQ";
 
 async function sbGet(id) {
   try {
