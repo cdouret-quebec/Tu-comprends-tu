@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://wdgoksaepdbxevzoootz.supabase.co";
+const SUPABASE_URL = "https://phiqzfrybptqobbdgrbn.supabase.co";
 
 function generateCode() {
   const part = () => Math.random().toString(36).slice(2, 6).toUpperCase();
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Signature invalide" });
     }
 
-    console.log("Webhook PayPal reçu:", event.event_type, JSON.stringify(event.resource));
+    console.log("Webhook PayPal reçu:", event.event_type);
 
     if (event.event_type !== "PAYMENT.CAPTURE.COMPLETED") {
       return res.status(200).json({ received: true, ignored: event.event_type });

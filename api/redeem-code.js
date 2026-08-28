@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://wdgoksaepdbxevzoootz.supabase.co";
+const SUPABASE_URL = "https://phiqzfrybptqobbdgrbn.supabase.co";
 const MAX_USES = 3;
 
 export default async function handler(req, res) {
