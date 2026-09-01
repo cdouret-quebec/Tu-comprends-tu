@@ -2007,7 +2007,7 @@ UNIQUEMENT JSON, sans markdown.`;
 
   return (
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
-      <div style={{ background: "#3D1F0F", padding: "18px 16px", position: "relative", textAlign: "center" }}>
+      <div style={{ background: "#470024", padding: "18px 16px", position: "relative", textAlign: "center" }}>
         <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#D4A574", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
         <div style={{ position: "absolute", top: 14, right: 16 }}>
           <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color="#D4A574" border="#D4A574" activeBg="#D4A574" />
