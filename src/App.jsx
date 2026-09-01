@@ -3104,7 +3104,7 @@ function DialogueCard({ data, color }) {
   );
 }
 function VocabCard({ data, color }) {
-  const rc={formel:"#1B4332",neutre:"#7B2D8B",familier:"#9E4F00"}, rb={formel:"#F0F7F4",neutre:"#F5EEF8",familier:"#FEF3E2"};
+  const rc={formel:"#2C5784",neutre:"#5B1865",familier:"#470024"}, rb={formel:"#EAF1F8",neutre:"#F3EAF8",familier:"#F5E9EA"};
   return <div><h3 style={{ marginBottom: 14, fontSize: 17 }}>{data.titre}</h3><div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
     {data.expressions.map((e,i)=>(
       <div key={i} style={{ background: rb[e.registre]||"#F8F8F8", border: `1px solid ${(rc[e.registre]||color)}30`, borderRadius: 12, padding: 14 }}>
@@ -3115,7 +3115,7 @@ function VocabCard({ data, color }) {
         <p style={{ margin: "0 0 4px", fontSize: 14, color: "#444" }}><strong>Contexte :</strong> {e.contexte}</p>
         <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333", fontStyle: "italic" }}>« {e.exemple} »</p>
         {e.equivalent_france&&<p style={{ margin: "0 0 3px", fontSize: 13, color: "#777" }}>🇫🇷 En France : <em>{e.equivalent_france}</em></p>}
-        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 13, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
+        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 13, color: "#470024", background: "#F5E9EA", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
       </div>
     ))}
   </div></div>;
