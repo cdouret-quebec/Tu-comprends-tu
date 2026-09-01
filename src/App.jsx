@@ -3424,6 +3424,11 @@ function LexiqueScreen({ onBack }) {
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "16px 14px 60px" }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Chercher une expression…"
           style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: `1px solid ${D.gris2}`, fontSize: 14, marginBottom: 14, boxSizing: "border-box", outline: "none", background: D.blanc, color: D.noir }} />
+        <a href="https://www.oqlf.gouv.qc.ca/ressources/bibliotheque/dictionnaires/vocabulaire-immigration.aspx" target="_blank" rel="noopener noreferrer"
+          style={{ display: "block", background: "#EAF1F8", border: "1px solid #A9C6E0", borderRadius: 8, padding: "10px 14px", marginBottom: 14, textDecoration: "none" }}>
+          <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#2C5784" }}>📖 Vocabulaire officiel de l'immigration (OQLF)</p>
+          <p style={{ margin: "2px 0 0", fontSize: 12, color: "#2C5784" }}>Dictionnaire du gouvernement du Québec — termes administratifs et légaux liés à l'immigration →</p>
+        </a>
         {entries.length === 0 ? (
           <div style={{ background: D.blanc, borderRadius: 10, padding: 28, textAlign: "center", border: `1px solid ${D.gris2}` }}>
             <p style={{ fontWeight: 500, color: D.noir, fontSize: 14, margin: "0 0 6px" }}>Lexique vide pour l'instant</p>
