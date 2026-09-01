@@ -765,9 +765,9 @@ function STRythmeCard({ data }) {
                 {s.reactions.map((r, j) => (
                   <div key={j} style={{
                     padding: "8px 12px", borderRadius: 8, fontSize: 15,
-                    background: r.type === "ideal" ? "#ECFDF5" : r.type === "correct" ? "#F0F9FF" : "#FEF2F2",
-                    border: `1px solid ${r.type === "ideal" ? "#A7F3D0" : r.type === "correct" ? "#BAE6FD" : "#FECACA"}`,
-                    color: r.type === "ideal" ? "#065F46" : r.type === "correct" ? "#0369A1" : "#991B1B"
+                    background: r.type === "ideal" ? "#F3EAF8" : r.type === "correct" ? "#EAF1F8" : "#F5E9EA",
+                    border: `1px solid ${r.type === "ideal" ? "#C9A0DE" : r.type === "correct" ? "#A9C6E0" : "#D9AEB2"}`,
+                    color: r.type === "ideal" ? "#5B1865" : r.type === "correct" ? "#2C5784" : "#470024"
                   }}>
                     <span style={{ fontWeight: 700, marginRight: 6 }}>{r.type === "ideal" ? "✅ Idéal" : r.type === "correct" ? "🆗 Correct" : "❌ À éviter"} :</span>
                     <em>« {r.reponse} »</em>
@@ -813,20 +813,20 @@ function STValeursCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ borderTop: `1px solid ${ST_COLOR}10` }}>
-                <div style={{ padding: "12px 14px", background: "#FEF2F2", borderBottom: "1px solid #FECACA" }}>
-                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#DC2626", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que fait l'immigrant</p>
+                <div style={{ padding: "12px 14px", background: "#F1EFE8", borderBottom: "1px solid #D3D1C7" }}>
+                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#5F5E5A", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que fait l'immigrant</p>
                   <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
                     <AnnotatedText text={s.ce_que_fait_immigrant} annotations={ann} />
                   </p>
                 </div>
-                <div style={{ padding: "12px 14px", background: "#FFF7ED", borderBottom: "1px solid #FED7AA" }}>
-                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#92400E", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que pensent les Québécois (sans le dire)</p>
+                <div style={{ padding: "12px 14px", background: "#F5E9EA", borderBottom: "1px solid #D9AEB2" }}>
+                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#470024", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que pensent les Québécois (sans le dire)</p>
                   <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5, fontStyle: "italic" }}>
                     <AnnotatedText text={s.ce_que_pensent_les_quebecois} annotations={ann} />
                   </p>
                 </div>
-                <div style={{ padding: "12px 14px", background: "#F0FDF4", borderBottom: "1px solid #BBF7D0" }}>
-                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#065F46", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce qui se passe vraiment</p>
+                <div style={{ padding: "12px 14px", background: "#EAF1F8", borderBottom: "1px solid #A9C6E0" }}>
+                  <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#2C5784", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce qui se passe vraiment</p>
                   <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
                     <AnnotatedText text={s.ce_qui_se_passe_vraiment} annotations={ann} />
                   </p>
@@ -1094,12 +1094,12 @@ function STFauxAmisCard({ data }) {
               {/* Sens Québec */}
               {!revealed[`qc_${i}`] ? (
                 <button onClick={() => setRevealed(r => ({ ...r, [`qc_${i}`]: true }))}
-                  style={{ fontSize: 14, color: "#065F46", background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
+                  style={{ fontSize: 14, color: "#5B1865", background: "#F3EAF8", border: "1px solid #C9A0DE", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
                   🇨🇦 Ce que ça veut dire au Québec ?
                 </button>
               ) : (
-                <div style={{ background: "#ECFDF5", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
-                  <p style={{ margin: 0, fontSize: 15, color: "#065F46", fontWeight: 600 }}>
+                <div style={{ background: "#F3EAF8", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
+                  <p style={{ margin: 0, fontSize: 15, color: "#5B1865", fontWeight: 600 }}>
                     🇨🇦 Au Québec : {fa.sens_quebec}
                   </p>
                 </div>
@@ -1107,20 +1107,20 @@ function STFauxAmisCard({ data }) {
               {/* Sens France / malentendu */}
               {!revealed[`fr_${i}`] ? (
                 <button onClick={() => setRevealed(r => ({ ...r, [`fr_${i}`]: true }))}
-                  style={{ fontSize: 14, color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
+                  style={{ fontSize: 14, color: "#470024", background: "#F5E9EA", border: "1px solid #D9AEB2", borderRadius: 8, padding: "5px 12px", cursor: "pointer", marginBottom: 8, display: "block" }}>
                   🇫🇷 Et en France / le malentendu ?
                 </button>
               ) : (
-                <div style={{ background: "#FEF2F2", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
-                  <p style={{ margin: 0, fontSize: 15, color: "#DC2626" }}>
+                <div style={{ background: "#F5E9EA", borderRadius: 8, padding: "8px 12px", marginBottom: 8 }}>
+                  <p style={{ margin: 0, fontSize: 15, color: "#470024" }}>
                     🇫🇷 {fa.sens_france_ou_malentendu}
                   </p>
                 </div>
               )}
               {/* Astuce mémo — visible après révélation */}
               {revealed[`qc_${i}`] && revealed[`fr_${i}`] && fa.astuce && (
-                <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "7px 12px" }}>
-                  <p style={{ margin: 0, fontSize: 14 }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
+                <div style={{ background: "#FFF8E1", border: "1px solid #FFC857", borderRadius: 8, padding: "7px 12px" }}>
+                  <p style={{ margin: 0, fontSize: 14, color: "#7A5C00" }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
                 </div>
               )}
             </div>
