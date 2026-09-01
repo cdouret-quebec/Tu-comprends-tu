@@ -112,6 +112,7 @@ const ST_MODULES = [
   { id: "entree_sortie", label: "Entrer & sortir", icon: "🚪", desc: "Amorces naturelles et façons de clore poliment" },
   { id: "rythme", label: "Rythme & rebond", icon: "🎭", desc: "Réagir, relancer, ne pas tuer la conversation" },
   { id: "lunch", label: "Le lunch", icon: "🍱", desc: "Dîner au bureau, boîte à lunch, commandes collectives" },
+  { id: "cinq_a_sept", label: "Le 5 à 7", icon: "🍻", desc: "L'apéro entre collègues après le travail — codes, pression sociale et comment décliner" },
   { id: "en_route", label: "En route", icon: "🚗", desc: "Char, bouchons, covoiturage — se rendre au travail comme un vrai Québécois" },
   { id: "mesures", label: "Les unités de mesure", icon: "📏", desc: "Pieds, pouces, livres, onces — un mélange qui surprend même les Français" },
   { id: "vacances_fetes", label: "Vacances et fêtes", icon: "🎃", desc: "Halloween, cabane à sucre, Saint-Jean — les rituels annuels à connaître" },
@@ -949,6 +950,15 @@ lunch: `Tu es expert de la culture québécoise au bureau. Génère un guide com
 Inclus "annotations": 8-12 termes québécois du guide avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
+cinq_a_sept: `Tu es expert de la culture québécoise au bureau. Génère un guide complet sur le "5 à 7" — l'apéro entre collègues après le travail, un vrai rituel social québécois qui a ses propres codes non-écrits pour un immigrant. Couvre exactement 4 sections :
+1. Qu'est-ce que c'est et quand ça arrive : un vendredi, pour souligner un événement (départ, promotion, fin de projet), ou juste "de même" — le lieu typique (un bar, une terrasse l'été, parfois au bureau même)
+2. Est-ce vraiment optionnel? : le non-dit social autour de la présence — pas obligatoire sur papier, mais souvent perçu comme un moment important pour l'intégration à l'équipe; comment évaluer si c'est un 5 à 7 "important" (départ d'un collègue proche) vs un 5 à 7 informel qu'on peut sauter sans conséquence
+3. Qui organise et qui paie : chacun sa tournée, tournées alternées, le boss qui invite pour souligner un succès, comment ça se négocie sans que ce soit jamais dit explicitement
+4. Comment décliner poliment et les boissons non-alcoolisées : des façons naturelles de refuser une invitation sans paraître antisocial, et le fait que commander une boisson sans alcool est de plus en plus accepté et normalisé, sans devoir se justifier
+Pour chaque section : un contenu explicatif clair, 3-5 expressions ou éléments concrets avec leur explication, et un conseil pratique.
+Inclus "annotations": 8-12 termes de ce guide avec leur définition courte.
+JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
+UNIQUEMENT JSON, sans markdown.`,
 en_route: `Tu es expert de la culture québécoise et du vocabulaire routier au Québec. Génère un guide complet sur le trajet vers le travail — un vrai univers linguistique à part pour un immigrant qui se déplace en auto au Québec. Couvre exactement 4 sections :
 1. Le char lui-même : les mots québécois pour désigner et décrire une auto et ses parties (char, minoune, bazou, la switch, embrayer, freiner sec, char automatique vs à bras, etc.) — inclus aussi le vocabulaire des voitures électriques, très courantes au Québec (char électrique, borne de recharge, "faire le plein" adapté à l'électrique, hybride, autonomie, Hydro-Québec et les incitatifs gouvernementaux)
 2. La route et les bouchons : le vocabulaire de la circulation (ça bouchonne, l'heure de pointe, un accrochage, un détour, la 20/la 40 pour désigner les autoroutes, un viaduc, une bretelle, tourner à droite au feu rouge, etc.)
@@ -1281,6 +1291,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
                   {activeSTModule.id === "entree_sortie" && <STEntreeSortieCard data={content} />}
                   {activeSTModule.id === "rythme" && <STRythmeCard data={content} />}
                   {activeSTModule.id === "lunch" && <STLunchCard data={content} />}
+                  {activeSTModule.id === "cinq_a_sept" && <STLunchCard data={content} />}
                   {activeSTModule.id === "en_route" && <STLunchCard data={content} />}
                   {activeSTModule.id === "mesures" && <STLunchCard data={content} />}
                   {activeSTModule.id === "vacances_fetes" && <STLunchCard data={content} />}
