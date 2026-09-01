@@ -49,13 +49,26 @@ const MODULES = [
     buildPrompt: (s) => {
       const isConstruction = s.id === "construction";
       const isFinance = s.id === "finance";
-      const registreNote = isConstruction ? "" : `
+      const registreNote = isConstruction ? `
+IMPORTANT sur le naturel du dialogue : les marqueurs oraux très typés (moé, asteure, pantoute, faque, là là, etc.) existent réellement sur un chantier, mais une vraie conversation n'en empile pas 4 ou 5 par réplique. Limite-toi à 1 ou 2 marqueurs oraux forts par réplique MAXIMUM, combinés au vocabulaire technique réel du secteur — par exemple : "T'as-tu checké les solives? Le foreman veut savoir si c'est correct." Ne mets pas systématiquement les mêmes marqueurs très marqués dans la bouche de chaque personnage : varie, et laisse certaines répliques dans un français oral plus neutre. L'objectif est que ça sonne comme un vrai chantier, pas comme une caricature de "gars de chantier québécois".
+Pour les anglicismes de métier (foreman, dispatcher, truck, shed, GC, etc.) : ce sont des mots qu'un immigrant peut réellement entendre sur un chantier même si son français attendrait un autre terme (ex: "contremaître" pour "foreman", "entrepreneur général" pour "GC") — indique toujours le terme français standard correspondant dans "traduction_standard".
+Pour les tournures : évite les formulations un peu artificielles comme "par boutte" ou "cossins de fixation" — préfère des tournures qui sonnent vraiment orales, comme "par endroits" ou "les fixations"/"la quincaillerie". "Cossins" fonctionne mieux seul, pour désigner vaguement de petites choses sans les nommer précisément.
+Si tu utilises l'expression "en criant lapin", précise qu'elle signifie "très rapidement et facilement" (pas seulement "rapidement").` : `
 IMPORTANT sur le registre : ce secteur (${s.label}) appelle un registre professionnel et plutôt formel entre collègues, même en québécois authentique. Évite les contractions très familières (comme "t'as", "j'sais", "faque", "pantoute") sauf si le contexte s'y prête vraiment (ex: une pause-café informelle). Garde des traits distinctifs du québécois (accent, rythme, quelques expressions typiques du secteur) sans tomber dans un registre familier de rue.`;
       const financeExemple = isFinance ? `
-Exemple du registre attendu (à ne PAS recopier, juste pour calibrer le ton) : "Bonjour madame Tremblay, merci d'être venue. On va regarder ensemble vos options de placement pour votre REER — j'ai préparé deux scénarios selon votre tolérance au risque." — noter : vouvoiement, phrases complètes, accent et rythme québécois présents dans la prononciation suggérée, mais AUCUNE contraction familière du type "t'as", "j'sais", "faque".` : "";
+Exemple du registre attendu (à ne PAS recopier, juste pour calibrer le ton) : "Bonjour madame Tremblay, merci d'être venue. On va regarder ensemble vos options de placement pour votre REER — j'ai préparé deux scénarios selon votre tolérance au risque." — noter : vouvoiement, phrases complètes, accent et rythme québécois présents dans la prononciation suggérée, mais AUCUNE contraction familière du type "t'as", "j'sais", "faque". Le mélange est volontaire : un conseiller peut dire "Ça fait un boutte" ou "pis" tout en utilisant "actifs et passifs", "fonds communs", "profil de risque" — un professionnel québécois n'est pas obligé de parler en français très soutenu pour être crédible.
+IMPORTANT sur l'exactitude financière : si le dialogue mentionne un REER et un CELI, ne présente JAMAIS un retrait du REER vers le CELI comme un simple transfert libre d'impôt — un retrait de REER est généralement imposable. Si la cliente veut épargner davantage dans son CELI, rends la source de cet argent explicite ou ambiguë (par exemple une nouvelle épargne, sans préciser qu'elle vient du REER), plutôt que de laisser croire à un transfert direct et non imposable entre les deux comptes.
+Évite la redondance du type "s'accumulent d'une année à l'autre, c'est cumulatif" — dis-le une seule fois.
+Ne classe pas des expressions générales comme "bas de laine", "piastres", "pas reluisant" ou "par boutte" comme "secteur" dans les explications — ce sont des expressions québécoises générales ("quebecois"), pas du vocabulaire professionnel. Réserve "secteur" à du vrai vocabulaire financier (REER, CELI, fonds communs, marge de crédit, etc.).
+Pour "magasiner" dans la bouche du conseiller, utilise une formulation naturelle comme "magasiner les taux de dépôt à terme" ou "comparer les différents dépôts à terme" plutôt que "magasiner les options de dépôt à terme".
+Tu peux illustrer un contraste de registre entre la cliente et le conseiller : la cliente peut dire qu'un taux est "pas reluisant", et le conseiller dire qu'il est "pas très intéressant" — les deux restent québécois, mais à des degrés de familiarité différents.
+Si le dialogue évoque le rendement d'un placement, évite de le présenter comme le seul facteur pertinent (le profil de risque, les objectifs et les frais comptent aussi), sans transformer la scène en consultation financière complète pour autant.
+Si tu combines une expression imagée et un terme professionnel (ex: "optimiser" + "bas de laine"), assure-toi que ça reste une formulation qu'un vrai conseiller pourrait dire, quitte à les garder dans deux répliques distinctes.` : "";
       return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote}${financeExemple} Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
+Pour "note_phonetique" : donne une vraie indication de prononciation, de rythme ou d'intonation (élision, contraction, accent tonique) — jamais une orthographe inventée du genre "comme ça sonne", qui risquerait d'enseigner une prononciation artificielle à un immigrant. Reste cohérent d'une réplique à l'autre pour un même mot (ex: si "piastres" se prononce "piasses", garde cette même notation partout où le mot revient).
+Pour "explications", indique dans "categorie" si l'expression est "secteur" (vraiment propre à ce métier), "anglicisme" (emprunt à l'anglais utilisé au travail, mais pas propre à un seul secteur) ou "quebecois" (français québécois général, ni l'un ni l'autre). Ne mets "secteur" que pour un terme vraiment spécifique à ce métier.
 Inclus aussi "annotations": liste de 5-8 termes québécois du texte avec leur définition courte en français standard, pour les survols interactifs.
-JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"specifique_au_secteur":boolean}],"annotations":[{"terme":string,"definition":string}]}
+JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"categorie":"secteur"|"anglicisme"|"quebecois"}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
     } },
   { id: "vocab", label: "Vocabulaire du secteur", icon: "💬", color: "#7B2D8B", desc: "Jargon, expressions et argot professionnel",
@@ -705,7 +718,7 @@ function STReferencesCard({ data }) {
                     <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "7px 10px", fontSize: 15, color: ST_COLOR, fontStyle: "italic" }}>« {p} »</div>
                   ))}
                 </div>
-                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 14, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "4px 8px" }}>⚠️ {r.piege}</p>}
+                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 14, color: "#1D4ED8", background: "#EFF6FF", borderRadius: 6, padding: "4px 8px" }}>💡 {r.piege}</p>}
               </div>
             )}
           </div>
@@ -929,8 +942,33 @@ function STExpressionsCard({ data: rawData }) {
   );
 }
 
+const ST_SYSTEM_PROMPT = `Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.
+
+RÈGLES ÉDITORIALES IMPORTANTES à respecter dans tout contenu généré, quel que soit le sujet :
+- Cette application s'adresse à des immigrants francophones qui apprennent à comprendre et à naviguer la culture professionnelle québécoise — pas à s'y conformer à tout prix. Présente les codes culturels comme des repères fréquents et utiles à connaître, jamais comme des règles obligatoires ou des conditions d'acceptation sociale.
+- Bannis les formulations du type "ne jamais dire...", "ne jamais faire...", "il ne faut pas...". Remplace-les systématiquement par un ton positif et inclusif : "tu peux dire...", "une façon naturelle de...", "💡 à savoir : ...".
+- Ne présente aucune pratique, opinion ou goût culturel comme obligatoire ou universel. Nuance avec "souvent", "plusieurs", "peut" plutôt que "tout le monde", "toujours", "jamais", "la référence absolue", "incontournable", "connu de tous".
+- Le Québec n'est pas homogène : évite de généraliser à partir de Montréal seul, et évite "en région" comme catégorie unique — les réalités varient (Québec, Gatineau, Saguenay, Sherbrooke, Rimouski, Rouyn-Noranda, etc. sont différentes entre elles).
+- Ne donne jamais l'impression qu'un immigrant doit cacher ses vrais goûts, opinions ou son identité pour être accepté. L'objectif est de lui donner des outils pour participer aux conversations, pas de lui dicter quoi aimer ou penser.
+- Pour tout contenu culturel ou lié à l'actualité (séries, personnalités, tendances), privilégie des exemples pertinents au moment de la génération plutôt que de te limiter à des exemples qui pourraient devenir datés.`;
+
 const ST_PROMPTS = {
-references: `Tu es expert de la culture québécoise et du small talk au bureau. Génère un guide sur 5 sujets de conversation incontournables à la pause café québécoise (hockey, météo, chalet, routes/circulation, séries québécoises ou culture pop). Pour chaque sujet : ce qu'il faut savoir pour ne pas être perdu, 3 phrases utiles à placer naturellement.
+references: `Tu es expert de la culture québécoise et du small talk au bureau. Génère un guide sur 5 sujets de conversation fréquents à la pause café québécoise : hockey, météo, chalet, routes/circulation, séries et culture pop québécoises.
+
+TON ET APPROCHE (règles importantes à respecter partout dans le guide) :
+- Présente ces sujets comme des sujets FRÉQUENTS et utiles à connaître pour participer plus facilement aux conversations informelles — jamais comme des obligations sociales, des rituels ou des prérequis pour être accepté. Évite des formulations comme "rituel sacré", "s'assurer une place de choix" ou "maîtriser ces sujets".
+- Ne présente jamais une pratique culturelle comme une norme universelle. Nuance avec "souvent", "plusieurs", "peut" plutôt que "tout le monde", "toujours", "la référence absolue".
+- Le champ "piege" ne doit JAMAIS être formulé comme un interdit ("ne jamais dire...", "ne pas confondre..."). Formule-le comme un conseil positif : une façon naturelle de participer à la conversation même si on ne connaît pas le sujet ou qu'on ne partage pas l'intérêt pour celui-ci. Exemple de ton recherché pour le hockey : "Tu n'as pas besoin d'aimer le hockey pour participer à la conversation. Tu peux dire : « Je suis pas vraiment le hockey, mais je suis curieux, comment va le Canadien cette année? » — ça relance la discussion sans prétendre aimer quelque chose que tu n'aimes pas."
+
+CONSIGNES PAR SUJET :
+- Hockey : sport emblématique / grande passion pour plusieurs Québécois — pas "la religion nationale". N'affirme pas que les séries éliminatoires "paralysent" tous les bureaux : l'intérêt varie énormément selon les personnes et les milieux de travail. Tu peux mentionner que la rivalité historique Canadiens–Nordiques reste un sujet chargé d'émotion, particulièrement à Québec.
+- Météo : MétéoMédia est très populaire et consulté par beaucoup de gens — évite "la référence absolue". Si tu mentionnes que certaines personnes vérifient les prévisions plusieurs fois par jour, présente-le explicitement comme une touche d'humour, pas comme une norme.
+- Chalet : la culture du chalet est bien présente, sans prétendre qu'une majorité de Québécois en possède un. N'établis PAS de règle du genre "ne pas dire maison de campagne, ça sonne bizarre" — "maison de campagne" reste parfaitement compréhensible. Explique plutôt que le mot "chalet" est souvent utilisé même pour une résidence secondaire moderne ou cossue, sans besoin d'être rustique.
+- Routes/circulation : ne te limite pas à Montréal. Varie selon le contexte — à Montréal (autoroutes, ponts, congestion), à Québec (travaux, grands axes, ponts), dans les régions moins urbanisées (conditions routières, travaux, animaux sauvages sur la route). Ne présente pas une seule radio comme réflexe universel (évite de présenter "98,5" comme LA référence) — parle plutôt d'une application de circulation, de navigation, ou de la radio, au choix de chacun.
+- Séries et culture pop : mentionne des productions et personnalités actuelles et pertinentes plutôt que de te limiter à des exemples datés. Évite les formulations absolues comme "connu de tous" — préfère "bien connu" ou "populaire".
+- Évite l'expression "en région" comme catégorie homogène (Gatineau, Saguenay, Sherbrooke, Rimouski et Rouyn-Noranda ne se ressemblent pas) — utilise "dans les régions moins urbanisées" et présente ça comme une tendance possible, pas une règle.
+
+Pour chaque sujet : ce qu'il faut savoir pour ne pas être perdu, 3 phrases utiles à placer naturellement, et un conseil inclusif dans "piege" pour participer même sans connaître ou partager le sujet.
 Inclus "annotations": 6-10 termes québécois du guide avec leur définition courte en français standard.
 JSON: {"titre":string,"intro":string,"references":[{"emoji":string,"sujet":string,"sous_titre":string,"ce_quil_faut_savoir":string,"phrases_utiles":[string],"piege":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
@@ -938,7 +976,7 @@ entree_sortie: `Tu es expert du small talk québécois au bureau. Génère un gu
 Inclus "annotations": 5-8 expressions québécoises des formules avec leur définition courte.
 JSON: {"titre":string,"intro":string,"entrees":[{"formule":string,"quand":string,"effet":string,"variante":string}],"sorties":[{"formule":string,"quand":string,"effet":string,"variante":string}],"conseil_cle":string,"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-rythme: `Tu es expert du small talk québécois. Génère 5 situations typiques où un immigrant francophone casse le rythme de la conversation — parce qu'il répond trop formellement, trop brièvement ou à côté. Pour chaque situation: ce que dit le collègue québécois Martin, 3 types de réponses possibles (idéale, correcte, à éviter) avec explication.
+rythme: `Tu es expert du small talk québécois. Génère 5 situations typiques où le style de réponse habituel d'un immigrant francophone (plus formel, plus bref, ou qui répond littéralement à la question posée) tombe à plat dans une conversation informelle québécoise, plus spontanée et relationnelle. Présente ça comme une différence de registre à apprivoiser, pas comme une erreur du francophone. Pour chaque situation: ce que dit le collègue québécois Martin, 3 types de réponses possibles (idéale, correcte, à éviter) avec explication.
 Inclus "annotations": 5-8 expressions québécoises des dialogues avec leur définition courte.
 JSON: {"titre":string,"intro":string,"situations":[{"ce_que_dit_martin":string,"reactions":[{"type":"ideal"|"correct"|"mauvais","reponse":string,"pourquoi":string}],"lecon":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
@@ -969,7 +1007,7 @@ Inclus "annotations": 8-12 termes québécois du guide avec leur définition cou
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
 mesures: `Tu es expert de la culture québécoise et du système de mesures utilisé au Québec. Génère un guide complet sur les unités de mesure, un vrai piège pour un immigrant — même francophone — puisque le Québec mélange le système métrique et le système impérial d'une façon qui ne ressemble NI à la France (100% métrique) NI complètement aux États-Unis. Couvre exactement 5 sections :
-1. Le corps humain : la taille se dit presque toujours en pieds et pouces (ex: "il mesure 5 pieds 10"), le poids en livres (ex: "je pèse 150 livres") — jamais en centimètres ou en kilos dans une conversation courante, contrairement à la France
+1. Le corps humain : la taille se dit très souvent en pieds et pouces (ex: "il mesure 5 pieds 10"), le poids en livres (ex: "je pèse 150 livres") — les centimètres et les kilos sont peu utilisés dans une conversation courante, contrairement à la France
 2. La maison et la construction : les pieds, les pouces et les pieds carrés pour tout ce qui touche à l'immobilier, la rénovation et la construction (ex: "un 2x4", "la maison fait 1500 pieds carrés", "8 pieds de plafond") — précise que c'est très différent de la France qui utilise les mètres carrés
 3. La cuisine : les tasses, les cuillères à thé/à table, les onces, et parfois les degrés Fahrenheit dans les recettes plus anciennes — alors que les degrés Celsius sont aussi couramment utilisés pour la cuisson au four aujourd'hui
 4. Ce qui reste 100% métrique (comme en France) : la météo se dit en degrés Celsius, les distances et vitesses en kilomètres et km/h — ici le Québec ressemble à la France et PAS aux États-Unis, ce qui peut semer la confusion puisque tout le reste est en système impérial
@@ -1003,7 +1041,7 @@ valeurs: `Tu es expert de la culture québécoise et des codes sociaux implicite
 4. L'humour autodérisoire comme code de bienvenue
 5. Le débat souverainiste/fédéraliste — esquiver poliment sans prendre position
 6. La laïcité et la religion — sujet sensible post-Révolution tranquille
-7. RESTER TARD AU BUREAU : partir à l'heure n'est PAS un manque d'engagement au Québec — rester tard = mal organisé
+7. RESTER TARD AU BUREAU : partir à l'heure n'est généralement PAS perçu comme un manque d'engagement au Québec — mais certains milieux ou collègues peuvent tout de même valoriser une présence prolongée; ça varie beaucoup selon le milieu de travail
 8. Le consensus mou en réunion — "c'est le fun" peut vouloir dire qu'on n'est pas convaincu
 9. Les évaluations indirectes — "c'est correct" peut signifier que c'est loin d'être correct
 Pour chaque scénario : ce que fait l'immigrant (sans mauvaise intention), ce que ça produit chez les collègues québécois (sans qu'ils le disent), ce qui se passe vraiment, et comment s'en sortir. Garde les textes COURTS (2-3 phrases max par champ).
@@ -1177,7 +1215,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
         }
       }
       const parsed = await callClaude([{ role: "user", content: ST_PROMPTS[mod.id] }],
-        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.");
+        ST_SYSTEM_PROMPT);
       await setCached("st", "smalltalk", parsed, mod.id);
     
       if (mod.id === "expressions" && parsed.expressions) {
@@ -2466,7 +2504,7 @@ function TeacherMode({ onClose }) {
       }
       if (!prompt) throw new Error("Prompt introuvable");
       const parsed = await callClaude([{ role: "user", content: prompt }],
-        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown.");
+        type === "st" ? ST_SYSTEM_PROMPT : "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown.");
 
       if (entry.status === "validated") {
       
@@ -3104,7 +3142,8 @@ function DialogueCard({ data, color }) {
           <div key={i} style={{ background: "white", border: `1px solid ${color}30`, borderRadius: 10, padding: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 6 }}>
               <strong style={{ color, fontSize: 14 }}>« {e.expression} »</strong>
-              {e.specifique_au_secteur&&<span style={{ fontSize: 12, background: color, color: "white", borderRadius: 10, padding: "1px 8px" }}>SECTEUR</span>}
+              {e.categorie==="secteur"&&<span style={{ fontSize: 12, background: color, color: "white", borderRadius: 10, padding: "1px 8px" }}>SECTEUR</span>}
+              {e.categorie==="anglicisme"&&<span style={{ fontSize: 12, background: "#4B5563", color: "white", borderRadius: 10, padding: "1px 8px" }}>ANGLICISME</span>}
             </div>
             <p style={{ margin: "3px 0 1px", fontSize: 14, color: "#666" }}>S'entend comme : <em>« {e.ce_que_ca_sonne} »</em></p>
             <p style={{ margin: 0, fontSize: 14, color: "#444" }}>Standard : <em>{e.traduction_standard}</em></p>
