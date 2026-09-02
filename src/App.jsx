@@ -1697,11 +1697,11 @@ function TrousGrammaireCard({ data, color }) {
 
       {/* Liste des mots à utiliser */}
       {mots.length > 0 && (
-        <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 12, padding: "12px 16px", marginBottom: 16 }}>
+        <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 12, padding: "12px 16px", marginBottom: 16 }}>
           <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: "#78350F" }}>📝 Mots à utiliser :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {mots.map((mot, i) => (
-              <span key={i} style={{ background: "white", border: "1px solid #FCD34D", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
+              <span key={i} style={{ background: "white", border: "1px solid #FED7AA", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
                 {mot}
               </span>
             ))}
