@@ -232,7 +232,7 @@ const NIVEAUX = [
 
 const EPOQUES = [
   {
-    id: "nouvelle_france", label: "Nouvelle-France", periode: "1608-1760", icon: "⚜️", color: "#1E3A8A", bg: "#EFF6FF",
+    id: "nouvelle_france", label: "Nouvelle-France", periode: "1608-1760", icon: "⚜️", color: "#7A5F1F", bg: "#F7F1E3",
     contexte: "la vie quotidienne en Nouvelle-France : colons, coureurs des bois, vie dans les seigneuries, relations avec les nations autochtones, le commerce des fourrures",
     notions: {
       a2:    { notion: "Le présent de l'indicatif", notionDesc: "Conjuguer être et avoir + verbes courants au présent", format: "trous" },
@@ -241,7 +241,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "conquete", label: "Conquête britannique", periode: "1760-1840", icon: "🏴", color: "#7C2D12", bg: "#FEF3E2",
+    id: "conquete", label: "Conquête britannique", periode: "1760-1840", icon: "🏴", color: "#66101F", bg: "#F7E3E7",
     contexte: "la Conquête de 1760, le Traité de Paris, l'Acte de Québec, la rébellion des Patriotes de 1837-1838",
     notions: {
       a2:    { notion: "Accords dans le groupe du nom", notionDesc: "Accorder déterminants, noms et adjectifs en genre (masculin/féminin) et en nombre", format: "trous" },
@@ -250,7 +250,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "19e_siecle", label: "19e siècle", periode: "1840-1896", icon: "🚂", color: "#065F46", bg: "#ECFDF5",
+    id: "19e_siecle", label: "19e siècle", periode: "1840-1896", icon: "🚂", color: "#445A2B", bg: "#EEF7E3",
     contexte: "l'Acte d'Union, la Confédération de 1867, l'industrialisation, l'exode rural vers les villes et vers les États-Unis",
     notions: {
       a2:    { notion: "Le passé composé", notionDesc: "Former et utiliser le passé composé pour raconter des événements simples", format: "trous" },
@@ -259,7 +259,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "20e_siecle", label: "20e siècle & Révolution tranquille", periode: "1896-1980", icon: "✊", color: "#5B21B6", bg: "#F5F3FF",
+    id: "20e_siecle", label: "20e siècle & Révolution tranquille", periode: "1896-1980", icon: "✊", color: "#562E60", bg: "#F3E3F7",
     contexte: "la Grande Noirceur, la Révolution tranquille des années 1960, la nationalisation de l'électricité, les revendications nationalistes, les référendums",
     notions: {
       a2:    { notion: "Les verbes modaux", notionDesc: "Utiliser vouloir, pouvoir et devoir au présent pour exprimer une intention ou une obligation", format: "trous" },
@@ -268,7 +268,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "contemporain", label: "Époque contemporaine", periode: "1980 à aujourd'hui", icon: "🏙️", color: "#BE185D", bg: "#FDF2F8",
+    id: "contemporain", label: "Époque contemporaine", periode: "1980 à aujourd'hui", icon: "🏙️", color: "#2A576F", bg: "#E3F0F7",
     contexte: "le Québec moderne, l'immigration récente, les enjeux linguistiques actuels, la diversité culturelle, les grands débats de société",
     notions: {
       a2:    { notion: "La phrase nominale et l'ellipse", notionDesc: "Comprendre et utiliser les formules courtes sans verbe très fréquentes au Québec : 'Pas de problème.', 'Correct.', 'Bonne journée.', 'Aucun souci.'", format: "trous" },
@@ -277,7 +277,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "litterature", label: "Littérature québécoise", periode: "1960 à aujourd'hui", icon: "📚", color: "#0F766E", bg: "#CCFBF1",
+    id: "litterature", label: "Littérature québécoise", periode: "1960 à aujourd'hui", icon: "📚", color: "#484D51", bg: "#E3EEF7",
     contexte: "la littérature québécoise moderne : Michel Tremblay, Réjean Ducharme, Victor-Lévy Beaulieu, Marie-Claire Blais, Gaston Miron — le joual comme revendication culturelle et artistique",
     notions: {
       a2:    { notion: "Les adjectifs et la description littéraire", notionDesc: "Utiliser des adjectifs variés pour décrire des personnages et des lieux dans un texte simple", format: "trous" },
@@ -286,7 +286,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "oral_qc", label: "Grammaire de l'oral québécois", periode: "Spécificités actuelles", icon: "🗣️", color: "#6B21A8", bg: "#F3E8FF",
+    id: "oral_qc", label: "Grammaire de l'oral québécois", periode: "Spécificités actuelles", icon: "🗣️", color: "#855A5C", bg: "#F7E3E4",
     contexte: "les particularités grammaticales du français québécois parlé au quotidien : négation sans 'ne', gallicismes temporels, phrases elliptiques, anglicismes grammaticaux, emploi de 'on' vs 'nous', voix passive évitée",
     notions: {
       a2:    { notion: "La négation à l'oral", notionDesc: "Comprendre que le 'ne' disparaît à l'oral québécois : 'je sais pas', 'c'est pas grave', 'y'a pas de problème'", format: "trous" },
