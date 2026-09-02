@@ -1328,7 +1328,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
   return (
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       {/* Header */}
-      <div style={{ background: "#52489C", padding: "18px 16px", position: "relative", textAlign: "center" }}>
+      <div style={{ background: "#2D1B5E", padding: "18px 16px", position: "relative", textAlign: "center" }}>
         <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
         <div style={{ position: "absolute", top: 14, right: 16 }}>
           <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color="#C4B5FD" border="#C4B5FD" activeBg="#C4B5FD" />
