@@ -3254,7 +3254,7 @@ function VocabCard({ data, color }) {
         <p style={{ margin: "0 0 4px", fontSize: 14, color: "#444" }}><strong>Contexte :</strong> {e.contexte}</p>
         <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333", fontStyle: "italic" }}>« {e.exemple} »</p>
         {e.equivalent_france&&<p style={{ margin: "0 0 3px", fontSize: 13, color: "#777" }}>🇫🇷 En France : <em>{e.equivalent_france}</em></p>}
-        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 13, color: "#470024", background: "#F5E9EA", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
+        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 13, color: "#92400E", background: "#FFF7ED", border: "1px solid #FDE1B8", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
       </div>
     ))}
   </div></div>;
