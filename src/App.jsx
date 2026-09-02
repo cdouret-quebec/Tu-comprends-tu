@@ -840,7 +840,7 @@ function STEntreeSortieCard({ data }) {
         </div>
       ))}
       {data.conseil_cle && (
-        <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 10, padding: 12 }}>
+        <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: 12 }}>
           <p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_cle}</p>
         </div>
       )}
@@ -1191,7 +1191,7 @@ function STSacresCard({ data }) {
                   </div>
                 )}
                 {s.conseil && (
-                  <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "8px 12px" }}>
+                  <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "8px 12px" }}>
                     <p style={{ margin: 0, fontSize: 14 }}>💡 {s.conseil}</p>
                   </div>
                 )}
@@ -1254,8 +1254,8 @@ function STFauxAmisCard({ data }) {
               )}
               {/* Astuce mémo — visible après révélation */}
               {revealed[`qc_${i}`] && revealed[`fr_${i}`] && fa.astuce && (
-                <div style={{ background: "#FFF8E1", border: "1px solid #FFC857", borderRadius: 8, padding: "7px 12px" }}>
-                  <p style={{ margin: 0, fontSize: 14, color: "#7A5C00" }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
+                <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "7px 12px" }}>
+                  <p style={{ margin: 0, fontSize: 14, color: "#92400E" }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
                 </div>
               )}
             </div>
@@ -1476,7 +1476,7 @@ function STLunchCard({ data }) {
                   </div>
                 )}
                 {s.conseil && (
-                  <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "7px 10px" }}>
+                  <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "7px 10px" }}>
                     <p style={{ margin: 0, fontSize: 14 }}>💡 {s.conseil}</p>
                   </div>
                 )}
@@ -3275,7 +3275,7 @@ function RegistreCard({ data }) {
         </div>
       ))}
     </div>
-    {data.conseil&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>Conseil :</strong> {data.conseil}</p></div>}
+    {data.conseil&&<div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>Conseil :</strong> {data.conseil}</p></div>}
   </div>;
 }
 function CultureCard({ data, color }) {
@@ -3295,7 +3295,7 @@ function CultureCard({ data, color }) {
         </div>
       ))}
     </div>
-    {data.conseil_pratique&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_pratique}</p></div>}
+    {data.conseil_pratique&&<div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_pratique}</p></div>}
   </div>;
 }
 function ResultCard({ moduleId, data, color, secteur, onQuizRetry, onQuizNewType, onQuizDone }) {
@@ -3758,7 +3758,7 @@ export default function App() {
               « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas toujours mes collègues québécois !"</em> Cette application est pour eux. »
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
+              <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Cours particuliers en ligne</p>
               <a href="https://carolinedouret.com" target="_blank" rel="noopener noreferrer"
                 style={{ display: "inline-flex", alignItems: "center", gap: 4, background: D.rouge, color: D.blanc, borderRadius: 6, padding: "7px 12px", fontSize: 12, fontWeight: 500, textDecoration: "none" }}>
                 carolinedouret.com →
