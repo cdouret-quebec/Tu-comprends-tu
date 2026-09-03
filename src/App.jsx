@@ -504,11 +504,19 @@ function stripPronounPrefix(val) {
   if (typeof raw !== "string") return raw;
   return raw.replace(/^[^\s/]+(?:\/[^\s/]+)+\s+/i, "").trim();
 }
+function melangerTableau(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 function nettoyerPronomsTrous(data) {
   if (!data || typeof data !== "object") return data;
   const clean = { ...data };
-  if (Array.isArray(clean.mots_a_utiliser)) clean.mots_a_utiliser = clean.mots_a_utiliser.map(stripPronounPrefix);
-  if (Array.isArray(clean["mots_à_utiliser"])) clean["mots_à_utiliser"] = clean["mots_à_utiliser"].map(stripPronounPrefix);
+  if (Array.isArray(clean.mots_a_utiliser)) clean.mots_a_utiliser = melangerTableau(clean.mots_a_utiliser.map(stripPronounPrefix));
+  if (Array.isArray(clean["mots_à_utiliser"])) clean["mots_à_utiliser"] = melangerTableau(clean["mots_à_utiliser"].map(stripPronounPrefix));
   if (Array.isArray(clean.trous)) clean.trous = clean.trous.map(t => t && typeof t === "object" ? { ...t, reponse: stripPronounPrefix(t.reponse) } : t);
   return clean;
 }
