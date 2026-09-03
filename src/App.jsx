@@ -496,6 +496,21 @@ async function updateCached(type, id, data, subId = "") {
   }
 }
 
+// Filet de sécurité : retire un préfixe de pronoms (ex: "il/elle/on/iel ") que l'IA pourrait
+// ajouter devant une forme verbale malgré la consigne — indépendant de la fiabilité du prompt.
+function stripPronounPrefix(str) {
+  if (typeof str !== "string") return str;
+  return str.replace(/^[^\s/]+(?:\/[^\s/]+)+\s+/i, "").trim();
+}
+function nettoyerPronomsTrous(data) {
+  if (!data || typeof data !== "object") return data;
+  const clean = { ...data };
+  if (Array.isArray(clean.mots_a_utiliser)) clean.mots_a_utiliser = clean.mots_a_utiliser.map(stripPronounPrefix);
+  if (Array.isArray(clean["mots_à_utiliser"])) clean["mots_à_utiliser"] = clean["mots_à_utiliser"].map(stripPronounPrefix);
+  if (Array.isArray(clean.trous)) clean.trous = clean.trous.map(t => t && typeof t === "object" ? { ...t, reponse: stripPronounPrefix(t.reponse) } : t);
+  return clean;
+}
+
 async function callClaude(messages, system, json = true, retries = 3) {
   const allMessages = system
     ? [{ role: "user", content: `[INSTRUCTIONS]\n${system}\n[/INSTRUCTIONS]\n\n${messages[0].content}` }, ...messages.slice(1)]
@@ -2013,8 +2028,9 @@ UNIQUEMENT JSON, sans markdown.`;
       else prompt = format === "trous" ? buildTrousPrompt(ep, niv) : buildLecturePrompt(ep, niv);
       const parsed = await callClaude([{ role: "user", content: prompt }],
         "Tu es expert en histoire du Québec et du Canada et en grammaire française, dans l'esprit pédagogique de Récitus (histoire.recitus.qc.ca). Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.");
-      await setCached("hg", ep.id, parsed, subId);
-      setContent(parsed);
+      const cleaned = format === "trous" && forcedMode !== "quiz" ? nettoyerPronomsTrous(parsed) : parsed;
+      await setCached("hg", ep.id, cleaned, subId);
+      setContent(cleaned);
     } catch (e) { setError(`Erreur : ${e.message}`); console.error(e); }
     finally { setLoading(false); }
   }
@@ -2604,8 +2620,9 @@ function TeacherMode({ onClose }) {
         }
       }
       if (!prompt) throw new Error("Prompt introuvable");
-      const parsed = await callClaude([{ role: "user", content: prompt }],
+      const parsedRaw = await callClaude([{ role: "user", content: prompt }],
         type === "st" ? ST_SYSTEM_PROMPT : "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown.");
+      const parsed = (type === "hg" && subId.startsWith("contenu_")) ? nettoyerPronomsTrous(parsedRaw) : parsedRaw;
 
       if (entry.status === "validated") {
       
