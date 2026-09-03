@@ -497,10 +497,12 @@ async function updateCached(type, id, data, subId = "") {
 }
 
 // Filet de sécurité : retire un préfixe de pronoms (ex: "il/elle/on/iel ") que l'IA pourrait
-// ajouter devant une forme verbale malgré la consigne — indépendant de la fiabilité du prompt.
-function stripPronounPrefix(str) {
-  if (typeof str !== "string") return str;
-  return str.replace(/^[^\s/]+(?:\/[^\s/]+)+\s+/i, "").trim();
+// ajouter devant une forme verbale malgré la consigne, et normalise l'ancien format objet
+// {forme, pronom} resté en cache — indépendant de la fiabilité du prompt.
+function stripPronounPrefix(val) {
+  const raw = (val && typeof val === "object") ? (val.forme || "") : val;
+  if (typeof raw !== "string") return raw;
+  return raw.replace(/^[^\s/]+(?:\/[^\s/]+)+\s+/i, "").trim();
 }
 function nettoyerPronomsTrous(data) {
   if (!data || typeof data !== "object") return data;
@@ -1713,6 +1715,12 @@ function TrousGrammaireCard({ data, color }) {
 
   // Mélanger les mots si disponibles
   const mots = data.mots_a_utiliser || data["mots_à_utiliser"] || [];
+  // Affichage défensif : gère un mot propre, un mot avec préfixe de pronoms
+  // ("il/elle/on/iel a"), ou l'ancien format objet {forme, pronom} resté en cache.
+  const motLabel = (mot) => {
+    const raw = (mot && typeof mot === "object") ? (mot.forme || "") : mot;
+    return typeof raw === "string" ? raw.replace(/^[^\s/]+(?:\/[^\s/]+)+\s+/i, "").trim() : String(raw ?? "");
+  };
 
   return (
     <div>
@@ -1731,7 +1739,7 @@ function TrousGrammaireCard({ data, color }) {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {mots.map((mot, i) => (
               <span key={i} style={{ background: "white", border: "1px solid #FED7AA", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
-                {mot}
+                {motLabel(mot)}
               </span>
             ))}
           </div>
@@ -2019,8 +2027,8 @@ UNIQUEMENT JSON, sans markdown.`;
       const subId = `${forcedMode}_${niv}`;
       if (!forceRegen) {
         const cached = await getCached("hg", ep.id, subId);
-        if (cached && cached.status === "validated") { setContent(cached.data); setLoading(false); return; }
-        if (cached && cached.status === "pending") { setContent(cached.data); setLoading(false); return; }
+        if (cached && cached.status === "validated") { setContent(forcedMode !== "quiz" ? nettoyerPronomsTrous(cached.data) : cached.data); setLoading(false); return; }
+        if (cached && cached.status === "pending") { setContent(forcedMode !== "quiz" ? nettoyerPronomsTrous(cached.data) : cached.data); setLoading(false); return; }
       }
       const { format } = getNotionPourNiveau(ep, niv);
       let prompt;
