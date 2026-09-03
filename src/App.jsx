@@ -1714,14 +1714,11 @@ function TrousGrammaireCard({ data, color }) {
         <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 12, padding: "12px 16px", marginBottom: 16 }}>
           <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: "#78350F" }}>📝 Mots à utiliser :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {mots.map((mot, i) => {
-              const label = typeof mot === "string" ? mot : (mot.pronom ? `${mot.pronom} ${mot.forme}` : mot.forme);
-              return (
-                <span key={i} style={{ background: "white", border: "1px solid #FED7AA", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
-                  {label}
-                </span>
-              );
-            })}
+            {mots.map((mot, i) => (
+              <span key={i} style={{ background: "white", border: "1px solid #FED7AA", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
+                {mot}
+              </span>
+            ))}
           </div>
         </div>
       )}
@@ -1959,6 +1956,7 @@ function HistoireGrammaireScreen({ onBack }) {
 ${consigne}
 Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire : ${notion} — ${notionDesc}.
+IMPORTANT sur "notion_explication" et "notion_exemples" : chaque fois que tu donnes un exemple de verbe conjugué à la 3e personne, écris toujours le sujet complet plutôt qu'un seul pronom — "il/elle/on/iel" au singulier, "elles/ils/iels" au pluriel (ex: "il/elle/on/iel est", "elles/ils/iels sont").
 JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
   }
@@ -1976,10 +1974,10 @@ ${contextePrompt}
 Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
 IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante").
-Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte.
-IMPORTANT sur "mots_a_utiliser" : la liste doit correspondre EXACTEMENT aux réponses de "trous" — un élément par trou, dans le désordre (mélangés), sans en omettre ni en ajouter (si un même mot sert deux fois, liste-le deux fois). Ne jamais en oublier un, comme un "a" qui manquerait alors qu'il est la bonne réponse d'un trou.
-Pour chaque élément de "mots_a_utiliser" qui est une forme verbale conjuguée à la 3e personne, indique aussi le sujet correspondant dans "pronom" : "il/elle/on/iel" au singulier, "ils/elles/iels" au pluriel. Si l'élément n'est pas un verbe conjugué à la 3e personne (nom, adjectif, préposition, verbe à un autre mode/personne, etc.), laisse "pronom" vide ("").${traductionNote}
-JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[{"forme":string,"pronom":string}],"trous":[{"id":number,"reponse":string,"explication":string}],"texte_en":string}
+Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer.
+IMPORTANT sur "mots_a_utiliser" : la liste doit correspondre EXACTEMENT aux réponses de "trous" — un élément par trou, dans le désordre, sans en omettre ni en ajouter (si un même mot sert deux fois, liste-le deux fois). Ne jamais en oublier un, comme un "a" qui manquerait alors qu'il est la bonne réponse d'un trou.
+IMPORTANT sur "notion_explication" : chaque fois que tu donnes un exemple de verbe conjugué à la 3e personne pour illustrer la notion, écris toujours le sujet complet plutôt qu'un seul pronom — "il/elle/on/iel" au singulier (ex: "il/elle/on/iel est", "il/elle/on/iel a"), "elles/ils/iels" au pluriel (ex: "elles/ils/iels sont", "elles/ils/iels ont"). Exemple de formulation attendue : "je suis, tu es, il/elle/on/iel est, nous sommes, vous êtes, elles/ils/iels sont ; j'ai, tu as, il/elle/on/iel a, nous avons, vous avez, elles/ils/iels ont."${traductionNote}
+JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}],"texte_en":string}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
@@ -2604,8 +2602,8 @@ function TeacherMode({ onClose }) {
           prompt = modeHG === "quiz"
             ? `Quiz sur "${ep.label}", notion: ${notionData.notion}. JSON: {"titre":string,"questions":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]} UNIQUEMENT JSON.`
             : notionData.format === "trous"
-              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. "mots_a_utiliser" doit correspondre EXACTEMENT aux réponses de "trous" (un élément par trou, mélangés, sans en omettre ni en ajouter). Pour chaque forme verbale conjuguée à la 3e personne, indique le sujet dans "pronom" ("il/elle/on/iel" au singulier, "ils/elles/iels" au pluriel), sinon laisse "pronom" vide. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[{"forme":string,"pronom":string}],"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
-              : `Texte + exercices sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`;
+              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. "mots_a_utiliser" doit correspondre EXACTEMENT aux réponses de "trous" (un élément par trou, mélangés, sans en omettre ni en ajouter). Dans "notion_explication", pour un exemple de verbe conjugué à la 3e personne, écris le sujet complet : "il/elle/on/iel" au singulier, "elles/ils/iels" au pluriel. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
+              : `Texte + exercices sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. Dans "notion_explication", pour un exemple de verbe conjugué à la 3e personne, écris le sujet complet : "il/elle/on/iel" au singulier, "elles/ils/iels" au pluriel. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`;
         }
       }
       if (!prompt) throw new Error("Prompt introuvable");
