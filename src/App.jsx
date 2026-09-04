@@ -526,7 +526,8 @@ function AnnotatedText({ text, annotations = [], style = {} }) {
 
   let segments = [{ text, annotated: false }];
   sorted.forEach(({ terme, definition }) => {
-    const regex = new RegExp(`(${terme.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+    const escaped = terme.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`(?<![\\p{L}\\p{N}_])(${escaped})(?![\\p{L}\\p{N}_])`, "giu");
     segments = segments.flatMap(seg => {
       if (seg.annotated) return [seg];
       const parts = seg.text.split(regex);
