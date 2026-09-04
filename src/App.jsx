@@ -107,7 +107,7 @@ UNIQUEMENT JSON, sans markdown.`;
 ];
 
 const ST_MODULES = [
-  { id: "simulation", label: "Simulation", icon: "🗣️", desc: "Joue une conversation avec Martin, ton collègue québécois" },
+  { id: "simulation", label: "Simulation", icon: "🗣️", desc: "Discute avec Martin, ton collègue québécois" },
   { id: "references", label: "Références culturelles", icon: "📡", desc: "Hockey, météo, chalet, culture pop québécoise" },
   { id: "entree_sortie", label: "Entrer & sortir", icon: "🚪", desc: "Amorces naturelles et façons de clore poliment" },
   { id: "rythme", label: "Rythme & rebond", icon: "🎭", desc: "Réagir, relancer, ne pas tuer la conversation" },
