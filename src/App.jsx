@@ -14,16 +14,16 @@ const C = {
   vertForet:"#1B4332",
 };
 
-const ST_COLOR = "#52489C";
-const ST_BG    = "#E4E3F7";
+const ST_COLOR = "#6B21A8";
+const ST_BG    = "#F3E8FF";
 
 const SECTEURS = [
-  { id: "construction", label: "Construction & Génie", icon: "🏗️", color: "#8E630B", bg: "#FBF2E0", desc: "Chantiers, sous-traitants, plans, sécurité", exemples: ["checker les cossins", "le boute", "la shed", "un truck", "foreman"], contexte: "chantier de construction québécois, réunion de chantier, interaction avec contremaître et ouvriers" },
-  { id: "finance", label: "Finance & Banque", icon: "💰", color: "#1F2041", bg: "#E0E1FB", desc: "REER, placements, conseils aux clients", exemples: ["mon cash", "les cennes", "le bas de laine", "magasiner un prêt", "l'impôt"], contexte: "succursale bancaire ou cabinet de conseil financier québécois, rencontre avec client" },
-  { id: "sante", label: "Santé & Services sociaux", icon: "🏥", color: "#19647E", bg: "#E0F4FB", desc: "Hôpitaux, CLSC, relations avec patients", exemples: ["la carte-soleil", "la RAMQ", "les médicaments remboursés", "le médecin de famille"], contexte: "hôpital ou CLSC québécois, interaction avec patients et collègues soignants" },
-  { id: "education", label: "Éducation & CPE", icon: "🎓", color: "#4B3F72", bg: "#E6E0FB", desc: "Écoles, CPE, relations avec parents", exemples: ["le bulletin", "les récupérations", "le service de garde", "la direction"], contexte: "école primaire ou secondaire québécoise, salle des profs, rencontre de parents" },
-  { id: "commerce", label: "Commerce & Vente", icon: "🛒", color: "#772229", bg: "#FBE0E2", desc: "Épiceries, commerces, service à la clientèle", exemples: ["la caisse", "le dépanneur", "checker le prix", "la commande"], contexte: "commerce de détail québécois, interaction avec clients et collègues" },
-  { id: "ti", label: "Technologies (TI)", icon: "💻", color: "#0D7C81", bg: "#E0F9FB", desc: "Développement, réunions agiles, startups", exemples: ["pitcher une idée", "le backlog", "ça fait du sens", "on se revire de bord"], contexte: "startup ou département TI québécois, standup, réunion d'équipe agile" }
+  { id: "construction", label: "Construction & Génie", icon: "🏗️", color: "#B45309", bg: "#FEF3C7", desc: "Chantiers, sous-traitants, plans, sécurité", exemples: ["checker les cossins", "le boute", "la shed", "un truck", "foreman"], contexte: "chantier de construction québécois, réunion de chantier, interaction avec contremaître et ouvriers" },
+  { id: "finance", label: "Finance & Banque", icon: "💰", color: "#1A1F5E", bg: "#E0E7FF", desc: "REER, placements, conseils aux clients", exemples: ["mon cash", "les cennes", "le bas de laine", "magasiner un prêt", "l'impôt"], contexte: "succursale bancaire ou cabinet de conseil financier québécois, rencontre avec client" },
+  { id: "sante", label: "Santé & Services sociaux", icon: "🏥", color: "#065F46", bg: "#D1FAE5", desc: "Hôpitaux, CLSC, relations avec patients", exemples: ["la carte-soleil", "la RAMQ", "les médicaments remboursés", "le médecin de famille"], contexte: "hôpital ou CLSC québécois, interaction avec patients et collègues soignants" },
+  { id: "education", label: "Éducation & CPE", icon: "🎓", color: "#6B21A8", bg: "#EDE9FE", desc: "Écoles, CPE, relations avec parents", exemples: ["le bulletin", "les récupérations", "le service de garde", "la direction"], contexte: "école primaire ou secondaire québécoise, salle des profs, rencontre de parents" },
+  { id: "commerce", label: "Commerce & Vente", icon: "🛒", color: "#D42B2B", bg: "#FEE2E2", desc: "Épiceries, commerces, service à la clientèle", exemples: ["la caisse", "le dépanneur", "checker le prix", "la commande"], contexte: "commerce de détail québécois, interaction avec clients et collègues" },
+  { id: "ti", label: "Technologies (TI)", icon: "💻", color: "#0F766E", bg: "#CCFBF1", desc: "Développement, réunions agiles, startups", exemples: ["pitcher une idée", "le backlog", "ça fait du sens", "on se revire de bord"], contexte: "startup ou département TI québécois, standup, réunion d'équipe agile" }
 ];
 
 const CONTENU_FIXE = {
@@ -49,135 +49,21 @@ const MODULES = [
     buildPrompt: (s) => {
       const isConstruction = s.id === "construction";
       const isFinance = s.id === "finance";
-      const isSante = s.id === "sante";
-      const isEducation = s.id === "education";
-      const isCommerce = s.id === "commerce";
-      const isTI = s.id === "ti";
-      const registreNote = isConstruction ? `
-IMPORTANT sur le naturel du dialogue : les marqueurs oraux très typés (moé, asteure, pantoute, faque, là là, etc.) ET les anglicismes (right là, icitte, pogner, etc.) existent réellement sur un chantier, mais une vraie conversation n'en empile pas 4 ou 5 par réplique. Limite-toi à 1 ou 2 marqueurs oraux ou anglicismes forts par réplique MAXIMUM, combinés au vocabulaire technique réel du secteur — par exemple : "T'as-tu checké les solives? Le foreman veut savoir si c'est correct." Ne mets pas systématiquement les mêmes marqueurs très marqués dans la bouche de chaque personnage : varie, et laisse certaines répliques dans un français oral plus neutre. L'objectif est que ça sonne comme un vrai chantier, pas comme une caricature de "gars de chantier québécois".
-IMPORTANT sur la grammaire : même très oral, le français québécois reste grammaticalement cohérent — n'invente pas de formes fautives pour paraître "plus oral". Par exemple : "tout le monde ait fini" (pas "toute le monde aye"), "va falloir que quelqu'un règle ça" (pas "quelqu'un va falloir que ça règle ça"), "j'ai checké" (pas "j'ai checkté"), "on va avoir l'air de caves" (pas "on va avoir l'air de des caves"), "Quelqu'un est-tu supposé venir le ramasser?" plutôt qu'une inversion maladroite, "dans la shed" (pas "dans shed" — ne fais pas disparaître l'article devant un nom emprunté à l'anglais).
-IMPORTANT sur le sens réel des mots : vérifie toujours le vrai sens d'une expression avant de l'utiliser, même pour donner de la couleur locale. Par exemple, "être en bédaine" signifie "être torse nu", pas "être laissé à l'abandon" (utilise plutôt "traîne encore" pour un équipement laissé de côté) ; "ostination" signifie "entêtement", ce n'est pas une interjection pour dire "on se grouille" ; "c'est le boutte" est ambigu (ça peut vouloir dire "c'est l'idéal" OU "c'est le comble, l'extrême", souvent avec une nuance ironique) — évite de l'enseigner comme s'il n'avait qu'un seul sens simple, ou évite-le si le contexte ne permet pas de lever l'ambiguïté. Dans le doute, préfère une expression plus simple mais juste plutôt qu'une expression pittoresque mal utilisée ou inventée.
-IMPORTANT sur la prudence professionnelle/légale : évite d'affirmer qui est responsable financièrement ou légalement d'un dommage ou d'une erreur (ex: ne dis pas "le contracteur va payer pour ça" — la responsabilité dépend du contrat, de la livraison, de l'assurance, etc.). Fais plutôt réagir les personnages en documentant ou en rapportant le problème (ex: "va falloir documenter ça pour le gérant de projet").
-IMPORTANT sur "grayer/gréyer" (équiper, préparer) : n'assume pas que c'est un québécisme de chantier universel — utilise plutôt une formulation neutre comme "préparer son équipement" par défaut, et ne présente "grayer" que comme un terme qu'on peut entendre dans certains milieux, pas comme LE terme à connaître partout.
-IMPORTANT sur "chalk line" : sers-toi en dans une phrase qui reflète son vrai usage (tracer/vérifier une ligne droite de référence sur une surface), pas une description technique bancale.
-IMPORTANT sur "foreman" et "contremaître" : introduis "contremaître" en premier, avec "foreman" entre parenthèses à la première mention (ex: "le contremaître (foreman)"), puis utilise simplement le nom du personnage et son rôle (ex: "Mario — contremaître") par la suite. Dans les explications, présente "foreman" comme un anglicisme utilisé dans certains milieux pour désigner le contremaître, pas comme le terme normal partout.
-IMPORTANT sur la densité globale : sur l'ensemble du dialogue (5-7 répliques), vise une bonne demi-douzaine de marqueurs oraux/anglicismes bien choisis au total, pas 15-20 empilés — le vocabulaire technique doit faire une bonne partie du travail, pas l'accumulation de couleur locale.
-Pour les anglicismes de métier (foreman, dispatcher, truck, shed, GC, overtime, batch, etc.) : ce sont des mots qu'un immigrant peut réellement entendre sur un chantier même si son français attendrait un autre terme (ex: "contremaître" pour "foreman", "entrepreneur général" pour "GC", "lot/quantité" pour "batch") — indique toujours le terme français correspondant dans "traduction_standard" et classe-les "anglicisme", pas "secteur", sauf s'ils sont vraiment propres à la construction. Transcris "overtime" tel quel, sans doubler de lettres.
-Pour les tournures : évite les formulations un peu artificielles comme "par boutte" ou "cossins de fixation" — préfère des tournures qui sonnent vraiment orales, comme "par endroits" ou "les fixations"/"la quincaillerie". "Cossins" fonctionne mieux seul, pour désigner vaguement de petites choses sans les nommer précisément. Si une expression reste ambiguë pour un apprenant (comme "ça serait l'boutte"), préfère une formulation plus limpide (ex: "ça serait pas de trop d'avoir..."). Pour se faire renvoyer, "se faire mettre dehors" est un choix plus clair et plus courant que "se faire pitcher dehors". Pour désigner le patron au bureau (par opposition au chantier), "le boss du bureau" ou "le boss de la shop" suffit — pas besoin d'ajouter "principale".
-Le passage où le dialogue mélange "carnet de bord" et "non-conformités" avec un français plus oral ailleurs dans la scène est exactement le bon dosage à viser : le vocabulaire professionnel réel qui cohabite avec l'oral québécois, sans que l'un efface l'autre.
-Pour "categorie" dans les explications : "secteur" peut couvrir un terme technique officiel (coffrage, étais) ou un jargon de chantier informel propre au métier (vibro pour désigner l'aiguille vibrante) — précise alors dans "traduction_standard" qu'il s'agit de jargon de chantier plutôt que du terme officiel.
-Si une expression est vulgaire ou d'un registre très familier/populaire (ex: "caves", "soye"), indique-le dans le champ optionnel "registre" (ex: "vulgaire", "très familier") pour que l'apprenant sache dans quel contexte ce n'est pas approprié.
-Si tu utilises l'expression "en criant lapin", précise qu'elle signifie "très rapidement et facilement" (pas seulement "rapidement").` : `
+      const registreNote = isConstruction ? "" : `
 IMPORTANT sur le registre : ce secteur (${s.label}) appelle un registre professionnel et plutôt formel entre collègues, même en québécois authentique. Évite les contractions très familières (comme "t'as", "j'sais", "faque", "pantoute") sauf si le contexte s'y prête vraiment (ex: une pause-café informelle). Garde des traits distinctifs du québécois (accent, rythme, quelques expressions typiques du secteur) sans tomber dans un registre familier de rue.`;
       const financeExemple = isFinance ? `
-Exemple du registre attendu (à ne PAS recopier, juste pour calibrer le ton) : "Bonjour madame Tremblay, merci d'être venue. On va regarder ensemble vos options de placement pour votre REER — j'ai préparé deux scénarios selon votre tolérance au risque." — noter : vouvoiement, phrases complètes, accent et rythme québécois présents dans la prononciation suggérée, mais AUCUNE contraction familière du type "t'as", "j'sais", "faque". Le mélange est volontaire : un conseiller peut dire "Ça fait un boutte" ou "pis" tout en utilisant "actifs et passifs", "fonds communs", "profil de risque" — un professionnel québécois n'est pas obligé de parler en français très soutenu pour être crédible.
-IMPORTANT sur l'exactitude financière : si le dialogue mentionne un REER et un CELI, ne présente JAMAIS un retrait du REER vers le CELI comme un simple transfert libre d'impôt — un retrait de REER est généralement imposable. Si la cliente veut épargner davantage dans son CELI, rends la source de cet argent explicite ou ambiguë (par exemple une nouvelle épargne, sans préciser qu'elle vient du REER), plutôt que de laisser croire à un transfert direct et non imposable entre les deux comptes.
-Évite la redondance du type "s'accumulent d'une année à l'autre, c'est cumulatif" — dis-le une seule fois.
-IMPORTANT sur le vocabulaire REER : utilise "cotisation" et non "contribution" pour désigner l'argent versé dans un REER (ex: "maximiser votre cotisation REER"), c'est le terme employé par l'ARC. Si tu mentionnes une date limite pour cotiser, dis "la date limite de cotisation" sans donner une date calendaire précise codée en dur (elle change chaque année, autour de la fin février ou du début mars) — situer l'action en février, comme ici, suffit à rendre la scène crédible.
-IMPORTANT sur le remboursement d'impôt : ne présente jamais de lien direct entre un montant cotisé et un montant de remboursement (évite "5000$ dans un REER = un gros remboursement"). Explique plutôt qu'une cotisation déductible réduit le revenu imposable, ce qui peut augmenter le remboursement selon la situation fiscale globale de la personne.
-IMPORTANT sur la diversification et le rendement : évite de présenter la diversification (fonds équilibrés, titres boursiers, etc.) comme menant directement à un meilleur rendement "sans trop de turbulences" — présente plutôt ça comme un équilibre à trouver entre le potentiel de rendement et le niveau de risque qui convient à la personne.
-IMPORTANT sur l'intemporalité : ne mets JAMAIS de prévision économique datée (ex: la Banque du Canada qui "pourrait baisser les taux d'ici la fin de l'année") — cette application est utilisée sur plusieurs années et une telle prévision devient vite fausse ou obsolète. Si tu veux aborder les taux d'intérêt ou l'économie, reste intemporel (ex: "les taux peuvent évoluer d'ici votre renouvellement, ça vaut la peine de comparer les scénarios plutôt que de se fier à une seule prévision"). Même chose pour toute date : jamais de mois ou date précise pour une échéance fiscale (dis "la date limite de cotisation", jamais "la date limite de mars" ou une date calendaire).
-IMPORTANT sur la terminologie : "droits de cotisation inutilisés" (ou "droits de cotisation REER inutilisés"), jamais "marge de cotisation inutilisée" — ce n'est pas le terme employé. "profil d'investisseur" (pas "profil investisseur"), et sa définition va au-delà de la seule tolérance au risque : elle inclut aussi les objectifs et l'horizon de placement. Pour "CPG encaissables", précise que les modalités de retrait avant échéance varient selon le produit plutôt que de présenter ça comme systématique. "maximiser votre cotisation au REER" plutôt que "maximiser le REER".
-Pour "diviser la mise" entre le REER et le CELI : ça sonne trop comme un pari dans la bouche d'un conseiller — utilise plutôt "répartir la somme" ou "répartir l'épargne".
-Ne classe pas des expressions générales comme "bas de laine", "piastres", "pas reluisant", "par boutte", "frileux/frileuse", "l'année passée" ou "ça vaut la peine" comme "secteur" dans les explications — ce sont des expressions québécoises générales ("quebecois"), pas du vocabulaire professionnel. Réserve "secteur" à du vrai vocabulaire financier et fiscal (REER, CELI, cotisation, droits de cotisation, profil d'investisseur, CPG, tranche d'imposition, préapprobation, fonds communs, marge de crédit, etc.). Pour une expression générale comme "à court", donne une définition large et réutilisable (ex: "ne plus avoir suffisamment d'argent ou de ressources disponibles") plutôt qu'une définition collée au seul contexte de la scène.
-Pour "magasiner" dans la bouche du conseiller, utilise une formulation naturelle comme "magasiner les taux de dépôt à terme" ou "comparer les différents dépôts à terme" plutôt que "magasiner les options de dépôt à terme".
-Tu peux illustrer un contraste de registre entre la cliente et le conseiller : la cliente peut dire qu'un taux est "pas reluisant" ou parler de son "bas de laine", et le conseiller dire qu'il est "pas très intéressant" ou parler de "votre épargne" — les deux restent québécois, mais à des degrés de familiarité différents.
-Si le dialogue évoque le rendement d'un placement, évite de le présenter comme le seul facteur pertinent (le profil de risque, les objectifs et les frais comptent aussi), sans transformer la scène en consultation financière complète pour autant.
-Si tu combines une expression imagée et un terme professionnel (ex: "optimiser" + "bas de laine"), assure-toi que ça reste une formulation qu'un vrai conseiller pourrait dire, quitte à les garder dans deux répliques distinctes.` : "";
-      const santeNote = isSante ? `
-IMPORTANT — PRUDENCE ADMINISTRATIVE (règle la plus importante pour ce secteur) : contrairement aux autres secteurs, un immigrant pourrait agir concrètement sur la base de ce qu'il lit ici (démarches de santé, couverture, identité). N'invente et n'affirme JAMAIS une procédure administrative précise comme si elle était générale ou garantie (ex: "on peut vérifier son numéro de RAMQ manuellement avec sa date de naissance et son adresse", ou "la confirmation verbale du numéro suffit pour procéder") — les modalités varient selon l'établissement, le système et la situation. Fais plutôt réagir les personnages avec une posture réaliste de vérification, sans détailler LA procédure comme si elle était universelle (ex: "On va voir ce qu'on peut faire pour vérifier son dossier", "Je vais vérifier avec elle ce qu'on peut faire si le patient n'a pas sa carte").
-Sur la couverture des médicaments : ne dis jamais qu'un régime "devrait couvrir une bonne partie" comme une quasi-certitude — la couverture dépend du médicament, de l'admissibilité et des conditions. Dis plutôt "on pourra vérifier ce qui est couvert et quelle part il devra payer". Le terme exact est "la liste des médicaments couverts par le régime public d'assurance médicaments", pas "la liste des médicaments remboursés".
-Sur "de garde" : réserve cette expression à un contexte où elle s'applique vraiment (médecin de garde, équipe de garde) — ne l'utilise pas pour dire qu'une travailleuse sociale est simplement présente ou disponible ce jour-là (dis plutôt "est là aujourd'hui" ou "est disponible aujourd'hui").
-Sur "croche" : évite de l'utiliser pour une ordonnance, parce que dans un contexte médical ça peut suggérer une irrégularité ou une falsification plutôt qu'un simple problème de lisibilité — dis plutôt qu'une ordonnance est "pas claire", "incomplète" ou que "la posologie était pas clairement indiquée". Tu peux garder "croche" dans un autre exemple plus neutre du dialogue.
-Sur les moyens de transmission (fax, etc.) : ne présente pas le fax comme LE réflexe universel et intemporel — utilise une formulation neutre comme "transmettre une copie corrigée de l'ordonnance", et tu peux mentionner le fax comme une réalité encore présente dans certains milieux plutôt que comme la norme.
-Sur le DSQ (Dossier santé Québec) : ce n'est PAS le dossier clinique local qu'une infirmière "met à jour" au quotidien — c'est un système provincial de partage de certaines informations entre professionnels autorisés. Ne dis pas "assurez-vous que le dossier soit bien mis à jour dans le DSQ" comme s'il s'agissait du dossier local. Utilise plutôt "assurez-vous que le dossier de M. Lapointe soit bien à jour dans notre système" pour l'action locale, et explique le DSQ séparément dans les explications si tu l'utilises.
-Pour les définitions : "carte-soleil" = nom familier donné à la carte d'assurance maladie du Québec (pas besoin de la décrire visuellement). "RAMQ" = Régie de l'assurance maladie du Québec, organisme responsable notamment de l'administration du régime d'assurance maladie et du régime public d'assurance médicaments (pas seulement "gère les soins"). "médecin de famille" = médecin qui assure habituellement le suivi médical général d'un patient (évite la comparaison avec le "médecin traitant" français, qui n'est pas une notion institutionnelle équivalente). "de garde" = qui assure un service ou une disponibilité en dehors ou en complément des heures habituelles (pas nécessairement un "quart de travail"). "pharmacien clinicien" = pharmacien qui travaille au sein d'une équipe de soins et qui participe à l'évaluation et à l'optimisation de la pharmacothérapie.
-Utilise "officiel" comme categorie pour RAMQ, DSQ, carte d'assurance maladie/carte-soleil, régime public d'assurance médicaments — et "secteur" pour le vocabulaire clinique/professionnel courant (posologie, ordonnance, dossier médical, orphelin de médecin, profil médicamenteux, plan de congé, équipe interdisciplinaire).
-IMPORTANT sur la sécurité clinique du contenu : si un patient présente des symptômes qui demandent une évaluation rapide (douleur thoracique, essoufflement, etc.), ne le décris jamais comme laissé "en attente de triage depuis tantôt" — ça laisse entendre un délai de prise en charge problématique. Utilise "tantôt" pour situer une arrivée ("il est arrivé tantôt"), pas pour décrire une attente clinique préoccupante.
-Sur le numéro de RAMQ donné verbalement (patient sans carte) : ne présente jamais ça comme une vérification automatiquement suffisante. Fais suivre d'une action de vérification, ex: "Il a pas sa carte-soleil sur lui, mais il nous a donné son numéro. — Est-ce qu'on a pu retracer son dossier dans le système?"
-Sur "orphelin de médecin" : bon terme à garder, mais varie la formulation plutôt que de le déclarer comme un fait absolu dans la bouche d'un seul personnage — par exemple en question ("Il est orphelin de médecin, c'est ça?") ou en le remplaçant simplement par "il n'a pas de médecin de famille" à un autre moment.
-Sur les systèmes informatiques cliniques nommés (ex: Cristal-Net) : ne les présente jamais comme LE système utilisé partout au Québec — ce sont des outils propres à certains établissements. Définis-les comme "système d'information clinique utilisé dans certains établissements de santé québécois", pas comme "le système québécois".
-Sur le profil pharmaceutique/DCI : simplifie en "profil médicamenteux" et ne présente pas ça comme systématiquement disponible dans tous les dossiers cliniques informatisés — une formulation comme "Est-ce qu'on a accès à son profil médicamenteux? Je veux vérifier ce qu'il prend actuellement" reste naturelle sans cette affirmation.
-Dans une scène d'urgence pour un problème cardiaque/respiratoire, ne surcharge pas avec une vérification de remboursement RAMQ des médicaments — priorise la liste des médicaments pris et leur observance (ça peut mener naturellement vers l'anticoagulothérapie de type Coumadin/INR si pertinent), et garde la discussion sur la franchise/coassurance du régime d'assurance médicaments pour une scène non urgente où c'est vraiment pertinent (et reste alors prudente : les modalités exactes de franchise et de coassurance sont particulières, ne les résume pas comme un simple seuil "je paie jusqu'à X$, puis c'est couvert").
-Utilise "interrompu sa médication" plutôt que "rupture de médication" — "médication" reste un excellent terme québécois courant à conserver tel quel.
-Remplace un administratif du type "éviter une récidive de consultation aux urgences" par une formulation plus naturelle comme "éviter qu'il doive revenir aux urgences".
-IMPORTANT — ne confonds pas le dossier clinique d'un établissement (CLSC, hôpital) avec la RAMQ : un établissement ne "ouvre pas un dossier à la RAMQ". La carte-soleil sert à identifier la personne et confirmer son admissibilité au régime d'assurance maladie — dis plutôt "vérifier votre identité et votre couverture d'assurance maladie". Pour un transfert de dossier entre établissements, ne présente pas ça comme une simple demande directe et automatique — dis plutôt "on va vérifier avec l'autre établissement comment faire transférer votre dossier; en attendant, on peut commencer votre évaluation".
-Sur la médication et la couverture : le personnel infirmier ne détermine généralement pas lui-même ce qui est couvert par la RAMQ — fais-le plutôt "faire le point sur la médication et voir s'il y a des difficultés à se procurer les médicaments", quitte à faire intervenir le pharmacien clinicien pour la suite. Ça montre que le problème peut être l'accès autant que la couverture.
-Sur les démarches d'exception ou d'autorisation particulière auprès de la RAMQ : ne les présente jamais comme une voie normale et systématique qu'un patient peut simplement demander pour un médicament non couvert — dis plutôt "il pourra vérifier s'il existe une mesure particulière qui permettrait de couvrir ce médicament dans votre situation", sans détailler une procédure ("demande d'exception", "autorisation provisoire") comme si elle s'appliquait généralement.
-Ne donne JAMAIS de délai précis en jours/semaines pour une démarche administrative (RAMQ ou autre) — ces délais varient et une valeur inventée risque d'être fausse. Dis plutôt que "le délai dépend du type de demande" et que le professionnel concerné peut expliquer les démarches applicables à la situation précise.
-"référé"/"être référé à" N'EST PAS un anglicisme — ce sont des mots français, même si l'usage courant au Québec pour ce sens est peut-être influencé par l'anglais "to refer". Classe "référé" comme "quebecois" (usage courant), jamais "anglicisme".
-Pour "ce processus-là" et les tournures similaires en "-là" : ne les présente pas comme un marqueur exclusif au québécois (le "-là" de renforcement existe dans d'autres variétés de français) — ce qui est particulièrement québécois, c'est sa fréquence et son usage discursif. Définis-le comme "façon familière d'insister sur quelque chose de précis dans le contexte", pas comme un marqueur typique du seul québécois.
-Ne donne pas d'autre nom/sigle pour "carte-soleil" (comme "CAMQ") si ce n'est pas une appellation officielle courante — ça ajouterait de la confusion pour rien.
-Sur le guichet d'accès à un médecin de famille : ne présente pas le personnel comme décidant d'inscrire la personne ("on va vous inscrire au guichet...") — demande plutôt si elle y est déjà inscrite, et propose de vérifier si l'inscription est toujours active plutôt que d'assumer une démarche d'inscription. Ex: "Vous êtes déjà inscrit au guichet d'accès à un médecin de famille? — On va vérifier que votre inscription est toujours active et voir quelles options de suivi sont disponibles en attendant."
-Sur le DSQ et les ordonnances : ne présente jamais le DSQ comme affichant une liste exhaustive et toujours à jour de "toutes les ordonnances actives", et ne mentionne jamais un mécanisme précis du type "plus remboursé depuis le dernier formulaire de mesures exceptionnelles" (trop spécifique et peu représentatif). Préfère un échange plus général, ex: "Je vois qu'il prend plusieurs médicaments, il faudrait vérifier sa liste avant qu'il reparte. — Oui, j'ai regardé, il y a une ordonnance qui semble ne plus être à jour, je vais vérifier ça avec le pharmacien communautaire."
-N'introduis PAS la notion de "mesure exceptionnelle" (accès à un médicament non couvert) dans une scène générale — c'est un sujet qui mérite sa propre page bien construite, pas une ligne de dialogue rapide qui risque de mal le représenter.
-Sur "avancer un médicament" par la pharmacie : ne le présente pas comme automatique ou garanti — utilise une formulation plus prudente comme "si la pharmacie peut m'en donner en attendant, ce serait parfait" plutôt qu'une affirmation catégorique.
-Pour "première ligne", donne une définition large : "services de santé et de soins accessibles en proximité, généralement avant le recours aux services spécialisés ou hospitaliers" — pas seulement "médecin de famille, CLSC, pharmacien".
-Pour "clientèle orpheline" : présente-le comme du vocabulaire administratif/institutionnel à connaître, pas comme une expression que le patient utilise pour se décrire — dans le dialogue, le patient dit simplement "je n'ai pas de médecin de famille".
-Pour "c'est correct", une définition simple suffit : "d'accord, ça va, aucun problème" — évite une définition trop appuyée du genre "à tous les niveaux de registre".
-Pour le lieu de la scène : choisis un cadre simple et crédible pour une scène de suivi (ex: "poste infirmier d'un CLSC, en matinée") plutôt qu'un décor dramatisé comme "salle de triage et corridor administratif", qui ne correspond pas à une scène de suivi de routine.
-Pour une scène en CLSC : évite de transformer la scène en leçon sur la mécanique de remboursement de la RAMQ. Structure-la plutôt autour de l'accueil, l'identification, l'évaluation, la médication et l'orientation vers le bon professionnel (ex: pharmacien clinicien) — garde la question du médicament comme un problème concret du patient (accès, coût) plutôt que comme un exposé sur les règles d'assurance médicaments.
-IMPORTANT — UN SEUL FIL CONDUCTEUR : ne fais pas cohabiter trop de fils administratifs différents dans une même scène courte (ex: RAMQ + couverture des médicaments + DSQ + médecin-conseil + travailleuse sociale + transfert vers un centre hospitalier, c'est trop). Choisis-en un seul et va au bout, par exemple pour un CLSC : "patient sans médecin de famille → suivi au CLSC → renouvellement → problème avec un médicament → pharmacien clinicien". N'ajoute pas un personnage (ex: un médecin de garde qui apparaît brièvement) juste comme prétexte pour introduire un terme (DSQ, mesure exceptionnelle, etc.) — si le fil de la scène n'appelle pas naturellement ce personnage, garde la scène à deux rôles (ex: infirmière ↔ patient), avec éventuellement un pharmacien si le vocabulaire pharmaceutique est pertinent.
-IMPORTANT — cohérence du lieu : si la scène se passe dans un CLSC ambulatoire, n'y mêle pas des détails qui appartiennent à une unité avec hébergement (rapport d'infirmière de nuit, patient en "salle 3", transfert vers un centre hospitalier) — ça ne correspond pas au fonctionnement d'un CLSC de quartier. Si tu veux ce genre d'interruption, choisis plutôt un lieu avec hébergement dès le départ (contexte cohérent), sinon retire-la complètement.
-Sur le DSQ : ne le présente jamais comme "mon dossier au DSQ" au sens d'un dossier médical complet et générique — il contient certaines catégories précises de renseignements (ex: médicaments, résultats de laboratoire) accessibles aux professionnels autorisés. Préfère une formulation concrète comme "ma liste de médicaments dans le système n'était pas à jour" plutôt qu'une référence générique au DSQ comme "mon dossier".
-Ne mets jamais "médecin-conseil" comme la fonction générique que consulte une infirmière de CLSC pour une interaction médicamenteuse — ce n'est pas universel. Utilise plutôt "je vais vérifier ça avec notre pharmacien clinicien" ou, plus neutre, "je vais vérifier ça avec le médecin".
-N'utilise jamais "croche"/"crocher" pour désigner une interaction entre médicaments (ex: "ça crochait avec mes autres médicaments") — ce n'est pas un usage naturel. Utilise plutôt "n'allait pas avec mes autres médicaments" (ou, si tu veux l'anglicisme réellement entendu, "fittait pas avec mes autres médicaments", en le présentant comme tel).
-"le médecin que j'ai vu à l'urgence" est plus naturel que "mon médecin de l'urgence" pour désigner un médecin vu une seule fois là-bas.
-Pour le guichet d'accès à un médecin de famille (GAMF) : "je suis inscrit au guichet d'accès à un médecin de famille depuis [durée]" est plus précis et naturel que "je suis inscrit sur le guichet d'accès" seul.
-Évite "faire une demande de suivi infirmier pour vous" comme démarche universelle — ce n'est pas une procédure standard partout. Dis plutôt "on peut voir comment on peut assurer votre suivi ici", pour laisser la décision dépendre du besoin clinique et des services disponibles.
-Dans une scène de suivi ou de renouvellement d'ordonnance, évite encore "on va s'assurer que vos médicaments sont bien couverts par la RAMQ" comme action de l'infirmière — dis plutôt "on va aussi faire le point sur vos médicaments. Vous avez un renouvellement d'ordonnance à faire?"
-"faire le nécessaire" est du français courant utilisé partout dans la francophonie — ne le présente pas comme une particularité québécoise si tu l'inclus dans les explications; classe-le "quebecois" seulement s'il s'agit d'un usage vraiment distinctif, sinon ne le mets pas en vedette comme québécisme.` : "";
-      const educationNote = isEducation ? `
-IMPORTANT sur la grammaire : "étape" est féminin — dis "la première/la deuxième/la troisième étape", jamais "le premier étape". La structure en étapes (bulletin de la première/deuxième/troisième étape) est un excellent réflexe à garder : c'est plus caractéristique du système scolaire québécois que "premier/deuxième trimestre" — conserve-la.
-Évite "adresser" au sens de "s'occuper de" (calque de l'anglais "to address") — ce n'est pas du français professionnel standard, même si on l'entend au Québec. Utilise plutôt "il y a quelques points sur lesquels on devrait travailler" (plus naturel dans la bouche d'une enseignante) ou "auxquels on devrait porter attention".
-Pour "les récupérations", la définition est : "périodes où un enseignant offre du soutien supplémentaire aux élèves, généralement en dehors des heures régulières de cours."
-Pour "la cote" : ne l'utilise pas au sens de note chiffrée — une cote peut désigner une appréciation ou un niveau selon le contexte scolaire, mais ce n'est pas synonyme de note/résultat. Dis plutôt "la note" ou "le résultat" pour un résultat chiffré (ex: "c'est là que la note est un peu plus basse").
-"filet de sécurité" est une expression naturelle à garder dans le dialogue, mais ce n'est pas une particularité québécoise — ne la mets pas dans les explications comme un québécisme à retenir.
-Pour la communication école-famille, évite "le journal de bord" comme terme scolaire québécois caractéristique — ce n'est pas un terme aussi distinctif que "récupération" et son usage varie selon l'établissement. Utilise plutôt "n'hésitez pas à me contacter par courriel" ou, si tu veux enseigner un outil réel, "l'agenda scolaire".` : "";
-      const commerceNote = isCommerce ? `
-Pour "checker le stock" : classe "checker" comme "anglicisme" (pas "secteur") — "stock" est aussi un anglicisme. Terme français standard : "vérifier l'inventaire" ou "vérifier les marchandises reçues".
-Évite "croche" pour dire que des quantités sur un bordereau ne concordent pas — dans ce contexte précis, "les quantités sont pas bonnes sur le bordereau" ou, en registre plus professionnel, "il y a un écart entre les quantités reçues et celles indiquées sur le bordereau" sonne plus naturel et évite l'impression de québécisme forcé. Tu peux garder "croche" ailleurs dans le dialogue pour un usage plus général.
-Uniformise vers "réapprovisionnement" plutôt que d'alterner avec "réassortiment" — ou, encore plus naturel entre collègues, une formulation simple comme "est-ce qu'on peut ajouter ça à la prochaine commande?"
-Pour "le plancher" (espace de vente), la définition est : "espace de vente accessible aux clients, par opposition à l'arrière-boutique ou à l'entrepôt" — évite une définition du genre "le floor en anglais commercial", qui n'ajoute rien.
-Pour du stock qui diminue sur les tablettes, "les tablettes commençaient à être pas mal vides" est plus naturel que "pas mal basses" si tu parles du stock disponible.` : "";
-      const tiNote = isTI ? `
-"ça ferait/fait du sens" est un calque de l'anglais "to make sense" très répandu en milieu professionnel et TI québécois — classe-le "anglicisme" (calque), PAS "quebecois"/"français courant". Terme standard : "ça aurait du sens", "ce serait logique".
-IMPORTANT sur la particule interrogative "-tu" : elle se place après le verbe conjugué, jamais au milieu ou à la fin d'une expression figée — dis "Ça fait-tu du sens de...", jamais "Ça fait du sens-tu de...". Pour "ça fait-tu du sens?" dans les explications, précise que c'est à la fois une tournure interrogative orale très québécoise (le "-tu") ET un calque de l'anglais dans "faire du sens" — classe-le "anglicisme" (c'est l'aspect le plus important à signaler), mais mentionne les deux dimensions dans la définition plutôt que de réduire ça à un simple "français courant". Équivalent standard : "Est-ce que ça a du sens?"
-Pour "se revirer de bord", évite "se retourner rapidement" qui risque d'être compris littéralement — la définition est plutôt : "s'adapter rapidement, changer d'approche ou de direction pour faire face à une situation" — et indique "registre" : "familier".
-Pour "pitcher une idée" : classe "pitcher" comme "anglicisme". Définition : "présenter ou exposer une idée, un projet ou un état d'avancement" (pas seulement une "idée" — ça couvre aussi un projet ou un statut d'avancement).
-Pour "adresser" (ex: "quelque chose qu'on peut adresser") : classe "anglicisme" (calque de "to address"). Définition : "traiter, prendre en charge ou régler un problème".
-Si un personnage dit qu'il va "se revirer de bord" pour aider quelqu'un sur un sujet précis, précise sur quoi avec "là-dessus" (ex: "on va se revirer de bord là-dessus rapidement") plutôt que "on va se revirer de bord rapidement" seul, qui reste ambigu.
-Le jargon Agile/TI anglophone est très utile pour reproduire le parler réel d'une équipe TI, mais ce n'est PAS une particularité québécoise — ne le mets jamais dans les explications comme "quebecois". Distingue : un mot anglais employé tel quel comme jargon de méthode Agile/TI (standup, story, backlog, grooming/backlog refinement, blockers, pull request/PR, staging, ticket Jira, en prod) se classe "secteur" ; un anglicisme francisé et conjugué à la française (pitcher, reviewer, checker, scaler, pusher) se classe "anglicisme". Définitions de référence : "standup" = courte réunion quotidienne où l'équipe fait le point sur l'avancement, les priorités et les obstacles ; "story" = unité de travail décrivant une fonctionnalité ou un besoin à développer ; "backlog" = liste priorisée des tâches, fonctionnalités ou éléments à réaliser dans un projet ; "grooming" = activité de révision, de clarification et de priorisation des éléments du backlog (aussi appelée "backlog refinement"/"raffinement du backlog") ; "blockers" = obstacles ou éléments qui empêchent l'avancement d'une tâche ; "pull request"/"PR" = demande de révision et d'intégration de modifications de code dans un dépôt ; "reviewer" (verbe, anglicisme) = examiner du code soumis par un collègue, faire une revue de code ; "staging" = environnement utilisé pour tester une application avant son déploiement en production ; "pousser en production" (secteur) = déployer une modification ou une nouvelle version dans l'environnement de production ; "scaler" (anglicisme/jargon TI) = mettre à l'échelle une solution pour qu'elle puisse gérer une charge ou un volume plus important ; "en prod" (secteur) = en production, l'environnement réel dans lequel l'application est utilisée (pas seulement "en ligne") ; "pusher" (anglicisme/jargon TI) = envoyer ou déployer du code vers un dépôt, un serveur ou un environnement (note phonétique possible : "pou-cher") ; "ticket Jira" (secteur) = élément créé dans Jira pour suivre une tâche, un problème, une demande ou une correction (plus large qu'une simple "tâche" ou un "bogue").
-Pour "croche" en contexte TI, l'extension de sens est légitime et à conserver : "de travers, pas droit; par extension, qui présente une anomalie ou qui ne fonctionne pas correctement" (ex: un bug, un comportement inattendu) — classe-le "quebecois".
-Pour "avant-midi" (matinée, période de la journée avant midi), "asteure" (maintenant, à présent — s'entend "astheur"/"asteur"), "tantôt" (tout à l'heure; moment récent ou proche avenir selon le contexte — s'entend "tan-tô"), "jaser" (parler, discuter de manière informelle — pas "français courant") et "certain" en réponse affirmative (oui, certainement, bien sûr) : classe-les tous "quebecois".
-Pense à inclure "fait que" (donc, alors, par conséquent) parmi les explications si le dialogue l'utilise — c'est un marqueur assez caractéristique du français québécois pour mériter d'être enseigné, classé "quebecois".` : "";
-      return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote}${financeExemple}${santeNote}${educationNote}${commerceNote}${tiNote} Note: "croche" (pas droit) et NON "croché" — ça veut dire "pas droit, de travers, mal aligné", PAS "non conforme" au sens réglementaire (une pièce peut être croche sans être officiellement non conforme; garde "non-conformité" comme terme professionnel séparé si besoin). Exemples: ${s.exemples.join(", ")}.
-Pour "note_phonetique" : donne une vraie indication de prononciation, de rythme ou d'intonation (élision, contraction, accent tonique) — jamais une orthographe inventée du genre "comme ça sonne", qui risquerait d'enseigner une prononciation artificielle à un immigrant. Reste cohérent d'une réplique à l'autre pour un même mot (ex: si "piastres" se prononce "piasses", garde cette même notation partout où le mot revient).
-Pour "explications", indique dans "categorie" si l'expression est "secteur" (vocabulaire professionnel/jargon de métier, ex: posologie, coffrage, cotisation), "anglicisme" (emprunt à l'anglais utilisé au travail, pas propre à un seul secteur), "officiel" (nom officiel d'un organisme, d'un régime ou d'un document du système québécois, ex: RAMQ, DSQ, régime public d'assurance médicaments, carte d'assurance maladie) ou "quebecois" (expression québécoise générale, ni l'un ni l'autre). "officiel" et "secteur" sont différents : "officiel" nomme une institution ou un régime précis, "secteur" est le jargon qu'on utilise en le pratiquant. Ne mets "secteur" que pour un terme vraiment spécifique à ce métier. Laisse "registre" vide ("") sauf pour une expression vulgaire ou très familière/populaire qui mérite un avertissement (ex: "vulgaire", "très familier"). Laisse "ce_que_ca_sonne" vide ("") pour un mot qui s'écrit et se prononce sans difficulté particulière — ne remplis ce champ que quand il y a une vraie réduction orale ou un accent qui vaut la peine d'être décodé (ex: "asteure" qui s'entend "asteur", pas pour un mot comme "bas de laine" qui ne présente aucune difficulté de prononciation).
+Exemple du registre attendu (à ne PAS recopier, juste pour calibrer le ton) : "Bonjour madame Tremblay, merci d'être venue. On va regarder ensemble vos options de placement pour votre REER — j'ai préparé deux scénarios selon votre tolérance au risque." — noter : vouvoiement, phrases complètes, accent et rythme québécois présents dans la prononciation suggérée, mais AUCUNE contraction familière du type "t'as", "j'sais", "faque".` : "";
+      return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote}${financeExemple} Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
 Inclus aussi "annotations": liste de 5-8 termes québécois du texte avec leur définition courte en français standard, pour les survols interactifs.
-JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"categorie":"secteur"|"anglicisme"|"quebecois"|"officiel","registre":string}],"annotations":[{"terme":string,"definition":string}]}
+JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"specifique_au_secteur":boolean}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
     } },
   { id: "vocab", label: "Vocabulaire du secteur", icon: "💬", color: "#7B2D8B", desc: "Jargon, expressions et argot professionnel",
     buildPrompt: (s) => {
       const isConstruction = s.id === "construction";
-      const isFinance = s.id === "finance";
       const sacresSection = isConstruction ? `
-IMPORTANT pour Construction : inclus obligatoirement 2 expressions avec sacres utilisés comme intensificateurs sur le chantier (ex: "ostie que c'est croche ce coffrage-là", "câlice, le béton est pas encore pris"). Indique la forme atténuée pour chaque sacre. Pour chacune, mets "registre":"familier" et précise dans "piege" que c'est un sacre très familier, potentiellement vulgaire, dont l'emploi dépend fortement du contexte et des personnes présentes — n'affirme jamais que c'est "normal et attendu" ou "socialement accepté" de façon générale : ça varie énormément selon le chantier, l'équipe et les personnes. Ne présente jamais les sacres comme de simples "intensificateurs émotionnels" neutres — ce sont des jurons dont la charge et l'à-propos dépendent du contexte.
-Pour "croche" (de travers, mal aligné, pas droit) : ne le donne jamais comme synonyme de "non-conformité" — une pièce peut être croche sans être officiellement non conforme, ce sont deux notions distinctes.
-Pour les anglicismes de métier (foreman, stacker, shed, setup, truck, etc.) : ne les présente jamais comme "pleinement acceptés dans le langage professionnel québécois" ni n'affirme qu'une alternative française serait "perçue comme distante ou formelle" — leur fréquence et leur acceptation varient selon l'équipe, l'entreprise et la région. Classe-les "ANGLICISME / JARGON DE CHANTIER" avec une traduction française simple (foreman → contremaître/chef d'équipe, stacker → empiler/entreposer, shed → remise/abri, setup → installation/configuration, truck → camion, ici camion-toupie pour le béton).
-Pour "checker les cossins" : ne dis pas que c'est une "expression très courante lors des réunions de chantier matinales" (trop précis et catégorique) — dis plutôt que c'est une expression familière pouvant servir à parler de divers objets, outils ou équipements sans les nommer précisément. Pour l'équivalent France, "matériel" ou "les affaires" sont plus neutres que "matos".
-Pour "le boute" utilisé comme dans "c'est le boute comme setup" : cette formulation précise est moins solidement établie que d'autres expressions figées (comme "c'est le boutte" seul) — si tu la gardes, indique "le boute" comme "QUÉBÉCISME / FAMILIER" avec une définition nuancée (le meilleur, le summum; dans certaines expressions, quelque chose d'excellent) plutôt que de la présenter comme une expression professionnelle courante sans réserve.
-Pour "en masse" : le sens ("beaucoup, largement, en grande quantité") dépend du contexte de la phrase — ne le présente pas comme ayant systématiquement ce sens dans tous les emplois.` : "";
-      const financeNote = isFinance ? `
-Pour "magasiner un prêt" (ou magasiner un taux, une hypothèque, etc.) : mets "registre":"neutre" mais précise dans le contexte que c'est un québécisme très naturel et bien intégré, y compris en contexte professionnel — pas une expression borderline familière.
-Pour "le bas de laine" : mets "registre":"familier" (pas "neutre") — l'expression est bien comprise et naturelle, mais elle est imagée, donc plutôt destinée à une conversation avec un client qu'à un document financier officiel. Exemple à privilégier : une phrase où un conseiller s'adresse directement à un client, pas un texte formel.
-Pour "les cennes" : garde "registre":"familier" — bon exemple.
-Pour "mon cash" : garde "registre":"familier", mais nuance le contexte : un conseiller ne l'utiliserait pas nécessairement avec tous les clients, ça dépend de son style et de sa proximité avec la personne. Exemple à privilégier : "Combien vous avez de cash de disponible pour la mise de fonds?"
-Pour "c'est croche" au sens figuré (douteux, pas réglo, pas honnête — ex: "cette clause-là, je la trouve pas mal croche") : excellent exemple à garder. Mais ne présente JAMAIS "croché" comme "une erreur fréquente des non-natifs qui signale immédiatement quelqu'un qui ne maîtrise pas le registre local" — c'est trop catégorique. "Croche" est la forme correcte dans ce sens précis, mais "croché" existe légitimement dans d'autres constructions avec d'autres sens (ex: participe passé de "crocher") — ne le présente pas comme une erreur en général.
-Pour "l'impôt" : évite "regarder votre situation à l'impôt" (peu naturel) — préfère "regarder votre situation fiscale pour éviter de mauvaises surprises quand vous allez faire vos impôts". Dans la fiche, privilégie l'entrée "faire ses impôts" (courant québécois) avec l'équivalent "faire sa déclaration de revenus" plutôt que "l'impôt" seul — c'est plus utile pédagogiquement.` : "";
-      return `Tu es expert du québécois professionnel dans le secteur "${s.label}" (${s.contexte}). Génère 6 expressions québécoises fréquentes dans ce secteur. "croche" et NON "croché". Exemples: ${s.exemples.join(", ")}.
-IMPORTANT — nuance et prudence : évite les affirmations absolues sur la fréquence ou l'acceptation sociale d'une expression (ex: "toujours utilisé", "pleinement accepté", "attendu de tous", "sera perçu comme..."). La réalité du français au travail varie selon l'entreprise, l'équipe, la région et les personnes. Ce sujet touche à l'intégration des immigrants au marché du travail québécois, un enjeu sensible pour les deux groupes — reste factuel et nuancé plutôt que catégorique, et ne présente jamais une expression comme un test d'appartenance ou un passage obligé pour être accepté.${sacresSection}${financeNote}
+IMPORTANT pour Construction : inclus obligatoirement 2 expressions avec sacres utilisés comme intensificateurs sur le chantier (ex: "ostie que c'est croche ce coffrage-là", "câlice, le béton est pas encore pris"). Indique la forme atténuée pour chaque sacre. Précise dans le contexte que ces expressions sont normales sur les chantiers québécois.` : "";
+      return `Tu es expert du québécois professionnel dans le secteur "${s.label}" (${s.contexte}). Génère 6 expressions québécoises fréquentes dans ce secteur. "croche" et NON "croché". Exemples: ${s.exemples.join(", ")}.${sacresSection}
 Inclus aussi "annotations": les 6 expressions elles-mêmes avec définition courte, pour les survols interactifs.
 JSON: {"titre":string,"expressions":[{"expression":string,"registre":"formel"|"neutre"|"familier","contexte":string,"exemple":string,"equivalent_france":string,"piege":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
@@ -246,7 +132,7 @@ const NIVEAUX = [
 
 const EPOQUES = [
   {
-    id: "nouvelle_france", label: "Nouvelle-France", periode: "1608-1760", icon: "⚜️", color: "#7A5F1F", bg: "#F7F1E3",
+    id: "nouvelle_france", label: "Nouvelle-France", periode: "1608-1760", icon: "⚜️", color: "#1E3A8A", bg: "#EFF6FF",
     contexte: "la vie quotidienne en Nouvelle-France : colons, coureurs des bois, vie dans les seigneuries, relations avec les nations autochtones, le commerce des fourrures",
     notions: {
       a2:    { notion: "Le présent de l'indicatif", notionDesc: "Conjuguer être et avoir + verbes courants au présent", format: "trous" },
@@ -255,7 +141,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "conquete", label: "Conquête britannique", periode: "1760-1840", icon: "🏴", color: "#66101F", bg: "#F7E3E7",
+    id: "conquete", label: "Conquête britannique", periode: "1760-1840", icon: "🏴", color: "#7C2D12", bg: "#FEF3E2",
     contexte: "la Conquête de 1760, le Traité de Paris, l'Acte de Québec, la rébellion des Patriotes de 1837-1838",
     notions: {
       a2:    { notion: "Accords dans le groupe du nom", notionDesc: "Accorder déterminants, noms et adjectifs en genre (masculin/féminin) et en nombre", format: "trous" },
@@ -264,7 +150,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "19e_siecle", label: "19e siècle", periode: "1840-1896", icon: "🚂", color: "#445A2B", bg: "#EEF7E3",
+    id: "19e_siecle", label: "19e siècle", periode: "1840-1896", icon: "🚂", color: "#065F46", bg: "#ECFDF5",
     contexte: "l'Acte d'Union, la Confédération de 1867, l'industrialisation, l'exode rural vers les villes et vers les États-Unis",
     notions: {
       a2:    { notion: "Le passé composé", notionDesc: "Former et utiliser le passé composé pour raconter des événements simples", format: "trous" },
@@ -273,7 +159,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "20e_siecle", label: "20e siècle & Révolution tranquille", periode: "1896-1980", icon: "✊", color: "#562E60", bg: "#F3E3F7",
+    id: "20e_siecle", label: "20e siècle & Révolution tranquille", periode: "1896-1980", icon: "✊", color: "#5B21B6", bg: "#F5F3FF",
     contexte: "la Grande Noirceur, la Révolution tranquille des années 1960, la nationalisation de l'électricité, les revendications nationalistes, les référendums",
     notions: {
       a2:    { notion: "Les verbes modaux", notionDesc: "Utiliser vouloir, pouvoir et devoir au présent pour exprimer une intention ou une obligation", format: "trous" },
@@ -282,7 +168,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "contemporain", label: "Époque contemporaine", periode: "1980 à aujourd'hui", icon: "🏙️", color: "#2A576F", bg: "#E3F0F7",
+    id: "contemporain", label: "Époque contemporaine", periode: "1980 à aujourd'hui", icon: "🏙️", color: "#BE185D", bg: "#FDF2F8",
     contexte: "le Québec moderne, l'immigration récente, les enjeux linguistiques actuels, la diversité culturelle, les grands débats de société",
     notions: {
       a2:    { notion: "La phrase nominale et l'ellipse", notionDesc: "Comprendre et utiliser les formules courtes sans verbe très fréquentes au Québec : 'Pas de problème.', 'Correct.', 'Bonne journée.', 'Aucun souci.'", format: "trous" },
@@ -291,7 +177,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "litterature", label: "Littérature québécoise", periode: "1960 à aujourd'hui", icon: "📚", color: "#484D51", bg: "#E3EEF7",
+    id: "litterature", label: "Littérature québécoise", periode: "1960 à aujourd'hui", icon: "📚", color: "#0F766E", bg: "#CCFBF1",
     contexte: "la littérature québécoise moderne : Michel Tremblay, Réjean Ducharme, Victor-Lévy Beaulieu, Marie-Claire Blais, Gaston Miron — le joual comme revendication culturelle et artistique",
     notions: {
       a2:    { notion: "Les adjectifs et la description littéraire", notionDesc: "Utiliser des adjectifs variés pour décrire des personnages et des lieux dans un texte simple", format: "trous" },
@@ -300,7 +186,7 @@ const EPOQUES = [
     }
   },
   {
-    id: "oral_qc", label: "Grammaire de l'oral québécois", periode: "Spécificités actuelles", icon: "🗣️", color: "#855A5C", bg: "#F7E3E4",
+    id: "oral_qc", label: "Grammaire de l'oral québécois", periode: "Spécificités actuelles", icon: "🗣️", color: "#6B21A8", bg: "#F3E8FF",
     contexte: "les particularités grammaticales du français québécois parlé au quotidien : négation sans 'ne', gallicismes temporels, phrases elliptiques, anglicismes grammaticaux, emploi de 'on' vs 'nous', voix passive évitée",
     notions: {
       a2:    { notion: "La négation à l'oral", notionDesc: "Comprendre que le 'ne' disparaît à l'oral québécois : 'je sais pas', 'c'est pas grave', 'y'a pas de problème'", format: "trous" },
@@ -494,31 +380,6 @@ async function updateCached(type, id, data, subId = "") {
     const cache = loadCache();
     if (cache[key]) { cache[key].data = data; cache[key].status = "validated"; saveCache(cache); }
   }
-}
-
-// Filet de sécurité : retire un préfixe de pronoms (ex: "il/elle/on/iel ") que l'IA pourrait
-// ajouter devant une forme verbale malgré la consigne, et normalise l'ancien format objet
-// {forme, pronom} resté en cache — indépendant de la fiabilité du prompt.
-function stripPronounPrefix(val) {
-  const raw = (val && typeof val === "object") ? (val.forme || "") : val;
-  if (typeof raw !== "string") return raw;
-  return raw.replace(/^[^\s/]+(?:\/[^\s/]+)+\s+/i, "").trim();
-}
-function melangerTableau(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-function nettoyerPronomsTrous(data) {
-  if (!data || typeof data !== "object") return data;
-  const clean = { ...data };
-  if (Array.isArray(clean.mots_a_utiliser)) clean.mots_a_utiliser = melangerTableau(clean.mots_a_utiliser.map(stripPronounPrefix));
-  if (Array.isArray(clean["mots_à_utiliser"])) clean["mots_à_utiliser"] = melangerTableau(clean["mots_à_utiliser"].map(stripPronounPrefix));
-  if (Array.isArray(clean.trous)) clean.trous = clean.trous.map(t => t && typeof t === "object" ? { ...t, reponse: stripPronounPrefix(t.reponse) } : t);
-  return clean;
 }
 
 async function callClaude(messages, system, json = true, retries = 3) {
@@ -747,7 +608,7 @@ function SimulationQCM({ data }) {
   }
 
   const repondu = choix[etape] !== undefined;
-  const bonneReponse = tour.bonne_reponse;
+  const bonneReponse = tour.bonne_reponse || tour["bonne_réponse"];
 
   return (
     <div>
@@ -844,7 +705,7 @@ function STReferencesCard({ data }) {
                     <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "7px 10px", fontSize: 15, color: ST_COLOR, fontStyle: "italic" }}>« {p} »</div>
                   ))}
                 </div>
-                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 14, color: "#1D4ED8", background: "#EFF6FF", borderRadius: 6, padding: "4px 8px" }}>💡 {r.piege}</p>}
+                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 14, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "4px 8px" }}>⚠️ {r.piege}</p>}
               </div>
             )}
           </div>
@@ -879,7 +740,7 @@ function STEntreeSortieCard({ data }) {
         </div>
       ))}
       {data.conseil_cle && (
-        <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: 12 }}>
+        <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 10, padding: 12 }}>
           <p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_cle}</p>
         </div>
       )}
@@ -1068,33 +929,8 @@ function STExpressionsCard({ data: rawData }) {
   );
 }
 
-const ST_SYSTEM_PROMPT = `Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.
-
-RÈGLES ÉDITORIALES IMPORTANTES à respecter dans tout contenu généré, quel que soit le sujet :
-- Cette application s'adresse à des immigrants francophones qui apprennent à comprendre et à naviguer la culture professionnelle québécoise — pas à s'y conformer à tout prix. Présente les codes culturels comme des repères fréquents et utiles à connaître, jamais comme des règles obligatoires ou des conditions d'acceptation sociale.
-- Bannis les formulations du type "ne jamais dire...", "ne jamais faire...", "il ne faut pas...". Remplace-les systématiquement par un ton positif et inclusif : "tu peux dire...", "une façon naturelle de...", "💡 à savoir : ...".
-- Ne présente aucune pratique, opinion ou goût culturel comme obligatoire ou universel. Nuance avec "souvent", "plusieurs", "peut" plutôt que "tout le monde", "toujours", "jamais", "la référence absolue", "incontournable", "connu de tous".
-- Le Québec n'est pas homogène : évite de généraliser à partir de Montréal seul, et évite "en région" comme catégorie unique — les réalités varient (Québec, Gatineau, Saguenay, Sherbrooke, Rimouski, Rouyn-Noranda, etc. sont différentes entre elles).
-- Ne donne jamais l'impression qu'un immigrant doit cacher ses vrais goûts, opinions ou son identité pour être accepté. L'objectif est de lui donner des outils pour participer aux conversations, pas de lui dicter quoi aimer ou penser.
-- Pour tout contenu culturel ou lié à l'actualité (séries, personnalités, tendances), privilégie des exemples pertinents au moment de la génération plutôt que de te limiter à des exemples qui pourraient devenir datés.`;
-
 const ST_PROMPTS = {
-references: `Tu es expert de la culture québécoise et du small talk au bureau. Génère un guide sur 5 sujets de conversation fréquents à la pause café québécoise : hockey, météo, chalet, routes/circulation, séries et culture pop québécoises.
-
-TON ET APPROCHE (règles importantes à respecter partout dans le guide) :
-- Présente ces sujets comme des sujets FRÉQUENTS et utiles à connaître pour participer plus facilement aux conversations informelles — jamais comme des obligations sociales, des rituels ou des prérequis pour être accepté. Évite des formulations comme "rituel sacré", "s'assurer une place de choix" ou "maîtriser ces sujets".
-- Ne présente jamais une pratique culturelle comme une norme universelle. Nuance avec "souvent", "plusieurs", "peut" plutôt que "tout le monde", "toujours", "la référence absolue".
-- Le champ "piege" ne doit JAMAIS être formulé comme un interdit ("ne jamais dire...", "ne pas confondre..."). Formule-le comme un conseil positif : une façon naturelle de participer à la conversation même si on ne connaît pas le sujet ou qu'on ne partage pas l'intérêt pour celui-ci. Exemple de ton recherché pour le hockey : "Tu n'as pas besoin d'aimer le hockey pour participer à la conversation. Tu peux dire : « Je suis pas vraiment le hockey, mais je suis curieux, comment va le Canadien cette année? » — ça relance la discussion sans prétendre aimer quelque chose que tu n'aimes pas."
-
-CONSIGNES PAR SUJET :
-- Hockey : sport emblématique / grande passion pour plusieurs Québécois — pas "la religion nationale". N'affirme pas que les séries éliminatoires "paralysent" tous les bureaux : l'intérêt varie énormément selon les personnes et les milieux de travail. Tu peux mentionner que la rivalité historique Canadiens–Nordiques reste un sujet chargé d'émotion, particulièrement à Québec.
-- Météo : MétéoMédia est très populaire et consulté par beaucoup de gens — évite "la référence absolue". Si tu mentionnes que certaines personnes vérifient les prévisions plusieurs fois par jour, présente-le explicitement comme une touche d'humour, pas comme une norme.
-- Chalet : la culture du chalet est bien présente, sans prétendre qu'une majorité de Québécois en possède un. N'établis PAS de règle du genre "ne pas dire maison de campagne, ça sonne bizarre" — "maison de campagne" reste parfaitement compréhensible. Explique plutôt que le mot "chalet" est souvent utilisé même pour une résidence secondaire moderne ou cossue, sans besoin d'être rustique.
-- Routes/circulation : ne te limite pas à Montréal. Varie selon le contexte — à Montréal (autoroutes, ponts, congestion), à Québec (travaux, grands axes, ponts), dans les régions moins urbanisées (conditions routières, travaux, animaux sauvages sur la route). Ne présente pas une seule radio comme réflexe universel (évite de présenter "98,5" comme LA référence) — parle plutôt d'une application de circulation, de navigation, ou de la radio, au choix de chacun.
-- Séries et culture pop : mentionne des productions et personnalités actuelles et pertinentes plutôt que de te limiter à des exemples datés. Évite les formulations absolues comme "connu de tous" — préfère "bien connu" ou "populaire".
-- Évite l'expression "en région" comme catégorie homogène (Gatineau, Saguenay, Sherbrooke, Rimouski et Rouyn-Noranda ne se ressemblent pas) — utilise "dans les régions moins urbanisées" et présente ça comme une tendance possible, pas une règle.
-
-Pour chaque sujet : ce qu'il faut savoir pour ne pas être perdu, 3 phrases utiles à placer naturellement, et un conseil inclusif dans "piege" pour participer même sans connaître ou partager le sujet.
+references: `Tu es expert de la culture québécoise et du small talk au bureau. Génère un guide sur 5 sujets de conversation incontournables à la pause café québécoise (hockey, météo, chalet, routes/circulation, séries québécoises ou culture pop). Pour chaque sujet : ce qu'il faut savoir pour ne pas être perdu, 3 phrases utiles à placer naturellement.
 Inclus "annotations": 6-10 termes québécois du guide avec leur définition courte en français standard.
 JSON: {"titre":string,"intro":string,"references":[{"emoji":string,"sujet":string,"sous_titre":string,"ce_quil_faut_savoir":string,"phrases_utiles":[string],"piege":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
@@ -1102,7 +938,7 @@ entree_sortie: `Tu es expert du small talk québécois au bureau. Génère un gu
 Inclus "annotations": 5-8 expressions québécoises des formules avec leur définition courte.
 JSON: {"titre":string,"intro":string,"entrees":[{"formule":string,"quand":string,"effet":string,"variante":string}],"sorties":[{"formule":string,"quand":string,"effet":string,"variante":string}],"conseil_cle":string,"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-rythme: `Tu es expert du small talk québécois. Génère 5 situations typiques où le style de réponse habituel d'un immigrant francophone (plus formel, plus bref, ou qui répond littéralement à la question posée) tombe à plat dans une conversation informelle québécoise, plus spontanée et relationnelle. Présente ça comme une différence de registre à apprivoiser, pas comme une erreur du francophone. Pour chaque situation: ce que dit le collègue québécois Martin, 3 types de réponses possibles (idéale, correcte, à éviter) avec explication.
+rythme: `Tu es expert du small talk québécois. Génère 5 situations typiques où un immigrant francophone casse le rythme de la conversation — parce qu'il répond trop formellement, trop brièvement ou à côté. Pour chaque situation: ce que dit le collègue québécois Martin, 3 types de réponses possibles (idéale, correcte, à éviter) avec explication.
 Inclus "annotations": 5-8 expressions québécoises des dialogues avec leur définition courte.
 JSON: {"titre":string,"intro":string,"situations":[{"ce_que_dit_martin":string,"reactions":[{"type":"ideal"|"correct"|"mauvais","reponse":string,"pourquoi":string}],"lecon":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
@@ -1133,7 +969,7 @@ Inclus "annotations": 8-12 termes québécois du guide avec leur définition cou
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"expressions":[{"expression":string,"explication":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
 mesures: `Tu es expert de la culture québécoise et du système de mesures utilisé au Québec. Génère un guide complet sur les unités de mesure, un vrai piège pour un immigrant — même francophone — puisque le Québec mélange le système métrique et le système impérial d'une façon qui ne ressemble NI à la France (100% métrique) NI complètement aux États-Unis. Couvre exactement 5 sections :
-1. Le corps humain : la taille se dit très souvent en pieds et pouces (ex: "il mesure 5 pieds 10"), le poids en livres (ex: "je pèse 150 livres") — les centimètres et les kilos sont peu utilisés dans une conversation courante, contrairement à la France
+1. Le corps humain : la taille se dit presque toujours en pieds et pouces (ex: "il mesure 5 pieds 10"), le poids en livres (ex: "je pèse 150 livres") — jamais en centimètres ou en kilos dans une conversation courante, contrairement à la France
 2. La maison et la construction : les pieds, les pouces et les pieds carrés pour tout ce qui touche à l'immobilier, la rénovation et la construction (ex: "un 2x4", "la maison fait 1500 pieds carrés", "8 pieds de plafond") — précise que c'est très différent de la France qui utilise les mètres carrés
 3. La cuisine : les tasses, les cuillères à thé/à table, les onces, et parfois les degrés Fahrenheit dans les recettes plus anciennes — alors que les degrés Celsius sont aussi couramment utilisés pour la cuisson au four aujourd'hui
 4. Ce qui reste 100% métrique (comme en France) : la météo se dit en degrés Celsius, les distances et vitesses en kilomètres et km/h — ici le Québec ressemble à la France et PAS aux États-Unis, ce qui peut semer la confusion puisque tout le reste est en système impérial
@@ -1167,7 +1003,7 @@ valeurs: `Tu es expert de la culture québécoise et des codes sociaux implicite
 4. L'humour autodérisoire comme code de bienvenue
 5. Le débat souverainiste/fédéraliste — esquiver poliment sans prendre position
 6. La laïcité et la religion — sujet sensible post-Révolution tranquille
-7. RESTER TARD AU BUREAU : partir à l'heure n'est généralement PAS perçu comme un manque d'engagement au Québec — mais certains milieux ou collègues peuvent tout de même valoriser une présence prolongée; ça varie beaucoup selon le milieu de travail
+7. RESTER TARD AU BUREAU : partir à l'heure n'est PAS un manque d'engagement au Québec — rester tard = mal organisé
 8. Le consensus mou en réunion — "c'est le fun" peut vouloir dire qu'on n'est pas convaincu
 9. Les évaluations indirectes — "c'est correct" peut signifier que c'est loin d'être correct
 Pour chaque scénario : ce que fait l'immigrant (sans mauvaise intention), ce que ça produit chez les collègues québécois (sans qu'ils le disent), ce qui se passe vraiment, et comment s'en sortir. Garde les textes COURTS (2-3 phrases max par champ).
@@ -1230,7 +1066,7 @@ function STSacresCard({ data }) {
                   </div>
                 )}
                 {s.conseil && (
-                  <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "8px 12px" }}>
+                  <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "8px 12px" }}>
                     <p style={{ margin: 0, fontSize: 14 }}>💡 {s.conseil}</p>
                   </div>
                 )}
@@ -1293,8 +1129,8 @@ function STFauxAmisCard({ data }) {
               )}
               {/* Astuce mémo — visible après révélation */}
               {revealed[`qc_${i}`] && revealed[`fr_${i}`] && fa.astuce && (
-                <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "7px 12px" }}>
-                  <p style={{ margin: 0, fontSize: 14, color: "#92400E" }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
+                <div style={{ background: "#FFF8E1", border: "1px solid #FFC857", borderRadius: 8, padding: "7px 12px" }}>
+                  <p style={{ margin: 0, fontSize: 14, color: "#7A5C00" }}>💡 <strong>Astuce :</strong> {fa.astuce}</p>
                 </div>
               )}
             </div>
@@ -1341,7 +1177,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
         }
       }
       const parsed = await callClaude([{ role: "user", content: ST_PROMPTS[mod.id] }],
-        ST_SYSTEM_PROMPT);
+        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.");
       await setCached("st", "smalltalk", parsed, mod.id);
     
       if (mod.id === "expressions" && parsed.expressions) {
@@ -1515,7 +1351,7 @@ function STLunchCard({ data }) {
                   </div>
                 )}
                 {s.conseil && (
-                  <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "7px 10px" }}>
+                  <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "7px 10px" }}>
                     <p style={{ margin: 0, fontSize: 14 }}>💡 {s.conseil}</p>
                   </div>
                 )}
@@ -1723,12 +1559,6 @@ function TrousGrammaireCard({ data, color }) {
 
   // Mélanger les mots si disponibles
   const mots = data.mots_a_utiliser || data["mots_à_utiliser"] || [];
-  // Affichage défensif : gère un mot propre, un mot avec préfixe de pronoms
-  // ("il/elle/on/iel a"), ou l'ancien format objet {forme, pronom} resté en cache.
-  const motLabel = (mot) => {
-    const raw = (mot && typeof mot === "object") ? (mot.forme || "") : mot;
-    return typeof raw === "string" ? raw.replace(/^[^\s/]+(?:\/[^\s/]+)+\s+/i, "").trim() : String(raw ?? "");
-  };
 
   return (
     <div>
@@ -1742,12 +1572,12 @@ function TrousGrammaireCard({ data, color }) {
 
       {/* Liste des mots à utiliser */}
       {mots.length > 0 && (
-        <div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 12, padding: "12px 16px", marginBottom: 16 }}>
+        <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 12, padding: "12px 16px", marginBottom: 16 }}>
           <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: "#78350F" }}>📝 Mots à utiliser :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {mots.map((mot, i) => (
-              <span key={i} style={{ background: "white", border: "1px solid #FED7AA", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
-                {motLabel(mot)}
+              <span key={i} style={{ background: "white", border: "1px solid #FCD34D", borderRadius: 8, padding: "4px 12px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>
+                {mot}
               </span>
             ))}
           </div>
@@ -2004,7 +1834,7 @@ ${contextePrompt}
 Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
 IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante").
-Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte (la forme verbale ou le mot SEUL, jamais précédé d'un pronom comme "il/elle/on/iel" ou "ils/elles/iels" — c'est cette valeur exacte que l'élève doit taper dans la case) et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs. Cette liste doit correspondre EXACTEMENT aux réponses de "trous" : un élément par trou, sans en omettre ni en ajouter (si un même mot sert deux fois, liste-le deux fois). IMPORTANT : chaque élément de "mots_a_utiliser" est la forme verbale (ou le mot) SEULE, exactement comme elle doit être tapée dans le trou — n'ajoute JAMAIS de pronom devant (jamais "il/elle/on/iel a" ni "ils/elles/iels ont" ni aucune variante avec des barres obliques) : écris seulement "a", "ont", "sont", "est", etc.${traductionNote}
+Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.${traductionNote}
 JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}],"texte_en":string}
 UNIQUEMENT JSON, sans markdown.`;
   }
@@ -2035,8 +1865,8 @@ UNIQUEMENT JSON, sans markdown.`;
       const subId = `${forcedMode}_${niv}`;
       if (!forceRegen) {
         const cached = await getCached("hg", ep.id, subId);
-        if (cached && cached.status === "validated") { setContent(forcedMode !== "quiz" ? nettoyerPronomsTrous(cached.data) : cached.data); setLoading(false); return; }
-        if (cached && cached.status === "pending") { setContent(forcedMode !== "quiz" ? nettoyerPronomsTrous(cached.data) : cached.data); setLoading(false); return; }
+        if (cached && cached.status === "validated") { setContent(cached.data); setLoading(false); return; }
+        if (cached && cached.status === "pending") { setContent(cached.data); setLoading(false); return; }
       }
       const { format } = getNotionPourNiveau(ep, niv);
       let prompt;
@@ -2044,16 +1874,15 @@ UNIQUEMENT JSON, sans markdown.`;
       else prompt = format === "trous" ? buildTrousPrompt(ep, niv) : buildLecturePrompt(ep, niv);
       const parsed = await callClaude([{ role: "user", content: prompt }],
         "Tu es expert en histoire du Québec et du Canada et en grammaire française, dans l'esprit pédagogique de Récitus (histoire.recitus.qc.ca). Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.");
-      const cleaned = format === "trous" && forcedMode !== "quiz" ? nettoyerPronomsTrous(parsed) : parsed;
-      await setCached("hg", ep.id, cleaned, subId);
-      setContent(cleaned);
+      await setCached("hg", ep.id, parsed, subId);
+      setContent(parsed);
     } catch (e) { setError(`Erreur : ${e.message}`); console.error(e); }
     finally { setLoading(false); }
   }
 
   return (
     <div style={{ minHeight: "100vh", background: "#F7F4EF", fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
-      <div style={{ background: "#470024", padding: "18px 16px", position: "relative", textAlign: "center" }}>
+      <div style={{ background: "#3D1F0F", padding: "18px 16px", position: "relative", textAlign: "center" }}>
         <button onClick={onBack} style={{ position: "absolute", top: 16, left: 16, background: "none", border: "none", color: "#D4A574", cursor: "pointer", fontSize: 14 }}>← Accueil</button>
         <div style={{ position: "absolute", top: 14, right: 16 }}>
           <FontSizeControl fontSize={fontSize} setFontSize={setFontSize} color="#D4A574" border="#D4A574" activeBg="#D4A574" />
@@ -2631,14 +2460,13 @@ function TeacherMode({ onClose }) {
           prompt = modeHG === "quiz"
             ? `Quiz sur "${ep.label}", notion: ${notionData.notion}. JSON: {"titre":string,"questions":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]} UNIQUEMENT JSON.`
             : notionData.format === "trous"
-              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. Inclus "mots_a_utiliser": liste mélangée des mots à placer dans les trous, correspondant EXACTEMENT aux réponses de "trous" (un élément par trou, sans en omettre ni en ajouter). Chaque élément est la forme verbale SEULE, sans pronom devant (jamais "il/elle/on/iel a" ni "ils/elles/iels ont" — écris seulement "a", "ont", etc.). JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
+              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. Inclus "mots_a_utiliser": liste mélangée des mots à placer dans les trous. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
               : `Texte + exercices sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`;
         }
       }
       if (!prompt) throw new Error("Prompt introuvable");
-      const parsedRaw = await callClaude([{ role: "user", content: prompt }],
-        type === "st" ? ST_SYSTEM_PROMPT : "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown.");
-      const parsed = (type === "hg" && subId.startsWith("contenu_")) ? nettoyerPronomsTrous(parsedRaw) : parsedRaw;
+      const parsed = await callClaude([{ role: "user", content: prompt }],
+        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown.");
 
       if (entry.status === "validated") {
       
@@ -3276,13 +3104,10 @@ function DialogueCard({ data, color }) {
           <div key={i} style={{ background: "white", border: `1px solid ${color}30`, borderRadius: 10, padding: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 6 }}>
               <strong style={{ color, fontSize: 14 }}>« {e.expression} »</strong>
-              {e.categorie==="secteur"&&<span style={{ fontSize: 12, background: color, color: "white", borderRadius: 10, padding: "1px 8px" }}>SECTEUR</span>}
-              {e.categorie==="anglicisme"&&<span style={{ fontSize: 12, background: "#4B5563", color: "white", borderRadius: 10, padding: "1px 8px" }}>ANGLICISME</span>}
-              {e.categorie==="officiel"&&<span style={{ fontSize: 12, background: "#1D4ED8", color: "white", borderRadius: 10, padding: "1px 8px" }}>OFFICIEL</span>}
+              {e.specifique_au_secteur&&<span style={{ fontSize: 12, background: color, color: "white", borderRadius: 10, padding: "1px 8px" }}>SECTEUR</span>}
             </div>
-            {e.ce_que_ca_sonne && <p style={{ margin: "3px 0 1px", fontSize: 14, color: "#666" }}>S'entend comme : <em>« {e.ce_que_ca_sonne} »</em></p>}
-            <p style={{ margin: 0, fontSize: 14, color: "#444" }}>{e.categorie==="secteur"?"Terme général":e.categorie==="anglicisme"?"Terme français":e.categorie==="officiel"?"Terme officiel":"Français courant"} : <em>{e.traduction_standard}</em></p>
-            {e.registre && <p style={{ margin: "4px 0 0", fontSize: 13, color: "#92400E", background: "#FFF7ED", borderRadius: 6, padding: "3px 8px" }}>⚠️ Registre {e.registre}</p>}
+            <p style={{ margin: "3px 0 1px", fontSize: 14, color: "#666" }}>S'entend comme : <em>« {e.ce_que_ca_sonne} »</em></p>
+            <p style={{ margin: 0, fontSize: 14, color: "#444" }}>Standard : <em>{e.traduction_standard}</em></p>
           </div>
         ))}
       </div>
@@ -3301,7 +3126,7 @@ function VocabCard({ data, color }) {
         <p style={{ margin: "0 0 4px", fontSize: 14, color: "#444" }}><strong>Contexte :</strong> {e.contexte}</p>
         <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333", fontStyle: "italic" }}>« {e.exemple} »</p>
         {e.equivalent_france&&<p style={{ margin: "0 0 3px", fontSize: 13, color: "#777" }}>🇫🇷 En France : <em>{e.equivalent_france}</em></p>}
-        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 13, color: "#92400E", background: "#FFF7ED", border: "1px solid #FDE1B8", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
+        {e.piege&&<p style={{ margin: "5px 0 0", fontSize: 13, color: "#470024", background: "#F5E9EA", borderRadius: 6, padding: "3px 8px" }}>⚠️ {e.piege}</p>}
       </div>
     ))}
   </div></div>;
@@ -3322,7 +3147,7 @@ function RegistreCard({ data }) {
         </div>
       ))}
     </div>
-    {data.conseil&&<div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>Conseil :</strong> {data.conseil}</p></div>}
+    {data.conseil&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>Conseil :</strong> {data.conseil}</p></div>}
   </div>;
 }
 function CultureCard({ data, color }) {
@@ -3342,7 +3167,7 @@ function CultureCard({ data, color }) {
         </div>
       ))}
     </div>
-    {data.conseil_pratique&&<div style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_pratique}</p></div>}
+    {data.conseil_pratique&&<div style={{ background: "#FFFBE6", border: "1px solid #FFD700", borderRadius: 10, padding: 12 }}><p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_pratique}</p></div>}
   </div>;
 }
 function ResultCard({ moduleId, data, color, secteur, onQuizRetry, onQuizNewType, onQuizDone }) {
@@ -3805,7 +3630,7 @@ export default function App() {
               « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas toujours mes collègues québécois !"</em> Cette application est pour eux. »
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Cours particuliers en ligne</p>
+              <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
               <a href="https://carolinedouret.com" target="_blank" rel="noopener noreferrer"
                 style={{ display: "inline-flex", alignItems: "center", gap: 4, background: D.rouge, color: D.blanc, borderRadius: 6, padding: "7px 12px", fontSize: 12, fontWeight: 500, textDecoration: "none" }}>
                 carolinedouret.com →
