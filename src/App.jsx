@@ -718,6 +718,7 @@ function STReferencesCard({ data }) {
 }
 
 function STEntreeSortieCard({ data }) {
+  const ann = data.annotations || [];
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
@@ -731,11 +732,11 @@ function STEntreeSortieCard({ data }) {
             {data[type].map((e, i) => (
               <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 10, padding: 14 }}>
                 <div style={{ background: ST_BG, borderRadius: 8, padding: "7px 12px", marginBottom: 8, fontSize: 14, color: ST_COLOR, fontWeight: 600, fontStyle: "italic" }}>
-                  « {e.formule} »
+                  « <AnnotatedText text={e.formule} annotations={ann} /> »
                 </div>
-                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#555" }}>📍 {e.quand}</p>
-                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333" }}>🎯 {e.effet}</p>
-                {e.variante && <p style={{ margin: 0, fontSize: 14, color: "#888", fontStyle: "italic" }}>Variante : « {e.variante} »</p>}
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#555" }}>📍 <AnnotatedText text={e.quand} annotations={ann} /></p>
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333" }}>🎯 <AnnotatedText text={e.effet} annotations={ann} /></p>
+                {e.variante && <p style={{ margin: 0, fontSize: 14, color: "#888", fontStyle: "italic" }}>Variante : « <AnnotatedText text={e.variante} annotations={ann} /> »</p>}
               </div>
             ))}
           </div>
@@ -743,7 +744,7 @@ function STEntreeSortieCard({ data }) {
       ))}
       {data.conseil_cle && (
         <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 10, padding: 12 }}>
-          <p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> {data.conseil_cle}</p>
+          <p style={{ margin: 0, fontSize: 15 }}>💡 <strong>À retenir :</strong> <AnnotatedText text={data.conseil_cle} annotations={ann} /></p>
         </div>
       )}
     </div>
@@ -751,6 +752,7 @@ function STEntreeSortieCard({ data }) {
 }
 
 function STRythmeCard({ data }) {
+  const ann = data.annotations || [];
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
@@ -760,7 +762,7 @@ function STRythmeCard({ data }) {
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
             <div style={{ background: ST_BG, padding: "10px 14px", borderBottom: `1px solid ${ST_COLOR}15` }}>
               <p style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "#1F2937" }}>
-                <span style={{ color: ST_COLOR }}>Martin dit : </span>« {s.ce_que_dit_martin} »
+                <span style={{ color: ST_COLOR }}>Martin dit : </span>« <AnnotatedText text={s.ce_que_dit_martin} annotations={ann} /> »
               </p>
             </div>
             <div style={{ padding: 14 }}>
@@ -773,12 +775,12 @@ function STRythmeCard({ data }) {
                     color: r.type === "ideal" ? "#5B1865" : r.type === "correct" ? "#2C5784" : "#470024"
                   }}>
                     <span style={{ fontWeight: 700, marginRight: 6 }}>{r.type === "ideal" ? "✅ Idéal" : r.type === "correct" ? "🆗 Correct" : "❌ À éviter"} :</span>
-                    <em>« {r.reponse} »</em>
-                    {r.pourquoi && <span style={{ display: "block", fontSize: 13, marginTop: 3, opacity: 0.85 }}>{r.pourquoi}</span>}
+                    <em>« <AnnotatedText text={r.reponse} annotations={ann} /> »</em>
+                    {r.pourquoi && <span style={{ display: "block", fontSize: 13, marginTop: 3, opacity: 0.85 }}><AnnotatedText text={r.pourquoi} annotations={ann} /></span>}
                   </div>
                 ))}
               </div>
-              <p style={{ margin: 0, fontSize: 14, color: "#6B7280", fontStyle: "italic" }}>💡 {s.lecon}</p>
+              <p style={{ margin: 0, fontSize: 14, color: "#6B7280", fontStyle: "italic" }}>💡 <AnnotatedText text={s.lecon} annotations={ann} /></p>
             </div>
           </div>
         ))}
@@ -1324,6 +1326,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
 
 function STLunchCard({ data }) {
   const [open, setOpen] = useState({ 0: true });
+  const ann = data.annotations || [];
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
@@ -1341,20 +1344,20 @@ function STLunchCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}>{s.contenu}</p>
+                <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}><AnnotatedText text={s.contenu} annotations={ann} /></p>
                 {s.expressions?.length > 0 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 10 }}>
                     {s.expressions.map((ex, j) => (
                       <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "8px 12px" }}>
-                        <span style={{ fontWeight: 700, color: ST_COLOR, fontSize: 15 }}>« {ex.expression} »</span>
-                        <span style={{ fontSize: 14, color: "#555", marginLeft: 8 }}>— {ex.explication}</span>
+                        <span style={{ fontWeight: 700, color: ST_COLOR, fontSize: 15 }}>« <AnnotatedText text={ex.expression} annotations={ann} /> »</span>
+                        <span style={{ fontSize: 14, color: "#555", marginLeft: 8 }}>— <AnnotatedText text={ex.explication} annotations={ann} /></span>
                       </div>
                     ))}
                   </div>
                 )}
                 {s.conseil && (
                   <div style={{ background: "#FFFBE6", border: "1px solid #FCD34D", borderRadius: 8, padding: "7px 10px" }}>
-                    <p style={{ margin: 0, fontSize: 14 }}>💡 {s.conseil}</p>
+                    <p style={{ margin: 0, fontSize: 14 }}>💡 <AnnotatedText text={s.conseil} annotations={ann} /></p>
                   </div>
                 )}
               </div>
