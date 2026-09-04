@@ -679,6 +679,7 @@ function SimulationQCM({ data }) {
 
 function STReferencesCard({ data }) {
   const [open, setOpen] = useState({});
+  const ann = data.annotations || [];
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
@@ -699,13 +700,13 @@ function STReferencesCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 15, color: "#374151", margin: "10px 0 8px", lineHeight: 1.6 }}>{r.ce_quil_faut_savoir}</p>
+                <p style={{ fontSize: 15, color: "#374151", margin: "10px 0 8px", lineHeight: 1.6 }}><AnnotatedText text={r.ce_quil_faut_savoir} annotations={ann} /></p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   {r.phrases_utiles.map((p, j) => (
-                    <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "7px 10px", fontSize: 15, color: ST_COLOR, fontStyle: "italic" }}>« {p} »</div>
+                    <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "7px 10px", fontSize: 15, color: ST_COLOR, fontStyle: "italic" }}>« <AnnotatedText text={p} annotations={ann} /> »</div>
                   ))}
                 </div>
-                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 14, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "4px 8px" }}>⚠️ {r.piege}</p>}
+                {r.piege && <p style={{ margin: "8px 0 0", fontSize: 14, color: "#c0392b", background: "#fdecea", borderRadius: 6, padding: "4px 8px" }}>⚠️ <AnnotatedText text={r.piege} annotations={ann} /></p>}
               </div>
             )}
           </div>
