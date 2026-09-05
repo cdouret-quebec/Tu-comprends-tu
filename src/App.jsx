@@ -3244,7 +3244,7 @@ function PolitiqueScreen({ onBack }) {
 
           <Section title="5. Fournisseurs de services">
             Nous faisons appel à des fournisseurs externes pour faire fonctionner l'application : Vercel (hébergement), Supabase (base de données), PayPal (paiements) et Resend (envoi de courriels).<br/><br/>
-            Certains de ces fournisseurs hébergent leurs serveurs à l'extérieur du Québec, notamment aux États-Unis. Ils ne sont autorisés à utiliser vos renseignements que pour nous fournir leurs services, selon leurs propres politiques et les lois applicables.
+            L'hébergement de l'application (Vercel) et la base de données (Supabase) sont opérés depuis des serveurs situés au Canada. PayPal et Resend, quant à eux, traitent une partie des renseignements (votre adresse courriel) sur des serveurs situés aux États-Unis. Tous nos fournisseurs ne sont autorisés à utiliser vos renseignements que pour nous fournir leurs services, selon leurs propres politiques et les lois applicables.
           </Section>
 
           <Section title="6. Communication des renseignements personnels">
