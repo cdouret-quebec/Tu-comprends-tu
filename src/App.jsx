@@ -3617,7 +3617,7 @@ export default function App() {
 
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
             <div style={{ flex: 1, height: 1, background: D.gris2 }} />
-            <span style={{ fontSize: 11, color: D.gris3, letterSpacing: 0.8, textTransform: "uppercase" }}>Ton milieu de travail</span>
+            <span style={{ fontSize: 11, color: D.gris3, letterSpacing: 0.8, textTransform: "uppercase" }}>Milieux de travail et services</span>
             <div style={{ flex: 1, height: 1, background: D.gris2 }} />
           </div>
 
