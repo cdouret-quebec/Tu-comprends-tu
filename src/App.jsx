@@ -468,7 +468,10 @@ function LoadingDots({ color = "#555" }) {
 
 function Tooltip({ terme, definition, children }) {
   const [visible, setVisible] = useState(false);
+  const [pos, setPos] = useState(null);
   const ref = useRef(null);
+  const TOOLTIP_WIDTH = 220;
+  const MARGIN = 8;
 
   useEffect(() => {
     function handleOutside(e) {
@@ -478,11 +481,28 @@ function Tooltip({ terme, definition, children }) {
     return () => document.removeEventListener("mousedown", handleOutside);
   }, [visible]);
 
+  function computePosition() {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - TOOLTIP_WIDTH / 2;
+    left = Math.max(MARGIN, Math.min(left, window.innerWidth - TOOLTIP_WIDTH - MARGIN));
+    const anchorCenter = rect.left + rect.width / 2;
+    const spaceAbove = rect.top;
+    const placement = spaceAbove < 90 ? "bottom" : "top";
+    const top = placement === "top" ? rect.top - 6 : rect.bottom + 6;
+    setPos({ top, left, anchorCenter, placement });
+  }
+
+  function show() {
+    computePosition();
+    setVisible(true);
+  }
+
   return (
     <span ref={ref} style={{ position: "relative", display: "inline" }}>
       <span
-        onClick={() => setVisible(v => !v)}
-        onMouseEnter={() => setVisible(true)}
+        onClick={() => (visible ? setVisible(false) : show())}
+        onMouseEnter={show}
         onMouseLeave={() => setVisible(false)}
         style={{
           borderBottom: "2px dotted #D42B2B",
@@ -492,14 +512,15 @@ function Tooltip({ terme, definition, children }) {
         }}>
         {children}
       </span>
-      {visible && (
+      {visible && pos && (
         <span style={{
-          position: "absolute", bottom: "calc(100% + 6px)", left: "50%",
-          transform: "translateX(-50%)", zIndex: 9999,
+          position: "fixed", top: pos.top, left: pos.left,
+          transform: pos.placement === "top" ? "translateY(-100%)" : "none",
+          zIndex: 9999,
           background: "#1A1F5E", color: "white",
           borderRadius: 8, padding: "8px 12px",
           fontSize: 14, lineHeight: 1.5,
-          width: 220, boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
+          width: TOOLTIP_WIDTH, boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
           pointerEvents: "none", textAlign: "left"
         }}>
           <span style={{ display: "block", fontWeight: 700, color: "#F5C800", marginBottom: 3 }}>
@@ -507,9 +528,12 @@ function Tooltip({ terme, definition, children }) {
           </span>
           {definition}
           <span style={{
-            position: "absolute", bottom: -5, left: "50%", transform: "translateX(-50%)",
+            position: "absolute",
+            [pos.placement === "top" ? "bottom" : "top"]: -5,
+            left: Math.max(10, Math.min(TOOLTIP_WIDTH - 10, pos.anchorCenter - pos.left)),
+            transform: "translateX(-50%)",
             width: 10, height: 10, background: "#1A1F5E",
-            clipPath: "polygon(0 0, 100% 0, 50% 100%)"
+            clipPath: pos.placement === "top" ? "polygon(0 0, 100% 0, 50% 100%)" : "polygon(0 100%, 100% 100%, 50% 0)"
           }} />
         </span>
       )}
