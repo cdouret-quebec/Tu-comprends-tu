@@ -29,14 +29,14 @@ const SECTEURS = [
 const CONTENU_FIXE = {
   "finance_culture": {
     titre: "Le vouvoiement, norme professionnelle en finance",
-    concept: "Contrairement à la vie courante au Québec, le vouvoiement reste la norme entre un conseiller et son client en milieu bancaire.",
-    pourquoi_ca_surprend: "Au Québec, le tutoiement s'installe très vite dans les commerces, entre collègues et dans la vie de tous les jours — ce qui peut laisser croire à un nouvel arrivant que c'est aussi la norme partout, y compris avec un client à la banque.",
+    concept: "Contrairement à la vie courante au Québec, le vouvoiement reste la norme entre un conseiller et son client en milieu bancaire. Le tutoiement rapide qu'on observe ailleurs au Québec s'applique entre collègues, pas avec la clientèle.",
+    pourquoi_ca_surprend: "Au Québec, le tutoiement s'installe très vite entre collègues et employés d'une même équipe — ce qui peut laisser croire à un nouvel arrivant que c'est aussi la norme avec un client à la banque. Mais cette familiarité rapide reste réservée aux relations entre employés : avec un client, le vouvoiement demeure le point de départ attendu.",
     comment_ca_marche: "En réalité, dans une relation professionnelle formelle comme celle entre un conseiller financier et son client, le vouvoiement reste le point de départ attendu. Un conseiller n'initie normalement pas le tutoiement de lui-même. Si un passage au \"tu\" se produit, c'est presque toujours à l'initiative du CLIENT — jamais du conseiller — souvent après plusieurs rencontres lorsqu'une relation de confiance est déjà établie.",
     exemples: [
       { situation: "Première rencontre pour ouvrir un compte ou discuter d'un prêt hypothécaire.", reaction_typique_quebecoise: "Bonjour, moi c'est Mathieu. Comment puis-je vous aider aujourd'hui ?", interpretation_possible: "Le conseiller garde le vouvoiement par défaut, même avec un ton chaleureux et détendu — les deux ne sont pas contradictoires au Québec." },
       { situation: "Après plusieurs rencontres, le client propose de se tutoyer.", reaction_typique_quebecoise: "On peut se tutoyer si tu veux, ça va être plus simple.", interpretation_possible: "C'est le client qui ouvre la porte au tutoiement. Le conseiller peut accepter, mais ne le propose pas de lui-même en général." }
     ],
-    conseil_pratique: "Garde le vouvoiement par défaut avec tes clients, même si l'ambiance est amicale et détendue. Le ton chaleureux québécois ne veut pas dire que le \"tu\" est automatique dans une relation professionnelle formelle — laisse le client faire ce choix.",
+    conseil_pratique: "Garde le vouvoiement par défaut avec tes clients, même si l'ambiance est amicale et détendue. Le tutoiement rapide et spontané, c'est la norme entre collègues — pas avec la clientèle : laisse toujours le client faire ce choix en premier.",
     annotations: [
       { terme: "vouvoiement", definition: "Utiliser \"vous\" pour s'adresser à quelqu'un, par respect ou dans un contexte formel." },
       { terme: "tutoiement", definition: "Utiliser \"tu\" pour s'adresser à quelqu'un, signe de familiarité ou de proximité." }
@@ -83,7 +83,7 @@ UNIQUEMENT JSON, sans markdown.` },
 Le sujet du guide DOIT être : les codes de politesse entre conseiller et client (tutoiement/vouvoiement) en milieu bancaire québécois. Base-toi EXACTEMENT sur ces faits, ne les invente pas autrement :
 - Le vouvoiement est la norme professionnelle par défaut entre un conseiller et son client au Québec, y compris en banque.
 - Le passage au tutoiement, quand il survient, est presque toujours à l'initiative du CLIENT — jamais du conseiller.
-- Le Québec tutoie beaucoup plus vite qu'en France dans la vie de tous les jours (commerces, collègues), ce qui peut faire croire à tort que c'est aussi la norme en relation client formelle — précise cette nuance, car c'est justement ce qui surprend les immigrants.
+- Le Québec tutoie beaucoup plus vite qu'en France ENTRE COLLÈGUES/EMPLOYÉS d'une même équipe — mais cette familiarité rapide ne s'étend PAS à la clientèle. Précise bien cette distinction (collègues vs client) car c'est justement ce qui peut induire un immigrant en erreur.
 Écris le guide du point de vue du CONSEILLER (le professionnel), pas du client.` : "";
       const santeNote = isSante ? `
 Si le sujet du guide touche au tutoiement/vouvoiement avec les patients : le vouvoiement est le point de départ par défaut avec un patient qu'on ne connaît pas, surtout à la première rencontre — ce n'est pas une règle rigide, ça peut évoluer selon le contexte (patients de longue date, personnes âgées avec qui certains soignants tutoient par proximité, enfants et adolescents où le vouvoiement peut sembler distant). Ne présente pas le tutoiement comme la norme générale d'emblée.` : "";
