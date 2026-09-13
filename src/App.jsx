@@ -1734,10 +1734,6 @@ function HGQuizCard({ data, color, onRetry }) {
             style={{ flex: 1, padding: "11px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
             ↩ Recommencer
           </button>
-          <button onClick={onRetry}
-            style={{ flex: 1, padding: "11px", borderRadius: 10, border: "none", background: color, color: "white", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-            🔄 Nouveau quiz
-          </button>
         </div>
       </div>
     );
@@ -3021,10 +3017,6 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
           <button onClick={() => { setCurrentIdx(0); setAnswers({}); setSubmitted({}); setCompleted(false); setTotalScore(0); }}
             style={{ flex: 1, padding: "11px", borderRadius: 10, border: `1px solid ${color}`, background: "white", color, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
             ↩ Recommencer ces quiz
-          </button>
-          <button onClick={onRetry}
-            style={{ flex: 1, padding: "11px", borderRadius: 10, border: "none", background: color, color: "white", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-            🔄 Nouveaux quiz
           </button>
         </div>
       </div>
