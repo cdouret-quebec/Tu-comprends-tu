@@ -590,7 +590,8 @@ function SimulationQCM({ data }) {
   const sc = data.scenarios;
   const tour = sc[etape];
   const total = sc.length;
-  const score = Object.entries(choix).filter(([i, c]) => sc[i]?.bonne_reponse === c).length;
+  const correctAnswer = (s) => s.bonne_reponse || s["bonne_réponse"];
+  const score = Object.entries(choix).filter(([i, c]) => correctAnswer(sc[i] || {}) === c).length;
 
   function handleChoix(lettre) {
     if (choix[etape] !== undefined) return;
@@ -615,10 +616,10 @@ function SimulationQCM({ data }) {
         <p style={{ fontSize: 14, color: "#555", margin: "0 0 20px" }}>{msg}</p>
         {score < total && (
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20, textAlign: "left" }}>
-            {sc.map((s, i) => choix[i] !== s.bonne_reponse && (
+            {sc.map((s, i) => choix[i] !== correctAnswer(s) && (
               <div key={i} style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "10px 12px" }}>
                 <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 600, color: "#92400E" }}>Martin : « {s.ce_que_dit_martin} »</p>
-                <p style={{ margin: "0 0 3px", fontSize: 14, color: "#065F46" }}>✅ {s.choix.find(c => c.lettre === s.bonne_reponse)?.texte}</p>
+                <p style={{ margin: "0 0 3px", fontSize: 14, color: "#065F46" }}>✅ {s.choix.find(c => c.lettre === correctAnswer(s))?.texte}</p>
                 <p style={{ margin: 0, fontSize: 13, color: "#78350F" }}>{s.explication}</p>
               </div>
             ))}
@@ -633,7 +634,7 @@ function SimulationQCM({ data }) {
   }
 
   const repondu = choix[etape] !== undefined;
-  const bonneReponse = tour.bonne_reponse || tour["bonne_réponse"];
+  const bonneReponse = correctAnswer(tour);
 
   return (
     <div>
