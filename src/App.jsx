@@ -996,7 +996,7 @@ sacres: `Tu es expert de la langue québécoise. Génère un guide sur les sacre
 Inclus "annotations": 6 formes atténuées avec leur définition courte.
 JSON: {"titre":string,"intro":string,"sections":[{"emoji":string,"titre":string,"contenu":string,"exemples":[{"sacre":string,"forme_attenuation":string,"emotion":string,"exemple_phrase":string,"traduction_emotion":string}],"conseil":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
-faux_amis: `Tu es expert de la langue québécoise. Génère 8 faux amis et pièges linguistiques qui créent des malentendus hilarants ou embarrassants. Inclus OBLIGATOIREMENT ces 4 premiers : 1) S'ennuyer de quelqu'un (I miss you au QC / trouver le temps long en France) ; 2) Les gosses (ATTENTION, piège très embarrassant : en France, "les gosses" = les enfants, terme affectueux et courant ; au Québec, "les gosses" = les testicules, terme vulgaire — ne JAMAIS utiliser ce mot pour parler des enfants de quelqu'un au Québec) ; 3) Supporter (au Québec, sous influence anglaise, "supporter" quelqu'un ou une équipe = l'encourager, être fan ; en France, "supporter" quelque chose = l'endurer, le tolérer — sens presque opposé) ; 4) Bienvenue (au Québec, se dit couramment en réponse à un merci, comme "you're welcome" en anglais ; en France, "bienvenue" sert uniquement à accueillir quelqu'un). Puis choisis 4 parmi : char, dépanneur, pogner, magasiner, brunante, clavarder, niaiseux, être game, blé d'Inde. Garde les textes COURTS (1-2 phrases max par champ).
+faux_amis: `Tu es expert de la langue québécoise. Génère 8 faux amis et pièges linguistiques qui créent des malentendus hilarants ou embarrassants. Inclus OBLIGATOIREMENT ces 4 premiers : 1) S'ennuyer de quelqu'un (au Québec, "s'ennuyer de qqn" = ressentir l'absence de qqn, l'équivalent de "tu me manques" ; en France, "s'ennuyer" seul, sans complément, signifie trouver le temps long/s'ennuyer au sens propre — la tournure "s'ennuyer DE quelqu'un" est peu usitée en France, donc un Français risque surtout d'être perplexe ou de mal comprendre la phrase, PAS de répondre par une réplique symétrique du type "je te trouve ennuyeux aussi" — le scénario doit rester réaliste, avec une réaction de confusion ou de malaise, pas un échange witty inventé) ; 2) Les gosses (ATTENTION, piège très embarrassant : en France, "les gosses" = les enfants, terme affectueux et courant ; au Québec, "les gosses" = les testicules, terme vulgaire — ne JAMAIS utiliser ce mot pour parler des enfants de quelqu'un au Québec) ; 3) Supporter (au Québec, sous influence anglaise, "supporter" quelqu'un ou une équipe = l'encourager, être fan ; en France, "supporter" quelque chose = l'endurer, le tolérer — sens presque opposé) ; 4) Bienvenue (au Québec, se dit couramment en réponse à un merci, comme "you're welcome" en anglais ; en France, "bienvenue" sert uniquement à accueillir quelqu'un). Puis choisis 4 parmi : char, dépanneur, pogner, magasiner, brunante, clavarder, niaiseux, être game, blé d'Inde. Pour chaque faux ami, le scénario doit être réaliste et plausible, pas une réplique inventée pour faire un effet comique forcé. Garde les textes COURTS (1-2 phrases max par champ).
 Inclus "annotations": les 8 termes avec leur sens québécois en définition courte.
 JSON: {"titre":string,"intro":string,"faux_amis":[{"mot":string,"scenario":string,"sens_quebec":string,"sens_france_ou_malentendu":string,"astuce":string}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`,
@@ -1182,7 +1182,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
         }
       }
       const parsed = await callClaude([{ role: "user", content: ST_PROMPTS[mod.id] }],
-        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks.");
+        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown, sans backticks. Les scénarios et exemples doivent être réalistes et plausibles, jamais des dialogues ou répliques inventés pour un effet comique forcé. Évite les généralisations absolues sur les Québécois ou les Français — nuance avec des tournures comme \"il n'est pas rare que...\", \"plusieurs...\", \"dans certains contextes...\" plutôt que des affirmations universelles.");
       await setCached("st", "smalltalk", parsed, mod.id);
     
       if (mod.id === "expressions" && parsed.expressions) {
@@ -2472,7 +2472,7 @@ function TeacherMode({ onClose }) {
       }
       if (!prompt) throw new Error("Prompt introuvable");
       const parsed = await callClaude([{ role: "user", content: prompt }],
-        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown.");
+        "Tu es expert de la langue et culture québécoise. Tu réponds TOUJOURS en JSON valide uniquement, sans markdown. Les scénarios et exemples doivent être réalistes et plausibles, jamais des dialogues ou répliques inventés pour un effet comique forcé. Évite les généralisations absolues sur les Québécois ou les Français — nuance avec des tournures comme \"il n'est pas rare que...\", \"plusieurs...\", \"dans certains contextes...\" plutôt que des affirmations universelles.");
 
       if (entry.status === "validated") {
       
