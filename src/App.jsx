@@ -271,6 +271,13 @@ function isPremium() {
 function activatePremium() {
   try { localStorage.setItem(PREMIUM_KEY, "true"); } catch {}
 }
+const TEACHER_AUTH_KEY = "qc_teacher_auth";
+function isTeacherMode() {
+  try { return localStorage.getItem(TEACHER_AUTH_KEY) === "true"; } catch { return false; }
+}
+function setTeacherMode() {
+  try { localStorage.setItem(TEACHER_AUTH_KEY, "true"); } catch {}
+}
 
 function loadLexique() {
   try { return JSON.parse(localStorage.getItem(LEXIQUE_KEY) || "null") || {}; }
@@ -2459,7 +2466,7 @@ function TeacherMode({ onClose }) {
   useEffect(() => { if (auth) refresh(); }, [auth]);
 
   function handleLogin() {
-    if (pwd === TEACHER_PWD) { setAuth(true); setPwdError(false); }
+    if (pwd === TEACHER_PWD) { setAuth(true); setPwdError(false); setTeacherMode(); }
     else { setPwdError(true); }
   }
 
@@ -3487,8 +3494,8 @@ function LexiqueScreen({ onBack }) {
                   <strong style={{ fontSize: 14, color: D.noir, fontWeight: 500 }}>« {entry.terme} »</strong>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     {entry.sources?.length > 0 && <span style={{ fontSize: 12, color: D.gris3, whiteSpace: "nowrap" }}>{entry.sources[0]}</span>}
-                    <button onClick={() => removeEntry(entry.terme)} title="Retirer du lexique"
-                      style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 2, lineHeight: 1 }}>🗑️</button>
+                    {isTeacherMode() && <button onClick={() => removeEntry(entry.terme)} title="Retirer du lexique"
+                      style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 2, lineHeight: 1 }}>🗑️</button>}
                   </div>
                 </div>
                 <p style={{ margin: 0, fontSize: 15, color: D.gris4, lineHeight: 1.5 }}>{entry.definition}</p>
