@@ -55,6 +55,7 @@ IMPORTANT sur le registre : ce secteur (${s.label}) appelle un registre professi
 Exemple du registre attendu (à ne PAS recopier, juste pour calibrer le ton) : "Bonjour madame Tremblay, merci d'être venue. On va regarder ensemble vos options de placement pour votre REER — j'ai préparé deux scénarios selon votre tolérance au risque." — noter : vouvoiement, phrases complètes, accent et rythme québécois présents dans la prononciation suggérée, mais AUCUNE contraction familière du type "t'as", "j'sais", "faque".` : "";
       return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote}${financeExemple} Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
 Inclus aussi "annotations": liste de 5-8 termes québécois du texte avec leur définition courte en français standard, pour les survols interactifs.
+Pour chaque item de "explications" : "ce_que_ca_sonne" doit donner la forme parlée/informelle telle qu'on l'entend réellement au Québec (ex: contraction, prononciation familière) UNIQUEMENT quand elle diffère vraiment de l'expression écrite ; si l'expression est un terme ou une expression sans variante phonétique informelle distincte (ex: du vocabulaire technique du secteur, un terme précis comme "droits de cotisation REER inutilisés"), laisse "ce_que_ca_sonne" en chaîne vide "" plutôt que de répéter l'expression ou d'inventer une variante artificielle. "traduction_standard" doit toujours contenir le sens/l'équivalent en français standard.
 JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"specifique_au_secteur":boolean}],"annotations":[{"terme":string,"definition":string}]}
 UNIQUEMENT JSON, sans markdown.`;
     } },
@@ -3129,7 +3130,8 @@ function DialogueCard({ data, color }) {
               <strong style={{ color, fontSize: 14 }}>« {e.expression} »</strong>
               {e.specifique_au_secteur&&<span style={{ fontSize: 12, background: color, color: "white", borderRadius: 10, padding: "1px 8px" }}>SECTEUR</span>}
             </div>
-            <p style={{ margin: "3px 0 1px", fontSize: 14, color: "#666" }}>S'entend comme : <em>« {e.ce_que_ca_sonne} »</em></p>
+            {e.ce_que_ca_sonne && e.ce_que_ca_sonne.trim() && e.ce_que_ca_sonne.trim() !== e.expression?.trim() &&
+              <p style={{ margin: "3px 0 1px", fontSize: 14, color: "#666" }}>S'entend comme : <em>« {e.ce_que_ca_sonne} »</em></p>}
             <p style={{ margin: 0, fontSize: 14, color: "#444" }}>Standard : <em>{e.traduction_standard}</em></p>
           </div>
         ))}
