@@ -97,7 +97,7 @@ UNIQUEMENT JSON, sans markdown.`;
     buildPrompt: (s, type) => {
       const types = {
         traduction: `Génère 5 questions QCM DISTINCTES : une expression québécoise du secteur "${s.label}" → 4 choix de sens. "croche" et NON "croché". Chaque question doit tester une expression DIFFÉRENTE.`,
-        situation: `Génère 5 questions QCM DISTINCTES de mise en situation dans le secteur "${s.label}". Scène réelle → réaction québécoise appropriée ? 4 choix. Chaque scénario doit être DIFFÉRENT.`,
+        situation: `Génère 5 questions QCM DISTINCTES de mise en situation dans le secteur "${s.label}". Scène réelle → réaction québécoise appropriée ? 4 choix. Chaque scénario doit être DIFFÉRENT. IMPORTANT : le contexte donné (lieu, ton, ce qui est dit) doit rendre la bonne réponse évidente et laisser les 3 autres choix clairement implausibles une fois tout le contexte pris en compte — évite les phrases sorties de leur contexte qui pourraient raisonnablement être interprétées de plusieurs façons différentes (ex: une expression au sens figuré qui pourrait aussi se lire au sens propre/littéral). Si l'expression testée a un sens figuré ET un sens littéral possible, ajoute assez de contexte dans la scène pour trancher sans ambiguïté vers le sens figuré visé.`,
         registre: `Génère 5 questions QCM DISTINCTES sur les registres dans le secteur "${s.label}". Phrase → quel contexte ? ou contexte → quelle formulation ? Chaque question doit cibler un registre DIFFÉRENT.`
       };
       return `Tu es expert du québécois professionnel dans le secteur "${s.label}" (${s.contexte}). ${types[type]||types.traduction} Exemples: ${s.exemples.join(", ")}.
