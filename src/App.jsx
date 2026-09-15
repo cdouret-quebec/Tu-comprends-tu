@@ -3438,11 +3438,18 @@ function TermesScreen({ onBack }) {
 function LexiqueScreen({ onBack }) {
   const [search, setSearch] = useState("");
   const [fontSize, setFontSize] = useState(loadFontSize());
-  const lex = loadLexique();
+  const [lex, setLex] = useState(() => loadLexique());
   const entries = Object.values(lex).sort((a, b) => a.terme.localeCompare(b.terme, "fr"));
   const filtered = entries.filter(e =>
     !search || e.terme.toLowerCase().includes(search.toLowerCase()) || e.definition.toLowerCase().includes(search.toLowerCase())
   );
+  function removeEntry(terme) {
+    const key = terme.toLowerCase().trim();
+    const updated = { ...lex };
+    delete updated[key];
+    saveLexique(updated);
+    setLex(updated);
+  }
   return (
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       <div style={{ background: D.noir, padding: "16px" }}>
@@ -3478,7 +3485,11 @@ function LexiqueScreen({ onBack }) {
               <div key={i} style={{ background: D.blanc, borderRadius: 8, padding: "12px 14px", borderLeft: `3px solid ${D.rouge}`, border: `1px solid ${D.gris2}`, borderLeft: `3px solid ${D.rouge}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
                   <strong style={{ fontSize: 14, color: D.noir, fontWeight: 500 }}>« {entry.terme} »</strong>
-                  {entry.sources?.length > 0 && <span style={{ fontSize: 12, color: D.gris3, whiteSpace: "nowrap" }}>{entry.sources[0]}</span>}
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    {entry.sources?.length > 0 && <span style={{ fontSize: 12, color: D.gris3, whiteSpace: "nowrap" }}>{entry.sources[0]}</span>}
+                    <button onClick={() => removeEntry(entry.terme)} title="Retirer du lexique"
+                      style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 2, lineHeight: 1 }}>🗑️</button>
+                  </div>
                 </div>
                 <p style={{ margin: 0, fontSize: 15, color: D.gris4, lineHeight: 1.5 }}>{entry.definition}</p>
               </div>
