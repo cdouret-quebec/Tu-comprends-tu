@@ -238,17 +238,22 @@ async function sbUpdate(id, updates) {
 
 async function sbDelete(id) {
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/cache_contenu?id=eq.${encodeURIComponent(id)}`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/cache_contenu?id=eq.${encodeURIComponent(id)}`, {
       method: "DELETE",
-      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Prefer": "return=representation" },
+      cache: "no-store"
     });
-  } catch {}
+    if (!res.ok) return { ok: false, status: res.status };
+    const rows = await res.json().catch(() => []);
+    return { ok: true, deletedCount: Array.isArray(rows) ? rows.length : 0 };
+  } catch (err) { return { ok: false, error: String(err) }; }
 }
 
 async function sbGetAll() {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/cache_contenu?select=*&order=created_at.desc`, {
-      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` },
+      cache: "no-store"
     });
     const rows = await res.json();
   
@@ -372,11 +377,13 @@ async function validateCached(type, id, subId = "") {
 async function rejectCached(type, id, subId = "") {
   const key = getCacheKey(type, id, subId);
   if (USE_SUPABASE) {
-    await sbDelete(key);
+    return await sbDelete(key);
   } else {
     const cache = loadCache();
+    const existed = key in cache;
     delete cache[key];
     saveCache(cache);
+    return { ok: true, deletedCount: existed ? 1 : 0 };
   }
 }
 
@@ -2538,7 +2545,12 @@ function TeacherMode({ onClose }) {
   async function handleReject(key) {
     if (confirm("Supprimer ce contenu ?")) {
       const [type, id, subId] = key.split("__");
-      await rejectCached(type, id, subId);
+      const result = await rejectCached(type, id, subId);
+      if (!result?.ok) {
+        alert(`⚠️ La suppression a échoué (${result?.status || result?.error || "erreur inconnue"}). Le contenu est probablement encore présent côté serveur — vérifie les droits de suppression dans Supabase.`);
+      } else if (result.deletedCount === 0) {
+        alert("⚠️ Aucune ligne supprimée — cette entrée n'existait peut-être déjà plus, ou la clé ne correspond à aucune ligne.");
+      }
       refresh();
     }
   }
