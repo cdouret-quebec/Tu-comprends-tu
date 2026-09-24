@@ -164,7 +164,7 @@ const EPOQUES = [
     notions: {
       a2:    { notion: "Le passé composé", notionDesc: "Former et utiliser le passé composé pour raconter des événements simples", format: "trous" },
       b1b2:  { notion: "Futur simple et futur proche", notionDesc: "Exprimer et distinguer projets, prédictions et intentions", format: "trous" },
-      c1c2:  { notion: "Subordonnées complexes et connecteurs", notionDesc: "Articuler causes, conséquences et oppositions avec des structures avancées", format: "trous" }
+      c1c2:  { notion: "Phrases complexes et mots de liaison", notionDesc: "Relier des idées de cause, de conséquence et d'opposition avec des mots de liaison avancés (bien que, de sorte que, quoique...)", format: "trous" }
     }
   },
   {
@@ -182,7 +182,7 @@ const EPOQUES = [
     notions: {
       a2:    { notion: "La phrase nominale et l'ellipse", notionDesc: "Comprendre et utiliser les formules courtes sans verbe très fréquentes au Québec : 'Pas de problème.', 'Correct.', 'Bonne journée.', 'Aucun souci.'", format: "trous" },
       b1b2:  { notion: "Le discours rapporté au présent", notionDesc: "Rapporter les paroles et les positions de quelqu'un avec les verbes déclaratifs", format: "trous" },
-      c1c2:  { notion: "Discours rapporté avec concordance complète", notionDesc: "Maîtriser les changements de temps, de pronoms et d'indicateurs temporels dans le discours indirect", format: "trous" }
+      c1c2:  { notion: "Rapporter les paroles de quelqu'un (au passé)", notionDesc: "Adapter les temps de verbes, les pronoms et les expressions de temps quand on rapporte ce que quelqu'un a dit, dans un contexte passé", format: "trous" }
     }
   },
   {
@@ -191,7 +191,7 @@ const EPOQUES = [
     notions: {
       a2:    { notion: "Les adjectifs et la description littéraire", notionDesc: "Utiliser des adjectifs variés pour décrire des personnages et des lieux dans un texte simple", format: "trous" },
       b1b2:  { notion: "Registres de langue : littéraire vs parlé", notionDesc: "Distinguer et analyser le registre soutenu (français standard) et le registre familier (québécois parlé) dans un même extrait", format: "trous" },
-      c1c2:  { notion: "Le joual comme langue littéraire", notionDesc: "Analyser les caractéristiques linguistiques du joual (phonologie, syntaxe, lexique) chez les auteurs québécois — sans reproduire d'œuvres protégées", format: "trous" }
+      c1c2:  { notion: "Le joual comme langue littéraire", notionDesc: "Analyser les caractéristiques du joual — sa prononciation, sa façon de construire les phrases et son vocabulaire — chez les auteurs québécois, sans reproduire d'œuvres protégées", format: "trous" }
     }
   },
   {
@@ -200,7 +200,7 @@ const EPOQUES = [
     notions: {
       a2:    { notion: "La négation à l'oral", notionDesc: "Comprendre que le 'ne' disparaît à l'oral québécois : 'je sais pas', 'c'est pas grave', 'y'a pas de problème'", format: "trous" },
       b1b2:  { notion: "Les gallicismes temporels", notionDesc: "Maîtriser venir de (passé récent), être en train de (présent progressif) et aller + infinitif (futur proche) — très fréquents à l'oral québécois", format: "trous" },
-      c1c2:  { notion: "Anglicismes grammaticaux et calques syntaxiques", notionDesc: "Identifier et corriger les calques de l'anglais fréquents chez les immigrants : 'être capable à', 'faire du sens', 'prendre pour acquis', 'c'est correct'", format: "trous" }
+      c1c2:  { notion: "Anglicismes grammaticaux (tournures copiées de l'anglais)", notionDesc: "Identifier et corriger les tournures traduites trop directement de l'anglais, fréquentes chez les immigrants : 'être capable à', 'faire du sens', 'prendre pour acquis', 'c'est correct'", format: "trous" }
     }
   }
 ];
@@ -1864,11 +1864,11 @@ function HistoireGrammaireScreen({ onBack }) {
 
     let consigne;
     if (isLitterature && niv === "c1c2") {
-      consigne = `Pour le niveau C1-C2 sur "${ep.label}", crée un exercice d'analyse du joual comme langue littéraire québécoise. IMPORTANT : ne reproduis AUCUN extrait réel des œuvres protégées (Tremblay, Ducharme, etc.). À la place : 1) Décris les caractéristiques linguistiques du joual (phonologie : moé, toé, chu, y'a ; syntaxe : interrogation par intonation, négation sans 'ne' ; lexique : anglicismes, sacres comme intensificateurs) ; 2) Crée des dialogues ORIGINAUX inspirés du style joual, sans copier aucune œuvre existante ; 3) Propose des exercices d'analyse stylistique comparant joual et français standard. Mentionne les auteurs comme contexte historique seulement.`;
+      consigne = `Pour le niveau C1-C2 sur "${ep.label}", crée un exercice d'analyse du joual comme langue littéraire québécoise. IMPORTANT : ne reproduis AUCUN extrait réel des œuvres protégées (Tremblay, Ducharme, etc.). À la place : 1) Décris les caractéristiques du joual — comment il se prononce (ex: moé, toé, chu, y'a), comment ses phrases se construisent (ex: interrogation par intonation, négation sans 'ne'), et son vocabulaire particulier (anglicismes, sacres comme intensificateurs) — SANS utiliser les termes techniques "phonologie", "syntaxe" ou "lexique" dans le texte destiné à l'élève, reste en langage courant ; 2) Crée des dialogues ORIGINAUX inspirés du style joual, sans copier aucune œuvre existante ; 3) Propose des exercices d'analyse stylistique comparant joual et français standard. Mentionne les auteurs comme contexte historique seulement.`;
     } else if (isOralQC) {
       consigne = `Crée un exercice sur les particularités grammaticales du français québécois parlé. Utilise des exemples de conversations réelles au bureau ou dans la vie quotidienne au Québec. Le texte doit montrer clairement la différence entre le français standard écrit et le québécois parlé. Inclus des exemples concrets et des contre-exemples. Crée 3 exercices pratiques de reconnaissance et de transformation.`;
     } else {
-      consigne = `Crée un exercice combinant histoire et grammaire pour l'époque "${ep.label}" (${ep.periode}), contexte : ${ep.contexte}. Le texte historique doit être factuel, intéressant, et illustrer naturellement la notion grammaticale ciblée. Identifie 4-6 mots-clés historiques importants et donne une définition courte (1 phrase) pour chacun dans "mots_cles". Crée 3 exercices d'application.`;
+      consigne = `Crée un exercice combinant histoire et grammaire pour l'époque "${ep.label}" (${ep.periode}), contexte : ${ep.contexte}. Le texte historique doit être factuel, intéressant, et illustrer naturellement la notion grammaticale ciblée. Reste concentré STRICTEMENT sur la notion ciblée : n'introduis pas d'autres modes ou temps avancés (subjonctif imparfait, passé antérieur, etc.) hors-sujet, même ailleurs dans les phrases — registre soutenu mais courant, pas de tournures archaïques rares. Identifie 4-6 mots-clés historiques importants et donne une définition courte (1 phrase) pour chacun dans "mots_cles". Crée 3 exercices d'application.`;
     }
 
     return `Tu es expert en histoire du Québec et du Canada (inspiré de Récitus) ET en grammaire française.
@@ -1891,7 +1891,7 @@ UNIQUEMENT JSON, sans markdown.`;
 ${contextePrompt}
 Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
-IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante").
+IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante"). Reste concentré STRICTEMENT sur la notion "${notion}" : n'introduis pas d'autres modes ou temps avancés (subjonctif imparfait, passé antérieur, etc.) qui ne font pas partie de la notion ciblée, même dans le reste de la phrase autour des trous — ça ajoute une complexité hors-sujet qui déroute l'élève sans servir l'objectif. Garde des phrases dans un registre soutenu mais grammaticalement courant, pas des tournures archaïques ou littéraires rares.
 Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.${traductionNote}
 JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}],"texte_en":string}
 UNIQUEMENT JSON, sans markdown.`;
