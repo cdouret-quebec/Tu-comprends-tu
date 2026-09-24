@@ -1619,6 +1619,18 @@ function TrousGrammaireCard({ data, color }) {
     );
   }
 
+  const idsDansTexte = [...data.texte_trous.matchAll(/\{\{(\d+)\}\}/g)].map(m => m[1]).sort();
+  const idsDansTrous = data.trous.map(t => String(t.id)).sort();
+  const desalignement = idsDansTexte.length !== idsDansTrous.length ||
+    idsDansTexte.some((id, i) => id !== idsDansTrous[i]);
+  if (desalignement) {
+    return (
+      <div style={{ textAlign: "center", padding: 24 }}>
+        <p style={{ fontSize: 14, color: "#888" }}>⚠️ Ce contenu contient une incohérence entre le texte et les réponses (désalignement des trous). En mode Enseignante, supprime-le et génère-le à nouveau.</p>
+      </div>
+    );
+  }
+
   const parts = data.texte_trous.split(/(\{\{\d+\}\})/g);
   const score = checked ? data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === (t.reponse || "").toLowerCase()).length : 0;
 
@@ -1893,6 +1905,7 @@ Niveau de langue : ${niveauLabel[niv]}.
 Notion de grammaire ciblée : ${notion} — ${notionDesc}.
 IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante"). Reste concentré STRICTEMENT sur la notion "${notion}" : n'introduis pas d'autres modes ou temps avancés (subjonctif imparfait, passé antérieur, etc.) qui ne font pas partie de la notion ciblée, même dans le reste de la phrase autour des trous — ça ajoute une complexité hors-sujet qui déroute l'élève sans servir l'objectif. Garde des phrases dans un registre soutenu mais grammaticalement courant, pas des tournures archaïques ou littéraires rares.
 Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.${traductionNote}
+VÉRIFICATION OBLIGATOIRE avant de finaliser : relis chaque trou avec sa réponse insérée directement dans le texte qui l'entoure (les mots juste avant et juste après), et confirme que la phrase complète est grammaticalement correcte. Piège fréquent : si le texte fixe contient déjà un déterminant juste avant le trou (ex: "Ces ___", "les ___", "cette ___"), ne mets JAMAIS un autre déterminant comme réponse (ex: "des", "les") — la réponse doit être un adjectif ou un nom compatible avec le déterminant déjà présent, pas un second déterminant. Dans "mots_a_utiliser", n'utilise QUE des mots français réels et correctement orthographiés — jamais un mot inventé ou mal orthographié, même comme distracteur.
 JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}],"texte_en":string}
 UNIQUEMENT JSON, sans markdown.`;
   }
