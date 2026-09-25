@@ -423,7 +423,7 @@ async function callClaude(messages, system, json = true, retries = 3) {
     try {
       const body = {
         model: "claude-sonnet-4-6",
-        max_tokens: 8000,
+        max_tokens: 16000,
         messages: allMessages
       };
 
@@ -477,7 +477,8 @@ async function callClaude(messages, system, json = true, retries = 3) {
         throw new Error(`Format inattendu : ${cleaned.substring(0, 200)}`);
       }
     } catch (e) {
-      if (attempt < retries && (e.message.includes("fetch") || e.message.includes("network"))) {
+      const retryable = e.message.includes("fetch") || e.message.includes("network") || e.message.includes("Format inattendu") || e.message.includes("Réponse serveur invalide");
+      if (attempt < retries && retryable) {
         await new Promise(r => setTimeout(r, attempt * 2000));
         continue;
       }
