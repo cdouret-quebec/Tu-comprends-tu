@@ -342,6 +342,12 @@ const USE_SUPABASE = window.location.hostname.includes('vercel.app');
 
 function getCacheKey(type, id, subId = "") { return `${type}__${id}__${subId}`; }
 
+// Compare deux réponses en ignorant les accents (claviers non francophones) et la casse
+function reponsesEquivalentes(a, b) {
+  const normaliser = (s) => (s || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return normaliser(a) === normaliser(b);
+}
+
 // Fonctions localStorage (artifact Claude)
 function loadCache() {
   try { return JSON.parse(localStorage.getItem(CACHE_KEY) || "null") || {}; }
@@ -1606,7 +1612,7 @@ function TrousGrammaireCard({ data, color }) {
   useEffect(() => {
     if (checked && !awardedRef.current && data?.trous) {
       awardedRef.current = true;
-      const sc = data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === (t.reponse || "").toLowerCase()).length;
+      const sc = data.trous.filter(t => reponsesEquivalentes(answers[t.id], t.reponse)).length;
       awardNoisette(sc === data.trous.length);
     }
   }, [checked]);
@@ -1657,7 +1663,7 @@ function TrousGrammaireCard({ data, color }) {
     );
   }
 
-  const score = checked ? data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() === (t.reponse || "").toLowerCase()).length : 0;
+  const score = checked ? data.trous.filter(t => reponsesEquivalentes(answers[t.id], t.reponse)).length : 0;
 
   return (
     <div>
@@ -1705,7 +1711,7 @@ function TrousGrammaireCard({ data, color }) {
             const id = match[1];
             const trou = data.trous.find(t => String(t.id) === id);
             const reponse = trou?.reponse || "";
-            const isCorrect = checked && (answers[id] || "").trim().toLowerCase() === reponse.toLowerCase();
+            const isCorrect = checked && reponsesEquivalentes(answers[id], reponse);
             return (
               <input key={i} value={answers[id] || ""} disabled={checked}
                 onChange={e => setAnswers(a => ({ ...a, [id]: e.target.value }))}
