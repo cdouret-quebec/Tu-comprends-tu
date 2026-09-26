@@ -348,6 +348,12 @@ function reponsesEquivalentes(a, b) {
   return normaliser(a) === normaliser(b);
 }
 
+// Accepte la réponse principale d'un trou OU toute autre réponse listée comme équivalente (ex: synonymes également bien conjugués)
+function reponseAcceptee(saisie, trou) {
+  const candidats = [trou?.reponse, ...(trou?.autres_reponses_acceptees || [])];
+  return candidats.some(c => reponsesEquivalentes(saisie, c));
+}
+
 // Mélange un tableau (Fisher-Yates) sans modifier l'original — utilisé pour randomiser l'ordre des choix de QCM
 function melangerTableau(arr) {
   const copie = [...(arr || [])];
@@ -1624,7 +1630,7 @@ function TrousGrammaireCard({ data, color }) {
   useEffect(() => {
     if (checked && !awardedRef.current && data?.trous) {
       awardedRef.current = true;
-      const sc = data.trous.filter(t => reponsesEquivalentes(answers[t.id], t.reponse)).length;
+      const sc = data.trous.filter(t => reponseAcceptee(answers[t.id], t)).length;
       awardNoisette(sc === data.trous.length);
     }
   }, [checked]);
@@ -1684,7 +1690,7 @@ function TrousGrammaireCard({ data, color }) {
     );
   }
 
-  const score = checked ? data.trous.filter(t => reponsesEquivalentes(answers[t.id], t.reponse)).length : 0;
+  const score = checked ? data.trous.filter(t => reponseAcceptee(answers[t.id], t)).length : 0;
 
   return (
     <div>
@@ -1731,14 +1737,13 @@ function TrousGrammaireCard({ data, color }) {
             if (!match) return <span key={i}>{part}</span>;
             const id = match[1];
             const trou = data.trous.find(t => String(t.id) === id);
-            const reponse = trou?.reponse || "";
-            const isCorrect = checked && reponsesEquivalentes(answers[id], reponse);
+            const isCorrect = checked && reponseAcceptee(answers[id], trou);
             return (
               <input key={i} value={answers[id] || ""} disabled={checked}
                 onChange={e => setAnswers(a => ({ ...a, [id]: e.target.value }))}
                 placeholder="..."
                 style={{
-                  width: Math.max(60, (reponse.length || 6) * 11), display: "inline-block",
+                  width: Math.max(60, (trou?.reponse?.length || 6) * 11), display: "inline-block",
                   margin: "0 3px", padding: "2px 6px", borderRadius: 6, fontSize: 14, textAlign: "center",
                   border: `2px solid ${checked ? (isCorrect ? "#065F46" : "#DC2626") : color + "50"}`,
                   background: checked ? (isCorrect ? "#ECFDF5" : "#FEF2F2") : "white",
@@ -1765,9 +1770,9 @@ function TrousGrammaireCard({ data, color }) {
             <span style={{ fontSize: 15, color: "#555", marginLeft: 8 }}>bonnes réponses</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
-            {data.trous.filter(t => (answers[t.id] || "").trim().toLowerCase() !== (t.reponse || "").toLowerCase()).map(t => (
+            {data.trous.filter(t => !reponseAcceptee(answers[t.id], t)).map(t => (
               <div key={t.id} style={{ background: "#FFF7ED", border: "1px solid #FED7AA", borderRadius: 8, padding: "8px 12px", fontSize: 14 }}>
-                <strong style={{ color: "#92400E" }}>Réponse attendue : {t.reponse}</strong>
+                <strong style={{ color: "#92400E" }}>Réponse attendue : {t.reponse}{t.autres_reponses_acceptees?.length ? ` (ou ${t.autres_reponses_acceptees.join(", ")})` : ""}</strong>
                 {t.explication && <p style={{ margin: "3px 0 0", color: "#78350F" }}>{t.explication}</p>}
               </div>
             ))}
@@ -1967,9 +1972,10 @@ Notion de grammaire ciblée : ${notion} — ${notionDesc}.
 IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante"). Reste concentré STRICTEMENT sur la notion "${notion}" : n'introduis pas d'autres modes ou temps avancés (subjonctif imparfait, passé antérieur, etc.) qui ne font pas partie de la notion ciblée, même dans le reste de la phrase autour des trous — ça ajoute une complexité hors-sujet qui déroute l'élève sans servir l'objectif. Garde des phrases dans un registre soutenu mais grammaticalement courant, pas des tournures archaïques ou littéraires rares.
 Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.${traductionNote}
 RÈGLE ABSOLUE SUR LE FORMAT : les champs "reponse" et "explication" sont lus TELS QUELS par l'élève. N'y écris JAMAIS une remarque adressée à toi-même ou une note de révision (ex: "Attendez, ce trou n'est pas dans mots_a_utiliser", "Correction :", "Erreur détectée :"). Si en te relisant tu détectes une erreur dans une réponse, CORRIGE SILENCIEUSEMENT la valeur elle-même (et mets-la à jour dans "mots_a_utiliser" en conséquence) avant de produire le JSON final — le JSON que tu renvoies doit être la version déjà corrigée, sans aucune trace du processus de vérification.
+RÉPONSES MULTIPLES ACCEPTÉES : si plusieurs mots de "mots_a_utiliser" sont des SYNONYMES interchangeables dans un trou donné (ex: des verbes déclaratifs comme "affirme/déclare/soutient/précise/explique/constate" — le sens ne permet pas de deviner lequel est "le" bon), ne force pas un seul mot comme unique bonne réponse : mets le mot de ton choix dans "reponse", et liste TOUS les autres mots de la banque qui seraient tout aussi corrects à cet endroit (une fois correctement conjugués/accordés pour ce trou précis) dans "autres_reponses_acceptees". Ce qui compte pour la notation, c'est que le mot choisi par l'élève soit grammaticalement bien accordé à cet endroit (bon temps, bonne personne, bon nombre) — pas qu'il devine LE mot que tu avais en tête. N'utilise "autres_reponses_acceptees" que pour de vrais synonymes ou variantes également correctes, jamais pour des mots qui changeraient le sens de la phrase.
 Sur l'accord des temps composés (passé composé, plus-que-parfait) : l'auxiliaire (avoir/être) s'accorde TOUJOURS avec le SUJET du verbe (ex: "le mouvement avait nourri" — "avait" est singulier car "le mouvement" est singulier, peu importe qu'un complément d'objet direct pluriel apparaisse avant dans la phrase). Pour ce niveau, ÉVITE les cas où le participe passé doit en plus s'accorder avec un complément d'objet direct placé avant l'auxiliaire (ex: "les espoirs que le mouvement avait nourris") — c'est une règle avancée hors-sujet par rapport à la concordance des temps, qui ajoute un risque d'erreur inutile ; préfère des phrases simples où le participe reste invariable (COD absent ou placé après le verbe).
 VÉRIFICATION OBLIGATOIRE avant de finaliser : relis chaque trou avec sa réponse insérée directement dans le texte qui l'entoure (les mots juste avant et juste après), et confirme que la phrase complète est grammaticalement correcte — vérifie en particulier que ta réponse n'est PAS identique au mot qui se trouve déjà juste avant ou juste après le trou dans le texte fixe (ex: ne mets pas "anglais" comme réponse si le mot "anglais" suit déjà immédiatement le trou — ça créerait "anglais anglais"). N'utilise pas deux fois le même mot-clé dans le texte (ex: "curés" ne doit apparaître qu'une seule fois) — varie le vocabulaire. Le mot "patriotes" (désignant le mouvement de 1837-1838) s'accorde par convention au masculin — ne fabrique jamais artificiellement un groupe "patriotes femmes" ou une scène où "patriotes" serait féminin, ce n'est pas naturel. Plus généralement, pour ce niveau, préfère des exemples SIMPLES et NATURELS d'accord (un seul genre à la fois : "des soldats courageux" OU "des femmes courageuses", pas un mélange artificiel des deux) plutôt que de fabriquer une scène de groupe mixte homme/femme juste pour illustrer une règle d'accord avancée — cette règle (le masculin l'emporte sur un groupe mixte) ne doit s'appliquer que si un tel groupe apparaît naturellement dans le contexte, jamais construite exprès. Piège fréquent : si le texte fixe contient déjà un déterminant juste avant le trou (ex: "Ces ___", "les ___", "cette ___"), ne mets JAMAIS un autre déterminant comme réponse (ex: "des", "les") — la réponse doit être un adjectif ou un nom compatible avec le déterminant déjà présent, pas un second déterminant. Les adjectifs de nationalité/origine (français, anglais, britannique, canadien, autochtone, etc.) se placent TOUJOURS après le nom, jamais avant ("leurs traditions françaises", PAS "leurs françaises traditions") — place le trou après le nom dans ce cas. Dans "mots_a_utiliser", n'utilise QUE des mots français réels et correctement orthographiés — jamais un mot inventé ou mal orthographié, même comme distracteur. La valeur EXACTE de chaque "reponse" dans "trous" doit apparaître littéralement, telle quelle (même orthographe, même forme), au moins une fois dans "mots_a_utiliser" — vérifie ce point mot par mot avant de finaliser, une incohérence ici rend l'exercice injouable.
-JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}],"texte_en":string}
+JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"autres_reponses_acceptees":[string],"explication":string}],"texte_en":string}
 UNIQUEMENT JSON, sans markdown.`;
   }
 
@@ -2596,7 +2602,7 @@ function TeacherMode({ onClose }) {
           prompt = modeHG === "quiz"
             ? `Quiz sur "${ep.label}", notion: ${notionData.notion}. JSON: {"titre":string,"questions":[{"question":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]} UNIQUEMENT JSON.`
             : notionData.format === "trous"
-              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. Inclus "mots_a_utiliser": liste mélangée des mots à placer dans les trous. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`
+              ? `Texte à trous sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. Inclus "mots_a_utiliser": liste mélangée des mots à placer dans les trous. Si plusieurs mots de la banque sont des synonymes interchangeables pour un trou, liste les autres comme valides dans "autres_reponses_acceptees". JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"texte_titre":string,"texte_trous":string,"mots_a_utiliser":[string],"trous":[{"id":number,"reponse":string,"autres_reponses_acceptees":[string],"explication":string}]} UNIQUEMENT JSON.`
               : `Texte + exercices sur "${ep.label}" (${ep.periode}), notion: ${notionData.notion}. JSON: {"titre":string,"periode_precise":string,"notion_titre":string,"notion_explication":string,"notion_exemples":[string],"texte_titre":string,"texte":string,"mots_cles":[{"terme":string,"definition":string}],"repere_historique":string,"exercices":[{"consigne":string,"reponse":string,"explication":string}]} UNIQUEMENT JSON.`;
         }
       }
