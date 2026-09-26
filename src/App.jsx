@@ -348,6 +348,16 @@ function reponsesEquivalentes(a, b) {
   return normaliser(a) === normaliser(b);
 }
 
+// Mélange un tableau (Fisher-Yates) sans modifier l'original — utilisé pour randomiser l'ordre des choix de QCM
+function melangerTableau(arr) {
+  const copie = [...(arr || [])];
+  for (let i = copie.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
 // Fonctions localStorage (artifact Claude)
 function loadCache() {
   try { return JSON.parse(localStorage.getItem(CACHE_KEY) || "null") || {}; }
@@ -614,11 +624,12 @@ function SimulationQCM({ data }) {
   const [choix, setChoix] = useState({});
   const [termine, setTermine] = useState(false);
   const ann = data.annotations || [];
+  const sc = data?.scenarios || [];
+  const tour = sc[etape];
+  const choixMelanges = useMemo(() => melangerTableau(tour?.choix), [tour]);
 
   if (!data?.scenarios?.length) return <p style={{ color: "#888", fontSize: 15 }}>Contenu en cours de préparation.</p>;
 
-  const sc = data.scenarios;
-  const tour = sc[etape];
   const total = sc.length;
   const correctAnswer = (s) => s.bonne_reponse || s["bonne_réponse"];
   const score = Object.entries(choix).filter(([i, c]) => correctAnswer(sc[i] || {}) === c).length;
@@ -690,7 +701,7 @@ function SimulationQCM({ data }) {
       {/* Choix de réponse */}
       <p style={{ fontSize: 14, color: "#888", margin: "0 0 8px" }}>Comment tu réponds ?</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
-        {tour.choix.map(c => {
+        {choixMelanges.map(c => {
           const isChosen = choix[etape] === c.lettre;
           const isCorrect = c.lettre === bonneReponse;
           let bg = "white", border = "1px solid #E5E7EB", color = "#1F2937";
@@ -1778,6 +1789,7 @@ function HGQuizCard({ data, color, onRetry }) {
 
   const q = allQuestions[currentIdx];
   const total = allQuestions.length;
+  const choixMelanges = useMemo(() => melangerTableau(q?.choix), [q]);
   const lettresDupliquees = q?.choix && new Set(q.choix.map(c => c.lettre)).size !== q.choix.length;
   if (lettresDupliquees) {
     return (
@@ -1863,7 +1875,7 @@ function HGQuizCard({ data, color, onRetry }) {
           )}
         </div>
         <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
-          {q.choix.map(c => (
+          {choixMelanges.map(c => (
             <button key={c.lettre} onClick={() => !isSubmitted && setAnswers(a => ({ ...a, [currentIdx]: c.lettre }))}
               style={{ ...cs(c.lettre), borderRadius: 8, padding: "10px 12px", cursor: isSubmitted ? "default" : "pointer", textAlign: "left", fontSize: 14, display: "flex", gap: 10, alignItems: "flex-start", width: "100%" }}>
               <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0, background: answers[currentIdx] === c.lettre ? color : "#E5E7EB", color: answers[currentIdx] === c.lettre ? "white" : "#6B7280" }}>{c.lettre}</span>
@@ -3051,6 +3063,7 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
 
   const q = allQuestions[currentIdx];
   const total = allQuestions.length;
+  const choixMelanges = useMemo(() => melangerTableau(q?.choix), [q]);
   const lettresDupliquees = q?.choix && new Set(q.choix.map(c => c.lettre)).size !== q.choix.length;
   if (lettresDupliquees) {
     return (
@@ -3170,7 +3183,7 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
           <p style={{ margin: 0, fontSize: 15, fontWeight: 600, color: "#111827", lineHeight: 1.5 }}>{q.question}</p>
         </div>
         <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
-          {q.choix.map(c => (
+          {choixMelanges.map(c => (
             <button key={c.lettre} onClick={() => !isSubmitted && setAnswers(a => ({ ...a, [currentIdx]: c.lettre }))}
               style={{ ...cs(c.lettre), borderRadius: 8, padding: "10px 12px", cursor: isSubmitted ? "default" : "pointer", textAlign: "left", fontSize: 14, display: "flex", gap: 10, alignItems: "flex-start", transition: "all 0.15s", width: "100%" }}>
               <span style={{ minWidth: 22, height: 22, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0, background: answers[currentIdx] === c.lettre ? color : "#E5E7EB", color: answers[currentIdx] === c.lettre ? "white" : "#6B7280" }}>{c.lettre}</span>
