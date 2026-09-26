@@ -1778,6 +1778,14 @@ function HGQuizCard({ data, color, onRetry }) {
 
   const q = allQuestions[currentIdx];
   const total = allQuestions.length;
+  const lettresDupliquees = q?.choix && new Set(q.choix.map(c => c.lettre)).size !== q.choix.length;
+  if (lettresDupliquees) {
+    return (
+      <div style={{ textAlign: "center", padding: 24 }}>
+        <p style={{ fontSize: 14, color: "#888" }}>⚠️ Cette question contient des choix mal étiquetés (lettres dupliquées). En mode Enseignante, supprime-la et génère-la à nouveau.</p>
+      </div>
+    );
+  }
   const isSubmitted = submitted[currentIdx];
   const isCorrect = isSubmitted && answers[currentIdx] === q?.bonne_reponse;
   const nbCorrect = Object.keys(submitted).filter(i => allQuestions[i]?.bonne_reponse === answers[i]).length;
@@ -1964,6 +1972,7 @@ UNIQUEMENT JSON, sans markdown.`;
 Génère 5 questions QCM DISTINCTES testant la notion "${notion}" (${notionDesc}) ${contexteQuiz}.
 Niveau : ${niveauLabel[niv]}. Mélange reconnaissance, transformation et application pratique. Chaque question doit tester un aspect DIFFÉRENT de la notion.
 IMPORTANT sur la rigueur grammaticale : avant de fixer "bonne_reponse", vérifie que ta réponse est incontestable, pas juste plausible. Piège fréquent avec imparfait/passé simple : un connecteur de simultanéité comme "tandis que", "pendant que", "alors que" relie normalement deux actions qui durent en parallèle dans le récit — les deux verbes vont alors à l'IMPARFAIT, pas un mélange passé simple/imparfait. Le passé simple s'utilise pour une action ponctuelle qui fait avancer le récit, pas pour deux états qui se déroulent en même temps. Autre piège fréquent, sur l'accord : si un groupe mixte apparaît NATURELLEMENT dans ta phrase (ex: "des hommes et des femmes ___"), rappelle-toi que le masculin pluriel l'emporte toujours — mais ne fabrique pas artificiellement une scène de groupe mixte juste pour tester cette règle ; préfère un exemple simple et naturel d'accord (un seul genre à la fois). Le mot "patriotes" (mouvement de 1837-1838) s'accorde par convention au masculin. Ne construis pas une explication qui justifie après coup une réponse discutable — si tu hésites entre deux réponses également défendables, choisis un autre exemple de phrase plutôt qu'un cas ambigu.
+IMPORTANT sur le registre, même au niveau C1-C2 : "soutenu" signifie du français cultivé mais VIVANT, jamais un français archaïque ou littéraire suranné. INTERDICTION d'utiliser : le subjonctif imparfait (ex: "accordât", "pussent", "fût"), le subjonctif plus-que-parfait (ex: "eût accepté", "eût perdu"), et les locutions optatives archaïques comme "plût au ciel que", "puissé-je". Ces formes sont pratiquement éteintes et un francophone cultivé d'aujourd'hui ne les emploierait jamais, même à l'écrit soutenu — les enseigner comme "la bonne réponse soutenue" induirait l'élève en erreur. Utilise plutôt le subjonctif présent ou le subjonctif passé, qui restent la norme même en français très soutenu. De même, préfère des locutions de doute/souhait naturelles et courantes ("je doute que", "il se peut que", "il est dommage que", "je souhaiterais que") plutôt que des tournures rares ou précieuses ("il est douteux que" sonne compassé) : le critère n'est pas la rareté de l'expression mais son usage réel par un locuteur cultivé contemporain. Dans le tableau "choix", chaque "lettre" doit être unique (A, B, C, D) — vérifie qu'aucune lettre n'est utilisée deux fois avant de finaliser.
 Inclus aussi "question_en" pour chaque question : une traduction anglaise fidèle de la question (pas des choix de réponse, qui sont la grammaire à tester), pour aider les élèves qui bloquent sur le sens plutôt que sur la grammaire elle-même.
 JSON: {"titre":string,"quiz":[{"question":string,"question_en":string,"choix":[{"lettre":"A"|"B"|"C"|"D","texte":string}],"bonne_reponse":"A"|"B"|"C"|"D","explication":string}]}
 UNIQUEMENT JSON, sans markdown.`;
@@ -3042,6 +3051,14 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
 
   const q = allQuestions[currentIdx];
   const total = allQuestions.length;
+  const lettresDupliquees = q?.choix && new Set(q.choix.map(c => c.lettre)).size !== q.choix.length;
+  if (lettresDupliquees) {
+    return (
+      <div style={{ textAlign: "center", padding: 24 }}>
+        <p style={{ fontSize: 14, color: "#888" }}>⚠️ Cette question contient des choix mal étiquetés (lettres dupliquées). En mode Enseignante, supprime-la et génère-la à nouveau.</p>
+      </div>
+    );
+  }
   const isSubmitted = submitted[currentIdx];
   const isCorrect = isSubmitted && answers[currentIdx] === q?.bonne_reponse;
   const nbCorrect = Object.keys(submitted).filter(i => allQuestions[i]?.bonne_reponse === answers[i]).length;
