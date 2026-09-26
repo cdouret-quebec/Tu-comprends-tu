@@ -1738,12 +1738,14 @@ function TrousGrammaireCard({ data, color }) {
             const id = match[1];
             const trou = data.trous.find(t => String(t.id) === id);
             const isCorrect = checked && reponseAcceptee(answers[id], trou);
+            const longueurs = [trou?.reponse?.length || 0, (answers[id] || "").length, ...(trou?.autres_reponses_acceptees || []).map(r => r.length)];
+            const largeurChamp = Math.max(70, (Math.max(6, ...longueurs) + 1) * 11);
             return (
               <input key={i} value={answers[id] || ""} disabled={checked}
                 onChange={e => setAnswers(a => ({ ...a, [id]: e.target.value }))}
                 placeholder="..."
                 style={{
-                  width: Math.max(60, (trou?.reponse?.length || 6) * 11), display: "inline-block",
+                  width: largeurChamp, display: "inline-block",
                   margin: "0 3px", padding: "2px 6px", borderRadius: 6, fontSize: 14, textAlign: "center",
                   border: `2px solid ${checked ? (isCorrect ? "#065F46" : "#DC2626") : color + "50"}`,
                   background: checked ? (isCorrect ? "#ECFDF5" : "#FEF2F2") : "white",
