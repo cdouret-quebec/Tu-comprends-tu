@@ -1586,7 +1586,7 @@ function NoisetteReward({ show, gold }) {
         ? <img src={GOLD_NUT_ICON} alt="Noisette dorée" style={{ width: 18, height: 18, objectFit: "contain", flexShrink: 0 }} />
         : <span style={{ fontSize: 15 }}>🌰</span>}
       <span style={{ fontSize: 14, fontWeight: 600, color: gold ? "#92400E" : "#5F4A2E" }}>
-        {gold ? "Noisette dorée — sans faute !" : "Noisette gagnée !"}
+        {gold ? "Noisette dorée — sans faute !" : "Tu as mérité une noisette !"}
       </span>
       <style>{`@keyframes noisettePop { 0% { transform: scale(0.8); opacity: 0; } 60% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }`}</style>
     </div>
@@ -1803,7 +1803,7 @@ function HGQuizCard({ data, color, onRetry }) {
     return (
       <div style={{ textAlign: "center", padding: "20px 0" }}>
         <div style={{ fontSize: 48, marginBottom: 14 }}>🎉</div>
-        <h3 style={{ margin: "0 0 8px", color: "#111" }}>Tous les quiz complétés !</h3>
+        <h3 style={{ margin: "0 0 8px", color: "#111" }}>Tu as répondu à toutes les questions !</h3>
         <div style={{ background: sb, border: `1px solid ${sc}40`, borderRadius: 12, padding: "16px 20px", marginBottom: 20, display: "inline-block" }}>
           <div style={{ fontSize: 32, fontWeight: 800, color: sc }}>{finalScore}/{total}</div>
           <div style={{ fontSize: 14, color: sc, marginTop: 4 }}>
@@ -3093,7 +3093,7 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
     return (
       <div style={{ textAlign: "center", padding: "20px 0" }}>
         <div style={{ fontSize: 48, marginBottom: 14 }}>🎉</div>
-        <h3 style={{ margin: "0 0 8px", color: "#111" }}>Tous les quiz complétés !</h3>
+        <h3 style={{ margin: "0 0 8px", color: "#111" }}>Tu as répondu à toutes les questions !</h3>
         <div style={{ background: sb, border: `1px solid ${sc}40`, borderRadius: 12, padding: "16px 20px", marginBottom: 20, display: "inline-block" }}>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <PawTrail total={total} filled={finalScore} />
