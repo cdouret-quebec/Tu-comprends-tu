@@ -1870,7 +1870,11 @@ function HGQuizCard({ data, color, onRetry }) {
     );
   }
 
-  if (!q) return null;
+  if (!q) return (
+    <div style={{ textAlign: "center", padding: 24 }}>
+      <p style={{ fontSize: 14, color: "#888" }}>⚠️ Ce quiz ne contient aucune question (format de contenu inattendu). En mode Enseignante, supprime-le et génère-le à nouveau, ou recolle un JSON complet contenant la clé "quiz".</p>
+    </div>
+  );
 
   return (
     <div>
@@ -3192,7 +3196,11 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
     );
   }
 
-  if (!q) return null;
+  if (!q) return (
+    <div style={{ textAlign: "center", padding: 24 }}>
+      <p style={{ fontSize: 14, color: "#888" }}>⚠️ Ce quiz ne contient aucune question (format de contenu inattendu). En mode Enseignante, supprime-le et génère-le à nouveau, ou recolle un JSON complet contenant la clé "quiz".</p>
+    </div>
+  );
 
   return (
     <div>
