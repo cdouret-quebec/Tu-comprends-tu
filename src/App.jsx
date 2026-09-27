@@ -200,7 +200,7 @@ const EPOQUES = [
     notions: {
       a2:    { notion: "La négation à l'oral", notionDesc: "Comprendre que le 'ne' disparaît à l'oral québécois : 'je sais pas', 'c'est pas grave', 'y'a pas de problème'", format: "trous" },
       b1b2:  { notion: "Les gallicismes temporels", notionDesc: "Maîtriser venir de (passé récent), être en train de (présent progressif) et aller + infinitif (futur proche) — très fréquents à l'oral québécois", format: "trous" },
-      c1c2:  { notion: "Anglicismes grammaticaux (tournures copiées de l'anglais)", notionDesc: "Identifier des tournures calquées sur l'anglais, très répandues et authentiques en français québécois parlé (utilisées par des francophones de longue date, pas seulement des nouveaux arrivants) : 'être capable à', 'faire du sens', 'prendre pour acquis', 'c'est correct' — savoir les reconnaître et connaître leur équivalent en registre plus soutenu/écrit", format: "trous" }
+      c1c2:  { notion: "L'influence de l'anglais sur le français québécois", notionDesc: "Reconnaître des expressions courantes du français québécois parlé influencées par l'anglais ('ça fait du sens', 'prendre pour acquis', 'c'est correct', 'appliquer pour un poste', 'supporter un projet') et connaître les formulations qu'on trouve plutôt dans un registre formel — deux registres légitimes, sans hiérarchie entre eux", format: "trous" }
     }
   }
 ];
@@ -1982,7 +1982,7 @@ UNIQUEMENT JSON, sans markdown.`;
   function buildTrousPrompt(ep, niv = niveau) {
     const { notion, notionDesc } = getNotionPourNiveau(ep, niv);
     const isOralQC = ep.id === "oral_qc";
-    const isAnglicismesNotion = /anglicismes/i.test(notion);
+    const isAnglicismesNotion = /anglicisme|influence de l'anglais/i.test(notion);
     const anglicismesNote = isAnglicismesNotion ? `
 IMPORTANT sur le cadrage de cette notion : ces tournures calquées sur l'anglais ("faire du sens", "être capable à", "prendre pour acquis", "c'est correct", etc.) sont des formes AUTHENTIQUES et très répandues du français québécois parlé, utilisées couramment par des francophones de longue date, PAS un phénomène propre aux immigrants, aux nouveaux arrivants ou aux locuteurs non natifs. Ne présente JAMAIS ces tournures comme des "fautes" typiques de personnes dont le français serait une langue seconde — ce serait à la fois inexact et désobligeant envers les locuteurs québécois qui les emploient depuis toujours. Cadre plutôt la distinction comme une question de REGISTRE : ces formes sont normales à l'oral et dans un contexte informel, et un registre plus soutenu ou l'écrit formel préfère d'autres formulations — les deux existent légitimement, ce n'est pas une hiérarchie de correction/incorrection liée à l'origine du locuteur.
 ÉVITE ABSOLUMENT tout vocabulaire hiérarchisant qui implique qu'une des deux formes est supérieure ou "la vraie" : bannis des tournures comme "le français standard préfère", "la forme correcte est", "la tournure correcte", "calque fautif". Utilise plutôt un vocabulaire purement descriptif de registre : "à l'oral informel, on dit X ; en registre plus soutenu ou à l'écrit, on dit Y" — présente les deux comme deux façons de parler légitimes selon le contexte, jamais comme une erreur à corriger.` : "";
