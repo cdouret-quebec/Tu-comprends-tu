@@ -200,7 +200,7 @@ const EPOQUES = [
     notions: {
       a2:    { notion: "La négation à l'oral", notionDesc: "Comprendre que le 'ne' disparaît à l'oral québécois : 'je sais pas', 'c'est pas grave', 'y'a pas de problème'", format: "trous" },
       b1b2:  { notion: "Les gallicismes temporels", notionDesc: "Maîtriser venir de (passé récent), être en train de (présent progressif) et aller + infinitif (futur proche) — très fréquents à l'oral québécois", format: "trous" },
-      c1c2:  { notion: "Anglicismes grammaticaux (tournures copiées de l'anglais)", notionDesc: "Identifier et corriger les tournures traduites trop directement de l'anglais, fréquentes chez les immigrants : 'être capable à', 'faire du sens', 'prendre pour acquis', 'c'est correct'", format: "trous" }
+      c1c2:  { notion: "Anglicismes grammaticaux (tournures copiées de l'anglais)", notionDesc: "Identifier des tournures calquées sur l'anglais, très répandues et authentiques en français québécois parlé (utilisées par des francophones de longue date, pas seulement des nouveaux arrivants) : 'être capable à', 'faire du sens', 'prendre pour acquis', 'c'est correct' — savoir les reconnaître et connaître leur équivalent en registre plus soutenu/écrit", format: "trous" }
     }
   }
 ];
@@ -1981,6 +1981,9 @@ UNIQUEMENT JSON, sans markdown.`;
   function buildTrousPrompt(ep, niv = niveau) {
     const { notion, notionDesc } = getNotionPourNiveau(ep, niv);
     const isOralQC = ep.id === "oral_qc";
+    const isAnglicismesNotion = /anglicismes/i.test(notion);
+    const anglicismesNote = isAnglicismesNotion ? `
+IMPORTANT sur le cadrage de cette notion : ces tournures calquées sur l'anglais ("faire du sens", "être capable à", "prendre pour acquis", "c'est correct", etc.) sont des formes AUTHENTIQUES et très répandues du français québécois parlé, utilisées couramment par des francophones de longue date, PAS un phénomène propre aux immigrants, aux nouveaux arrivants ou aux locuteurs non natifs. Ne présente JAMAIS ces tournures comme des "fautes" typiques de personnes dont le français serait une langue seconde — ce serait à la fois inexact et désobligeant envers les locuteurs québécois qui les emploient depuis toujours. Cadre plutôt la distinction comme une question de REGISTRE : ces formes sont normales à l'oral et dans un contexte informel, et un registre plus soutenu ou l'écrit formel préfère d'autres formulations — les deux existent légitimement, ce n'est pas une hiérarchie de correction/incorrection liée à l'origine du locuteur.` : "";
     const contextePrompt = isOralQC
       ? `Crée un texte sur une situation quotidienne au Québec (conversation au bureau, à l'épicerie, entre collègues) illustrant les particularités grammaticales du québécois parlé.`
       : `Crée un texte historique factuel sur l'époque "${ep.label}" (${ep.periode}), contexte : ${ep.contexte}.`;
@@ -1989,7 +1992,7 @@ UNIQUEMENT JSON, sans markdown.`;
     return `Tu es expert en grammaire française et en québécois parlé.
 ${contextePrompt}
 Niveau de langue : ${niveauLabel[niv]}.
-Notion de grammaire ciblée : ${notion} — ${notionDesc}.
+Notion de grammaire ciblée : ${notion} — ${notionDesc}.${anglicismesNote}
 IMPORTANT : Vérifie soigneusement les formes féminines et plurielles — évite les erreurs comme "colonne" pour le féminin de "colon" (correct : "colone" ou "habitante"). Reste concentré STRICTEMENT sur la notion "${notion}" : n'introduis pas d'autres modes ou temps avancés (subjonctif imparfait, passé antérieur, etc.) qui ne font pas partie de la notion ciblée, même dans le reste de la phrase autour des trous — ça ajoute une complexité hors-sujet qui déroute l'élève sans servir l'objectif. Garde des phrases dans un registre soutenu mais grammaticalement courant, pas des tournures archaïques ou littéraires rares.
 Texte de 6-10 phrases. Choisis 5-7 mots/groupes illustrant la notion, remplace par {{1}}, {{2}}... Dans "trous", donne la réponse exacte et une explication grammaticale courte. Dans "mots_a_utiliser", liste les mots/formes à placer dans les trous dans le désordre (mélangés) pour que l'élève puisse les choisir sans devoir les inventer — c'est essentiel pour éviter les fausses erreurs.${traductionNote}
 RÈGLE ABSOLUE SUR LE FORMAT : les champs "reponse" et "explication" sont lus TELS QUELS par l'élève. N'y écris JAMAIS une remarque adressée à toi-même ou une note de révision (ex: "Attendez, ce trou n'est pas dans mots_a_utiliser", "Correction :", "Erreur détectée :"). Si en te relisant tu détectes une erreur dans une réponse, CORRIGE SILENCIEUSEMENT la valeur elle-même (et mets-la à jour dans "mots_a_utiliser" en conséquence) avant de produire le JSON final — le JSON que tu renvoies doit être la version déjà corrigée, sans aucune trace du processus de vérification.
