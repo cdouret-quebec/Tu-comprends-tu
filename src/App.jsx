@@ -3653,6 +3653,8 @@ function LexiqueScreen({ onBack }) {
   const [lex, setLex] = useState(() => loadLexique());
   const [editingTerme, setEditingTerme] = useState(null);
   const [editText, setEditText] = useState("");
+  const [ajoutTexte, setAjoutTexte] = useState("");
+  const [ajoutOuvert, setAjoutOuvert] = useState(false);
   const entries = Object.values(lex).sort((a, b) => a.terme.localeCompare(b.terme, "fr"));
   const filtered = entries.filter(e =>
     !search || e.terme.toLowerCase().includes(search.toLowerCase()) || e.definition.toLowerCase().includes(search.toLowerCase())
@@ -3685,6 +3687,25 @@ function LexiqueScreen({ onBack }) {
       ? `Aucun doublon trouvé (${apres} expressions) — mais la casse des mots a été uniformisée.`
       : `${avant - apres} doublon(s) fusionné(s) — ${apres} expressions au total.`);
   }
+  function ajouterEnBloc() {
+    const lignes = ajoutTexte.split("\n").map(l => l.trim()).filter(Boolean);
+    const annotations = [];
+    const ignorees = [];
+    lignes.forEach(ligne => {
+      const m = ligne.match(/^(.+?)\s*[:—-]\s*(.+)$/);
+      if (m) annotations.push({ terme: m[1].trim(), definition: m[2].trim() });
+      else ignorees.push(ligne);
+    });
+    if (annotations.length) {
+      addToLexique(annotations, "Ajout manuel");
+      setLex(loadLexique());
+    }
+    setAjoutTexte("");
+    setAjoutOuvert(false);
+    alert(ignorees.length
+      ? `${annotations.length} expression(s) ajoutée(s). ${ignorees.length} ligne(s) ignorée(s) (format non reconnu) : ${ignorees.join(" / ")}`
+      : `${annotations.length} expression(s) ajoutée(s) avec succès !`);
+  }
   return (
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       <div style={{ background: D.noir, padding: "16px" }}>
@@ -3703,10 +3724,36 @@ function LexiqueScreen({ onBack }) {
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Chercher une expression…"
           style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: `1px solid ${D.gris2}`, fontSize: 14, marginBottom: 14, boxSizing: "border-box", outline: "none", background: D.blanc, color: D.noir }} />
         {isTeacherMode() && (
-          <button onClick={fusionnerDoublons}
-            style={{ width: "100%", padding: "8px 14px", borderRadius: 8, border: `1px solid ${D.gris2}`, background: D.blanc, color: D.gris4, fontSize: 13, cursor: "pointer", marginBottom: 14 }}>
-            🧹 Fusionner les doublons (articles/majuscules)
-          </button>
+          <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+            <button onClick={() => setAjoutOuvert(v => !v)}
+              style={{ flex: 1, padding: "8px 14px", borderRadius: 8, border: `1px solid ${D.gris2}`, background: D.blanc, color: D.gris4, fontSize: 13, cursor: "pointer" }}>
+              ➕ Ajouter des expressions
+            </button>
+            <button onClick={fusionnerDoublons}
+              style={{ flex: 1, padding: "8px 14px", borderRadius: 8, border: `1px solid ${D.gris2}`, background: D.blanc, color: D.gris4, fontSize: 13, cursor: "pointer" }}>
+              🧹 Fusionner les doublons
+            </button>
+          </div>
+        )}
+        {isTeacherMode() && ajoutOuvert && (
+          <div style={{ background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: 8, padding: 12, marginBottom: 14 }}>
+            <p style={{ margin: "0 0 6px", fontSize: 13, color: D.gris4 }}>
+              Une expression par ligne, au format <strong>terme : définition</strong> (le tiret « - » ou le tiret cadratin « — » fonctionnent aussi comme séparateur).
+            </p>
+            <textarea value={ajoutTexte} onChange={e => setAjoutTexte(e.target.value)} rows={6}
+              placeholder={"péter de la broue : Se vanter, exagérer ses réussites ou ses capacités.\nse pogner le beigne : Paresser, ne rien faire, perdre son temps."}
+              style={{ width: "100%", boxSizing: "border-box", padding: "8px 10px", borderRadius: 6, border: `1px solid ${D.gris2}`, fontSize: 14, fontFamily: "inherit", resize: "vertical", marginBottom: 8 }} />
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={ajouterEnBloc} disabled={!ajoutTexte.trim()}
+                style={{ background: D.rouge, color: D.blanc, border: "none", borderRadius: 6, padding: "6px 14px", fontSize: 13, fontWeight: 600, cursor: ajoutTexte.trim() ? "pointer" : "not-allowed", opacity: ajoutTexte.trim() ? 1 : 0.5 }}>
+                Ajouter tout
+              </button>
+              <button onClick={() => { setAjoutOuvert(false); setAjoutTexte(""); }}
+                style={{ background: "none", border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "6px 14px", fontSize: 13, cursor: "pointer", color: D.gris4 }}>
+                Annuler
+              </button>
+            </div>
+          </div>
         )}
         <a href="https://www.oqlf.gouv.qc.ca/ressources/bibliotheque/dictionnaires/vocabulaire-immigration.aspx" target="_blank" rel="noopener noreferrer"
           style={{ display: "block", background: "#EAF1F8", border: "1px solid #A9C6E0", borderRadius: 8, padding: "10px 14px", marginBottom: 14, textDecoration: "none" }}>
