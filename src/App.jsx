@@ -869,7 +869,10 @@ function SimulationQCM({ data }) {
       <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 16 }}>
         <div style={{ width: 36, height: 36, borderRadius: "50%", background: ST_COLOR, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, flexShrink: 0 }}>M</div>
         <div style={{ background: "#F8F6FF", borderRadius: "4px 14px 14px 14px", padding: "10px 13px", fontSize: 14, lineHeight: 1.6, flex: 1 }}>
-          <AnnotatedText text={tour.ce_que_dit_martin} annotations={ann} />
+          <span style={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
+            <span style={{ flex: 1 }}><AnnotatedText text={tour.ce_que_dit_martin} annotations={ann} /></span>
+            <LireBouton texte={tour.ce_que_dit_martin} voiceName={VOIX_QC.M} color={ST_COLOR} />
+          </span>
           {tour.contexte && <p style={{ margin: "6px 0 0", fontSize: 13, color: "#888", fontStyle: "italic" }}>📍 {tour.contexte}</p>}
         </div>
       </div>
