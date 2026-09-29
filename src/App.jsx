@@ -3615,6 +3615,8 @@ function LexiqueScreen({ onBack }) {
   const [search, setSearch] = useState("");
   const [fontSize, setFontSize] = useState(loadFontSize());
   const [lex, setLex] = useState(() => loadLexique());
+  const [editingTerme, setEditingTerme] = useState(null);
+  const [editText, setEditText] = useState("");
   const entries = Object.values(lex).sort((a, b) => a.terme.localeCompare(b.terme, "fr"));
   const filtered = entries.filter(e =>
     !search || e.terme.toLowerCase().includes(search.toLowerCase()) || e.definition.toLowerCase().includes(search.toLowerCase())
@@ -3625,6 +3627,17 @@ function LexiqueScreen({ onBack }) {
     delete updated[key];
     saveLexique(updated);
     setLex(updated);
+  }
+  function startEdit(entry) {
+    setEditingTerme(entry.terme);
+    setEditText(entry.definition);
+  }
+  function saveEdit(terme) {
+    const key = terme.toLowerCase().trim();
+    const updated = { ...lex, [key]: { ...lex[key], definition: editText } };
+    saveLexique(updated);
+    setLex(updated);
+    setEditingTerme(null);
   }
   return (
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
@@ -3663,11 +3676,28 @@ function LexiqueScreen({ onBack }) {
                   <strong style={{ fontSize: 14, color: D.noir, fontWeight: 500 }}>« {entry.terme} »</strong>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     {entry.sources?.length > 0 && <span style={{ fontSize: 12, color: D.gris3, whiteSpace: "nowrap" }}>{entry.sources[0]}</span>}
+                    {isTeacherMode() && editingTerme !== entry.terme && (
+                      <button onClick={() => startEdit(entry)} title="Modifier la définition"
+                        style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 2, lineHeight: 1 }}>✏️</button>
+                    )}
                     {isTeacherMode() && <button onClick={() => removeEntry(entry.terme)} title="Retirer du lexique"
                       style={{ background: "none", border: "none", color: D.gris3, cursor: "pointer", fontSize: 14, padding: 2, lineHeight: 1 }}>🗑️</button>}
                   </div>
                 </div>
-                <p style={{ margin: 0, fontSize: 15, color: D.gris4, lineHeight: 1.5 }}>{entry.definition}</p>
+                {editingTerme === entry.terme ? (
+                  <div>
+                    <textarea value={editText} onChange={e => setEditText(e.target.value)} rows={3}
+                      style={{ width: "100%", boxSizing: "border-box", padding: "8px 10px", borderRadius: 6, border: `1px solid ${D.gris2}`, fontSize: 14, fontFamily: "inherit", resize: "vertical", marginBottom: 6 }} />
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <button onClick={() => saveEdit(entry.terme)}
+                        style={{ background: D.rouge, color: D.blanc, border: "none", borderRadius: 6, padding: "5px 12px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Sauvegarder</button>
+                      <button onClick={() => setEditingTerme(null)}
+                        style={{ background: "none", border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "5px 12px", fontSize: 13, cursor: "pointer", color: D.gris4 }}>Annuler</button>
+                    </div>
+                  </div>
+                ) : (
+                  <p style={{ margin: 0, fontSize: 15, color: D.gris4, lineHeight: 1.5 }}>{entry.definition}</p>
+                )}
               </div>
             ))}
           </div>
