@@ -207,6 +207,7 @@ const EPOQUES = [
 
 const SUPABASE_URL = "https://phiqzfrybptqobbdgrbn.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoaXF6ZnJ5YnB0cW9iYmRncmJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc5MzgzMjQsImV4cCI6MjEwMzUxNDMyNH0.JHvSAJt4CvG-9qMO284Nwx1RXzhviA1JcAc5Oi2bxVQ";
+const GOOGLE_TTS_KEY = "AIzaSyDlsc50GdFD3lMRUCzJ1mGf2M7Res9c3WQ";
 
 async function sbGet(id) {
   try {
@@ -391,6 +392,89 @@ function reponseAcceptee(saisie, trou) {
 }
 
 // Mélange un tableau (Fisher-Yates) sans modifier l'original — utilisé pour randomiser l'ordre des choix de QCM
+const VOIX_QC = { F: "fr-CA-Neural2-A", M: "fr-CA-Neural2-B" };
+
+function LireBouton({ texte, voiceName = VOIX_QC.F, color = "#333" }) {
+  const [statut, setStatut] = useState("idle"); // idle | chargement | lecture | erreur
+  const audioRef = useRef(null);
+
+  async function jouer() {
+    if (statut === "chargement") return;
+    if (statut === "lecture") {
+      audioRef.current?.pause();
+      setStatut("idle");
+      return;
+    }
+    setStatut("chargement");
+    const audioBase64 = await synthetiserVoix(texte, voiceName);
+    if (!audioBase64) { setStatut("erreur"); setTimeout(() => setStatut("idle"), 2000); return; }
+    const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`);
+    audioRef.current = audio;
+    audio.onended = () => setStatut("idle");
+    audio.onerror = () => setStatut("erreur");
+    setStatut("lecture");
+    audio.play();
+  }
+
+  const icone = statut === "chargement" ? "⏳" : statut === "lecture" ? "⏸️" : statut === "erreur" ? "⚠️" : "🔊";
+  return (
+    <button onClick={jouer} title="Écouter"
+      style={{ background: "none", border: "none", cursor: "pointer", padding: "2px 4px", fontSize: 15, color, flexShrink: 0, lineHeight: 1 }}>
+      {icone}
+    </button>
+  );
+}
+
+// Joue toutes les répliques d'un dialogue à la suite, avec la bonne voix pour chacune
+function EcouterToutBouton({ dialogue, voixParPersonnage, color }) {
+  const [statut, setStatut] = useState("idle"); // idle | lecture
+  const arretRef = useRef(false);
+
+  async function jouerTout() {
+    if (statut === "lecture") { arretRef.current = true; setStatut("idle"); return; }
+    arretRef.current = false;
+    setStatut("lecture");
+    for (const ligne of dialogue) {
+      if (arretRef.current) break;
+      const voiceName = voixParPersonnage[ligne.personnage] || VOIX_QC.F;
+      const audioBase64 = await synthetiserVoix(ligne.texte, voiceName);
+      if (arretRef.current) break;
+      if (!audioBase64) continue;
+      await new Promise(resolve => {
+        const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`);
+        audio.onended = resolve;
+        audio.onerror = resolve;
+        audio.play();
+      });
+    }
+    setStatut("idle");
+  }
+
+  return (
+    <button onClick={jouerTout}
+      style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: `1px solid ${color}50`, borderRadius: 20, padding: "5px 12px", fontSize: 13, fontWeight: 600, color, cursor: "pointer", marginBottom: 10 }}>
+      {statut === "lecture" ? "⏹️ Arrêter" : "🔊 Écouter tout le dialogue"}
+    </button>
+  );
+}
+
+// Petit contrôle pour choisir le genre (et donc la voix) de chaque personnage d'un dialogue
+function ChoixVoixPersonnages({ persos, genreParPerso, setGenreParPerso, color }) {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 10 }}>
+      {persos.map(perso => (
+        <div key={perso} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, color: "#666" }}>
+          <span style={{ fontWeight: 600 }}>{perso} :</span>
+          <button onClick={() => setGenreParPerso(g => ({ ...g, [perso]: "F" }))}
+            style={{ border: "none", background: genreParPerso[perso] === "F" ? color : "#eee", color: genreParPerso[perso] === "F" ? "white" : "#999", borderRadius: "6px 0 0 6px", padding: "2px 8px", fontSize: 13, cursor: "pointer" }}>♀</button>
+          <button onClick={() => setGenreParPerso(g => ({ ...g, [perso]: "M" }))}
+            style={{ border: "none", background: genreParPerso[perso] === "M" ? color : "#eee", color: genreParPerso[perso] === "M" ? "white" : "#999", borderRadius: "0 6px 6px 0", padding: "2px 8px", fontSize: 13, cursor: "pointer" }}>♂</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function melangerTableau(arr) {
   const copie = [...(arr || [])];
   for (let i = copie.length - 1; i > 0; i--) {
@@ -420,6 +504,42 @@ function loadCache() {
   catch { return {}; }
 }
 function saveCache(c) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); } catch {} }
+
+// Hash court et stable pour servir de clé de cache à partir d'un texte quelconque
+function hashTexte(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  }
+  return "t" + Math.abs(h).toString(36);
+}
+
+const VOIX_QC_DEFAUT = "fr-CA-Neural2-B";
+
+// Génère (ou récupère du cache) l'audio d'un texte en voix québécoise via Google Cloud TTS.
+// Retourne le contenu audio en base64 (MP3), ou null en cas d'échec.
+async function synthetiserVoix(texte, voiceName = VOIX_QC_DEFAUT) {
+  if (!texte?.trim()) return null;
+  const cleTexte = hashTexte(texte.trim());
+  const cache = await getCached("audio", cleTexte, voiceName);
+  if (cache?.data?.audioBase64) return cache.data.audioBase64;
+  try {
+    const res = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_KEY}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        input: { text: texte },
+        voice: { languageCode: "fr-CA", name: voiceName },
+        audioConfig: { audioEncoding: "MP3", speakingRate: 0.95 }
+      })
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (!json.audioContent) return null;
+    await setCached("audio", cleTexte, { audioBase64: json.audioContent, texte: texte.slice(0, 200) }, voiceName);
+    return json.audioContent;
+  } catch { return null; }
+}
 
 async function getCached(type, id, subId = "") {
   const key = getCacheKey(type, id, subId);
@@ -3313,19 +3433,30 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
 function DialogueCard({ data, color }) {
   const [rev, setRev] = useState({});
   const ann = data.annotations || [];
+  const persos = [...new Set(data.dialogue.map(l => l.personnage))];
+  const [genreParPerso, setGenreParPerso] = useState(() => {
+    const obj = {};
+    persos.forEach((p, i) => obj[p] = i % 2 === 0 ? "F" : "M");
+    return obj;
+  });
+  const voixParPersonnage = {};
+  persos.forEach(p => { voixParPersonnage[p] = VOIX_QC[genreParPerso[p] || "F"]; });
   return (
     <div>
       <h3 style={{ color, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
       {data.lieu&&<p style={{ color: "#888", fontSize: 15, marginBottom: 14 }}>📍 {data.lieu}</p>}
       {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 10, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
+      {persos.length > 1 && <ChoixVoixPersonnages persos={persos} genreParPerso={genreParPerso} setGenreParPerso={setGenreParPerso} color={color} />}
+      <EcouterToutBouton dialogue={data.dialogue} voixParPersonnage={voixParPersonnage} color={color} />
       <div style={{ background: "#F8F8F8", borderRadius: 12, padding: 14, marginBottom: 18 }}>
         {data.dialogue.map((line,i)=>(
           <div key={i} style={{ marginBottom: 12 }}>
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
               <span style={{ background: color, color: "white", borderRadius: 20, padding: "2px 10px", fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", marginTop: 3, flexShrink: 0 }}>{line.personnage}</span>
               <div style={{ flex: 1 }}>
-                <p style={{ margin: 0, fontSize: 15, lineHeight: 1.5 }}>
-                  <AnnotatedText text={line.texte} annotations={ann} />
+                <p style={{ margin: 0, fontSize: 15, lineHeight: 1.5, display: "flex", alignItems: "flex-start", gap: 6 }}>
+                  <span style={{ flex: 1 }}><AnnotatedText text={line.texte} annotations={ann} /></span>
+                  <LireBouton texte={line.texte} voiceName={voixParPersonnage[line.personnage]} color={color} />
                 </p>
                 {!rev[i]?<button onClick={()=>setRev(r=>({...r,[i]:true}))} style={{ marginTop: 4, fontSize: 14, color, background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline" }}>💡 Note phonétique</button>
                 :<p style={{ margin: "4px 0 0", fontSize: 14, color: "#555", fontStyle: "italic", background: "white", padding: "4px 8px", borderRadius: 6 }}>📢 {line.note_phonetique}</p>}
@@ -3692,7 +3823,8 @@ function LexiqueScreen({ onBack }) {
     const annotations = [];
     const ignorees = [];
     lignes.forEach(ligne => {
-      const m = ligne.match(/^(.+?)\s*[:—-]\s*(.+)$/);
+      // Priorité aux ":" (jamais ambigu) avant les tirets, qui peuvent apparaître DANS un mot composé (ex: "Ski-doo")
+      const m = ligne.match(/^(.+?):\s*(.+)$/) || ligne.match(/^(.+?)\s+[—-]\s+(.+)$/);
       if (m) annotations.push({ terme: m[1].trim(), definition: m[2].trim() });
       else ignorees.push(ligne);
     });
