@@ -54,6 +54,7 @@ IMPORTANT sur le registre : ce secteur (${s.label}) appelle un registre professi
       const financeExemple = isFinance ? `
 Exemple du registre attendu (à ne PAS recopier, juste pour calibrer le ton) : "Bonjour madame Tremblay, merci d'être venue. On va regarder ensemble vos options de placement pour votre REER — j'ai préparé deux scénarios selon votre tolérance au risque." — noter : vouvoiement, phrases complètes, accent et rythme québécois présents dans la prononciation suggérée, mais AUCUNE contraction familière du type "t'as", "j'sais", "faque".` : "";
       return `Tu es expert du québécois parlé dans le secteur "${s.label}" (${s.contexte}). Génère un dialogue réaliste (5-7 répliques) avec des traits phonétiques et des contractions typiques du québécois ET vocabulaire du secteur.${registreNote}${financeExemple} Note: "croche" (pas droit) et NON "croché". Exemples: ${s.exemples.join(", ")}.
+IMPORTANT sur "personnage" : utilise EXACTEMENT la même chaîne de caractères, mot pour mot, pour désigner un même personnage sur toutes ses répliques (ex: si la première réplique dit "Mario — contremaître (foreman)", les suivantes doivent utiliser CE MÊME texte, pas une version raccourcie comme "Mario — contremaître"). Ce champ sert à regrouper les répliques du même personnage — toute variation le casse.
 Inclus aussi "annotations": liste de 5-8 termes québécois du texte avec leur définition courte en français standard, pour les survols interactifs.
 Pour chaque item de "explications" : "ce_que_ca_sonne" doit donner la forme parlée/informelle telle qu'on l'entend réellement au Québec (ex: contraction, prononciation familière) UNIQUEMENT quand elle diffère vraiment de l'expression écrite ; si l'expression est un terme ou une expression sans variante phonétique informelle distincte (ex: du vocabulaire technique du secteur, un terme précis comme "droits de cotisation REER inutilisés"), laisse "ce_que_ca_sonne" en chaîne vide "" plutôt que de répéter l'expression ou d'inventer une variante artificielle. "traduction_standard" doit toujours contenir le sens/l'équivalent en français standard.
 JSON: {"titre":string,"lieu":string,"dialogue":[{"personnage":string,"texte":string,"note_phonetique":string}],"explications":[{"expression":string,"ce_que_ca_sonne":string,"traduction_standard":string,"specifique_au_secteur":boolean}],"annotations":[{"terme":string,"definition":string}]}
@@ -393,6 +394,27 @@ function reponseAcceptee(saisie, trou) {
 
 // Mélange un tableau (Fisher-Yates) sans modifier l'original — utilisé pour randomiser l'ordre des choix de QCM
 const VOIX_QC = { F: "fr-CA-Neural2-A", M: "fr-CA-Neural2-B" };
+const VOIX_QC_PAR_GENRE = { F: ["fr-CA-Neural2-A", "fr-CA-Neural2-C"], M: ["fr-CA-Neural2-B", "fr-CA-Neural2-D"] };
+
+// Ignore un suffixe entre parenthèses (ex: "Mario — contremaître (foreman)" -> "Mario — contremaître")
+// pour regrouper le même personnage même si l'IA n'a pas gardé un nom parfaitement identique partout.
+function normaliserPersonnage(nom) {
+  return (nom || "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+}
+
+// Calcule la voix de chaque personnage : alterne entre les 2 voix disponibles pour son genre,
+// pour que deux personnages du même genre ne sonnent jamais identiques.
+function calculerVoixParPersonnage(persos, genreParPerso) {
+  const compteurs = { F: 0, M: 0 };
+  const voix = {};
+  persos.forEach(p => {
+    const genre = genreParPerso[p] || "F";
+    const options = VOIX_QC_PAR_GENRE[genre];
+    voix[p] = options[compteurs[genre] % options.length];
+    compteurs[genre]++;
+  });
+  return voix;
+}
 
 function LireBouton({ texte, voiceName = VOIX_QC.F, color = "#333" }) {
   const [statut, setStatut] = useState("idle"); // idle | chargement | lecture | erreur
@@ -436,7 +458,7 @@ function EcouterToutBouton({ dialogue, voixParPersonnage, color }) {
     setStatut("lecture");
     for (const ligne of dialogue) {
       if (arretRef.current) break;
-      const voiceName = voixParPersonnage[ligne.personnage] || VOIX_QC.F;
+      const voiceName = voixParPersonnage[normaliserPersonnage(ligne.personnage)] || VOIX_QC.F;
       const audioBase64 = await synthetiserVoix(ligne.texte, voiceName);
       if (arretRef.current) break;
       if (!audioBase64) continue;
@@ -3436,14 +3458,13 @@ function QuizCard({ data, color, secteur, onRetry, onNewType, onQuizDone }) {
 function DialogueCard({ data, color }) {
   const [rev, setRev] = useState({});
   const ann = data.annotations || [];
-  const persos = [...new Set(data.dialogue.map(l => l.personnage))];
+  const persos = [...new Set(data.dialogue.map(l => normaliserPersonnage(l.personnage)))];
   const [genreParPerso, setGenreParPerso] = useState(() => {
     const obj = {};
     persos.forEach((p, i) => obj[p] = i % 2 === 0 ? "F" : "M");
     return obj;
   });
-  const voixParPersonnage = {};
-  persos.forEach(p => { voixParPersonnage[p] = VOIX_QC[genreParPerso[p] || "F"]; });
+  const voixParPersonnage = calculerVoixParPersonnage(persos, genreParPerso);
   return (
     <div>
       <h3 style={{ color, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
@@ -3459,7 +3480,7 @@ function DialogueCard({ data, color }) {
               <div style={{ flex: 1 }}>
                 <p style={{ margin: 0, fontSize: 15, lineHeight: 1.5, display: "flex", alignItems: "flex-start", gap: 6 }}>
                   <span style={{ flex: 1 }}><AnnotatedText text={line.texte} annotations={ann} /></span>
-                  <LireBouton texte={line.texte} voiceName={voixParPersonnage[line.personnage]} color={color} />
+                  <LireBouton texte={line.texte} voiceName={voixParPersonnage[normaliserPersonnage(line.personnage)]} color={color} />
                 </p>
                 {!rev[i]?<button onClick={()=>setRev(r=>({...r,[i]:true}))} style={{ marginTop: 4, fontSize: 14, color, background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline" }}>💡 Note phonétique</button>
                 :<p style={{ margin: "4px 0 0", fontSize: 14, color: "#555", fontStyle: "italic", background: "white", padding: "4px 8px", borderRadius: 6 }}>📢 {line.note_phonetique}</p>}
