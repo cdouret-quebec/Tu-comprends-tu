@@ -448,9 +448,16 @@ function LireBouton({ texte, voiceName = VOIX_QC.F, color = "#333" }) {
 function EcouterToutBouton({ dialogue, voixParPersonnage, color }) {
   const [statut, setStatut] = useState("idle"); // idle | lecture
   const arretRef = useRef(false);
+  const audioActuelRef = useRef(null);
+
+  function arreter() {
+    arretRef.current = true;
+    audioActuelRef.current?.pause();
+    setStatut("idle");
+  }
 
   async function jouerTout() {
-    if (statut === "lecture") { arretRef.current = true; setStatut("idle"); return; }
+    if (statut === "lecture") { arreter(); return; }
     arretRef.current = false;
     setStatut("lecture");
     for (const ligne of dialogue) {
@@ -461,11 +468,14 @@ function EcouterToutBouton({ dialogue, voixParPersonnage, color }) {
       if (!audioBase64) continue;
       await new Promise(resolve => {
         const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`);
+        audioActuelRef.current = audio;
         audio.onended = resolve;
         audio.onerror = resolve;
+        audio.onpause = () => { if (arretRef.current) resolve(); };
         audio.play();
       });
     }
+    audioActuelRef.current = null;
     setStatut("idle");
   }
 
