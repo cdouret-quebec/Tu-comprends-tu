@@ -297,13 +297,13 @@ function loadLexique() {
   catch { return {}; }
 }
 function saveLexique(l) { try { localStorage.setItem(LEXIQUE_KEY, JSON.stringify(l)); } catch {} }
-// Retire un article de tête (le/la/l'/les/un/une/des/du) et normalise la casse pour éviter les doublons "bédaine" / "la bédaine"
+// Retire un article de tête (le/la/l'/les/un/une/des/du) et met une majuscule initiale pour éviter les doublons "bédaine" / "la bédaine" et les incohérences de casse
 function normaliserTerme(terme) {
   let t = (terme || "").trim();
   t = t.replace(/^(le|la|les|l'|l’|un|une|des|du)\s+/i, "");
   // Ne touche pas à la casse si le mot est entièrement en majuscules (acronyme, ex: ARC, GAMF)
   if (t !== t.toUpperCase()) {
-    t = t.charAt(0).toLowerCase() + t.slice(1);
+    t = t.charAt(0).toUpperCase() + t.slice(1);
   }
   return t;
 }
@@ -3676,9 +3676,14 @@ function LexiqueScreen({ onBack }) {
     setEditingTerme(null);
   }
   function fusionnerDoublons() {
+    const avant = Object.keys(lex).length;
     const fusionne = fusionnerDoublonsLexique(lex);
     saveLexique(fusionne);
     setLex(fusionne);
+    const apres = Object.keys(fusionne).length;
+    alert(avant === apres
+      ? `Aucun doublon trouvé (${apres} expressions) — mais la casse des mots a été uniformisée.`
+      : `${avant - apres} doublon(s) fusionné(s) — ${apres} expressions au total.`);
   }
   return (
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
