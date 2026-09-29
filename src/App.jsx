@@ -297,16 +297,52 @@ function loadLexique() {
   catch { return {}; }
 }
 function saveLexique(l) { try { localStorage.setItem(LEXIQUE_KEY, JSON.stringify(l)); } catch {} }
+// Retire un article de tête (le/la/l'/les/un/une/des/du) et normalise la casse pour éviter les doublons "bédaine" / "la bédaine"
+function normaliserTerme(terme) {
+  let t = (terme || "").trim();
+  t = t.replace(/^(le|la|les|l'|l’|un|une|des|du)\s+/i, "");
+  // Ne touche pas à la casse si le mot est entièrement en majuscules (acronyme, ex: ARC, GAMF)
+  if (t !== t.toUpperCase()) {
+    t = t.charAt(0).toLowerCase() + t.slice(1);
+  }
+  return t;
+}
+
 function addToLexique(annotations, source) {
   if (!annotations?.length) return;
   const lex = loadLexique();
   annotations.forEach(({ terme, definition }) => {
     if (!terme || !definition) return;
-    const key = terme.toLowerCase().trim();
-    if (!lex[key]) lex[key] = { terme, definition, sources: [] };
+    const termeNormalise = normaliserTerme(terme);
+    const key = termeNormalise.toLowerCase().trim();
+    if (!lex[key]) lex[key] = { terme: termeNormalise, definition, sources: [] };
     if (!lex[key].sources.includes(source)) lex[key].sources.push(source);
   });
   saveLexique(lex);
+}
+
+// Fusionne les entrées existantes qui ne diffèrent que par un article de tête ou la casse
+function fusionnerDoublonsLexique(lex) {
+  const groupes = {};
+  Object.values(lex).forEach(entry => {
+    const key = normaliserTerme(entry.terme).toLowerCase();
+    if (!groupes[key]) groupes[key] = [];
+    groupes[key].push(entry);
+  });
+  const fusionne = {};
+  Object.values(groupes).forEach(groupe => {
+    if (groupe.length === 1) {
+      const e = groupe[0];
+      fusionne[normaliserTerme(e.terme).toLowerCase()] = { ...e, terme: normaliserTerme(e.terme) };
+      return;
+    }
+    // Plusieurs variantes du même terme : garde la définition la plus longue (souvent la plus complète/corrigée), fusionne les sources
+    const meilleure = groupe.reduce((a, b) => (b.definition?.length || 0) > (a.definition?.length || 0) ? b : a);
+    const toutesSources = [...new Set(groupe.flatMap(e => e.sources || []))];
+    const key = normaliserTerme(meilleure.terme).toLowerCase();
+    fusionne[key] = { terme: normaliserTerme(meilleure.terme), definition: meilleure.definition, sources: toutesSources };
+  });
+  return fusionne;
 }
 
 function loadProgression() {
@@ -3639,6 +3675,11 @@ function LexiqueScreen({ onBack }) {
     setLex(updated);
     setEditingTerme(null);
   }
+  function fusionnerDoublons() {
+    const fusionne = fusionnerDoublonsLexique(lex);
+    saveLexique(fusionne);
+    setLex(fusionne);
+  }
   return (
     <div style={{ minHeight: "100vh", background: D.gris0, fontFamily: "'Segoe UI', system-ui, sans-serif", zoom: fsEm(fontSize) }}>
       <div style={{ background: D.noir, padding: "16px" }}>
@@ -3656,6 +3697,12 @@ function LexiqueScreen({ onBack }) {
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "16px 14px 60px" }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Chercher une expression…"
           style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: `1px solid ${D.gris2}`, fontSize: 14, marginBottom: 14, boxSizing: "border-box", outline: "none", background: D.blanc, color: D.noir }} />
+        {isTeacherMode() && (
+          <button onClick={fusionnerDoublons}
+            style={{ width: "100%", padding: "8px 14px", borderRadius: 8, border: `1px solid ${D.gris2}`, background: D.blanc, color: D.gris4, fontSize: 13, cursor: "pointer", marginBottom: 14 }}>
+            🧹 Fusionner les doublons (articles/majuscules)
+          </button>
+        )}
         <a href="https://www.oqlf.gouv.qc.ca/ressources/bibliotheque/dictionnaires/vocabulaire-immigration.aspx" target="_blank" rel="noopener noreferrer"
           style={{ display: "block", background: "#EAF1F8", border: "1px solid #A9C6E0", borderRadius: 8, padding: "10px 14px", marginBottom: 14, textDecoration: "none" }}>
           <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#2C5784" }}>📖 Vocabulaire officiel de l'immigration (OQLF)</p>
