@@ -291,6 +291,15 @@ function setTeacherMode() {
   try { localStorage.setItem(TEACHER_AUTH_KEY, "true"); } catch {}
 }
 
+const VOIX_PERSONNAGES_KEY = "qc_voix_personnages";
+function loadVoixPersonnages() {
+  try { return JSON.parse(localStorage.getItem(VOIX_PERSONNAGES_KEY) || "null") || {}; }
+  catch { return {}; }
+}
+function saveVoixPersonnages(obj) {
+  try { localStorage.setItem(VOIX_PERSONNAGES_KEY, JSON.stringify(obj)); } catch {}
+}
+
 function loadLexique() {
   try { return JSON.parse(localStorage.getItem(LEXIQUE_KEY) || "null") || {}; }
   catch { return {}; }
@@ -3466,11 +3475,26 @@ function DialogueCard({ data, color }) {
   const [rev, setRev] = useState({});
   const ann = data.annotations || [];
   const persos = [...new Set(data.dialogue.map(l => normaliserPersonnage(l.personnage)))];
-  const [genreParPerso, setGenreParPerso] = useState(() => {
+  const [genreParPerso, setGenreParPersoBrut] = useState(() => {
+    const sauvegarde = loadVoixPersonnages();
     const obj = {};
-    persos.forEach((p, i) => obj[p] = i % 2 === 0 ? "F" : "M");
+    persos.forEach((p, i) => {
+      const cle = `${data.titre || ""}::${p}`;
+      obj[p] = sauvegarde[cle] || (i % 2 === 0 ? "F" : "M");
+    });
     return obj;
   });
+  function setGenreParPerso(updater) {
+    setGenreParPersoBrut(prev => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      const sauvegarde = loadVoixPersonnages();
+      Object.entries(next).forEach(([perso, genre]) => {
+        sauvegarde[`${data.titre || ""}::${perso}`] = genre;
+      });
+      saveVoixPersonnages(sauvegarde);
+      return next;
+    });
+  }
   const voixParPersonnage = calculerVoixParPersonnage(persos, genreParPerso);
   return (
     <div>
