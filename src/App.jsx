@@ -581,6 +581,12 @@ function preparerTextePourVoix(texte) {
     t = t.replace(new RegExp(`\\b${mot}\\b`, "g"), remplacement);
   });
   t = t.replace(/[’‘]/g, "'");
+  // Cas particuliers de contractions très familières, à détendre avant la fusion générale :
+  t = t.replace(/\bj'l'/gi, "je l'"); // "j'l'ai" -> "je l'ai" (sinon la fusion générale donnerait "jlai")
+  t = t.replace(/\bj'vas?\b/gi, "je vais"); // "j'va"/"j'vas" -> "je vais"
+  // "A" seul en tout début de phrase représente "elle" prononcé de façon relâchée (jamais le cas ailleurs,
+  // où "a" isolé est le verbe avoir et n'est jamais en début de phrase) :
+  t = t.replace(/(^|[.!?…—]\s*|«\s*)A\b(?=\s)/g, "$1Elle");
   // Fusionne les élisions ("l'argent" -> "largent") au lieu de garder l'apostrophe :
   // Chirp 3 lit parfois "l'" isolé comme la lettre L plutôt que de l'élider naturellement.
   t = t.replace(/\b(jusqu|qu|l|d|j|n|m|t|s|c)'/gi, "$1");
