@@ -596,7 +596,7 @@ async function synthetiserVoix(texte, voiceName = VOIX_QC_DEFAUT) {
     if (!res.ok) return null;
     const json = await res.json();
     if (!json.audioContent) return null;
-    await setCached("audio", cleTexte, { audioBase64: json.audioContent, texte: texte.slice(0, 200) }, voiceName);
+    await setCached("audio", cleTexte, { texte: texte.slice(0, 200), audioBase64: json.audioContent }, voiceName);
     return json.audioContent;
   } catch { return null; }
 }
@@ -2813,6 +2813,7 @@ function TeacherMode({ onClose }) {
   const [regenLoading, setRegenLoading] = useState(null);
   const [altData, setAltData] = useState({});
   const [filter, setFilter] = useState("all");
+  const [rechercheTexte, setRechercheTexte] = useState("");
 
   async function refresh() {
     setCacheLoading(true);
@@ -2928,7 +2929,9 @@ function TeacherMode({ onClose }) {
   }
 
   const entries = Object.entries(cache);
-  const filtered = entries.filter(([, v]) => filter === "all" || v.status === filter);
+  const filtered = entries
+    .filter(([, v]) => filter === "all" || v.status === filter)
+    .filter(([, v]) => !rechercheTexte.trim() || JSON.stringify(v.data).toLowerCase().includes(rechercheTexte.trim().toLowerCase()));
   const pendingCount = entries.filter(([, v]) => v.status === "pending").length;
 
   const LABEL = (key) => {
@@ -2945,6 +2948,7 @@ function TeacherMode({ onClose }) {
       const [modeLabel, niv] = subId.split("_");
       return `📜 ${ep?.label || id} — ${modeLabel === "quiz" ? "Quiz" : "Lecture"} (${niv?.toUpperCase() || ""})`;
     }
+    if (type === "audio") return `🔊 Audio (${subId})`;
     return key;
   };
 
@@ -2995,6 +2999,8 @@ function TeacherMode({ onClose }) {
       </div>
 
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "16px 16px 60px" }}>
+        <input value={rechercheTexte} onChange={e => setRechercheTexte(e.target.value)} placeholder="Rechercher dans le contenu (ex: REER)…"
+          style={{ width: "100%", padding: "9px 14px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, marginBottom: 14, boxSizing: "border-box", outline: "none" }} />
         {cacheLoading ? (
           <div style={{ textAlign: "center", padding: 40 }}>
             <LoadingDots color="#1B2B1E" />
