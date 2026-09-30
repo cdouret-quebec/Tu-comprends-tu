@@ -556,7 +556,25 @@ function hashTexte(str) {
   return "t" + Math.abs(h).toString(36);
 }
 
-const VOIX_QC_DEFAUT = "fr-CA-Neural2-B";
+const VOIX_QC_DEFAUT = "fr-CA-Chirp3-HD-Kore";
+
+// Acronymes/mots courants mal prononcés tels quels par la synthèse vocale (lus lettre par lettre)
+// -> remplacés par une orthographe phonétique avant l'envoi, SANS changer le texte affiché à l'écran.
+const PRONONCIATIONS_CORRIGEES = {
+  "REER": "Réère",
+  "CELI": "Célie",
+};
+
+// Corrige le texte juste avant synthèse : acronymes prononcés comme un mot + apostrophes cohérentes
+// (les apostrophes courbes/droites mélangées font parfois lire "l'" comme la lettre "L").
+function preparerTextePourVoix(texte) {
+  let t = texte;
+  Object.entries(PRONONCIATIONS_CORRIGEES).forEach(([mot, remplacement]) => {
+    t = t.replace(new RegExp(`\\b${mot}\\b`, "g"), remplacement);
+  });
+  t = t.replace(/[’‘]/g, "'");
+  return t;
+}
 
 // Génère (ou récupère du cache) l'audio d'un texte en voix québécoise via Google Cloud TTS.
 // Retourne le contenu audio en base64 (MP3), ou null en cas d'échec.
@@ -570,7 +588,7 @@ async function synthetiserVoix(texte, voiceName = VOIX_QC_DEFAUT) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        input: { text: texte },
+        input: { text: preparerTextePourVoix(texte) },
         voice: { languageCode: "fr-CA", name: voiceName },
         audioConfig: { audioEncoding: "MP3" }
       })
