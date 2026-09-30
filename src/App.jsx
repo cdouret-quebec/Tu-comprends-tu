@@ -403,8 +403,8 @@ function reponseAcceptee(saisie, trou) {
 }
 
 // Mélange un tableau (Fisher-Yates) sans modifier l'original — utilisé pour randomiser l'ordre des choix de QCM
-const VOIX_QC = { F: "fr-CA-Neural2-A", M: "fr-CA-Neural2-B" };
-const VOIX_QC_PAR_GENRE = { F: ["fr-CA-Neural2-A", "fr-CA-Neural2-C"], M: ["fr-CA-Neural2-B", "fr-CA-Neural2-D"] };
+const VOIX_QC = { F: "fr-CA-Chirp3-HD-Kore", M: "fr-CA-Chirp3-HD-Charon" };
+const VOIX_QC_PAR_GENRE = { F: ["fr-CA-Chirp3-HD-Kore", "fr-CA-Chirp3-HD-Aoede", "fr-CA-Chirp3-HD-Autonoe"], M: ["fr-CA-Chirp3-HD-Charon", "fr-CA-Chirp3-HD-Fenrir", "fr-CA-Chirp3-HD-Orus"] };
 
 // Ignore un suffixe entre parenthèses (ex: "Mario — contremaître (foreman)" -> "Mario — contremaître")
 // pour regrouper le même personnage même si l'IA n'a pas gardé un nom parfaitement identique partout.
@@ -572,7 +572,7 @@ async function synthetiserVoix(texte, voiceName = VOIX_QC_DEFAUT) {
       body: JSON.stringify({
         input: { text: texte },
         voice: { languageCode: "fr-CA", name: voiceName },
-        audioConfig: { audioEncoding: "MP3", speakingRate: 0.95 }
+        audioConfig: { audioEncoding: "MP3" }
       })
     });
     if (!res.ok) return null;
