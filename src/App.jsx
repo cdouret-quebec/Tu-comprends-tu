@@ -571,6 +571,8 @@ const VOIX_QC_DEFAUT = "fr-CA-Chirp3-HD-Kore";
 const PRONONCIATIONS_CORRIGEES = {
   "REER": "Réère",
   "CELI": "Célie",
+  "pis": "pi",
+  "s'ra": "sera",
 };
 
 // Corrige le texte juste avant synthèse : acronymes prononcés comme un mot + apostrophes cohérentes
@@ -578,7 +580,7 @@ const PRONONCIATIONS_CORRIGEES = {
 function preparerTextePourVoix(texte) {
   let t = texte;
   Object.entries(PRONONCIATIONS_CORRIGEES).forEach(([mot, remplacement]) => {
-    t = t.replace(new RegExp(`\\b${mot}\\b`, "g"), remplacement);
+    t = t.replace(new RegExp(`\\b${mot}\\b`, "gi"), remplacement);
   });
   t = t.replace(/[’‘]/g, "'");
   // Cas particuliers de contractions très familières, à détendre avant la fusion générale :
