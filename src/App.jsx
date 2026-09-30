@@ -573,6 +573,9 @@ function preparerTextePourVoix(texte) {
     t = t.replace(new RegExp(`\\b${mot}\\b`, "g"), remplacement);
   });
   t = t.replace(/[’‘]/g, "'");
+  // Fusionne les élisions ("l'argent" -> "largent") au lieu de garder l'apostrophe :
+  // Chirp 3 lit parfois "l'" isolé comme la lettre L plutôt que de l'élider naturellement.
+  t = t.replace(/\b(jusqu|qu|l|d|j|n|m|t|s|c)'/gi, "$1");
   return t;
 }
 
