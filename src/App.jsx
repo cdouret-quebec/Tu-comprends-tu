@@ -430,6 +430,10 @@ function LireBouton({ texte, voiceName = VOIX_QC.F, color = "#333" }) {
   const [statut, setStatut] = useState("idle"); // idle | chargement | lecture | erreur
   const audioRef = useRef(null);
 
+  useEffect(() => {
+    return () => { audioRef.current?.pause(); };
+  }, []);
+
   async function jouer() {
     if (statut === "chargement") return;
     if (statut === "lecture") {
@@ -462,6 +466,10 @@ function EcouterToutBouton({ dialogue, voixParPersonnage, color }) {
   const [statut, setStatut] = useState("idle"); // idle | lecture
   const arretRef = useRef(false);
   const audioActuelRef = useRef(null);
+
+  useEffect(() => {
+    return () => { arretRef.current = true; audioActuelRef.current?.pause(); };
+  }, []);
 
   function arreter() {
     arretRef.current = true;
