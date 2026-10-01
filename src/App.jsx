@@ -1055,12 +1055,18 @@ function STEntreeSortieCard({ data }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {data[type].map((e, i) => (
               <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 10, padding: 14 }}>
-                <div style={{ background: ST_BG, borderRadius: 8, padding: "7px 12px", marginBottom: 8, fontSize: 14, color: ST_COLOR, fontWeight: 600, fontStyle: "italic" }}>
-                  « <AnnotatedText text={e.formule} annotations={ann} /> »
+                <div style={{ background: ST_BG, borderRadius: 8, padding: "7px 12px", marginBottom: 8, fontSize: 14, color: ST_COLOR, fontWeight: 600, fontStyle: "italic", display: "flex", alignItems: "flex-start", gap: 6 }}>
+                  <span style={{ flex: 1 }}>« <AnnotatedText text={e.formule} annotations={ann} /> »</span>
+                  <LireBouton texte={e.formule} color={ST_COLOR} />
                 </div>
                 <p style={{ margin: "0 0 4px", fontSize: 15, color: "#555" }}>📍 <AnnotatedText text={e.quand} annotations={ann} /></p>
                 <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333" }}>🎯 <AnnotatedText text={e.effet} annotations={ann} /></p>
-                {e.variante && <p style={{ margin: 0, fontSize: 14, color: "#888", fontStyle: "italic" }}>Variante : « <AnnotatedText text={e.variante} annotations={ann} /> »</p>}
+                {e.variante && (
+                  <p style={{ margin: 0, fontSize: 14, color: "#888", fontStyle: "italic", display: "flex", alignItems: "flex-start", gap: 6 }}>
+                    <span style={{ flex: 1 }}>Variante : « <AnnotatedText text={e.variante} annotations={ann} /> »</span>
+                    <LireBouton texte={e.variante} color="#888" />
+                  </p>
+                )}
               </div>
             ))}
           </div>
