@@ -573,6 +573,7 @@ const PRONONCIATIONS_CORRIGEES = {
   "CELI": "Célie",
   "pis": "pi",
   "s'ra": "sera",
+  "ayoye": "ayoy",
 };
 
 // Corrige le texte juste avant synthèse : acronymes prononcés comme un mot + apostrophes cohérentes
@@ -589,6 +590,12 @@ function preparerTextePourVoix(texte) {
   // "A" seul en tout début de phrase représente "elle" prononcé de façon relâchée (jamais le cas ailleurs,
   // où "a" isolé est le verbe avoir et n'est jamais en début de phrase) :
   t = t.replace(/(^|[.!?…—]\s*|«\s*)A\b(?=\s)/g, "$1Elle");
+  // "j'" devant une consonne (j'te, j'sais, j'pense...) : la fusion directe donne un groupe de lettres
+  // que Chirp 3 n'arrive pas à prononcer et épelle lettre par lettre. On détend plutôt en "je ".
+  t = t.replace(/\bj'(?=[bcdfgklmnpqrstvwxz])/gi, "je ");
+  // Élision suivie d'une voyelle ACCENTUÉE (l'été, l'école...) : la fusion directe semble perturber
+  // le moteur, qui se met à épeler les lettres accentuées. Un trait d'union évite le problème.
+  t = t.replace(/\b(jusqu|qu|l|d|j|n|m|t|s|c)'(?=[éèêëàâîïôöùûü])/gi, "$1-");
   // Fusionne les élisions ("l'argent" -> "largent") au lieu de garder l'apostrophe :
   // Chirp 3 lit parfois "l'" isolé comme la lettre L plutôt que de l'élider naturellement.
   t = t.replace(/\b(jusqu|qu|l|d|j|n|m|t|s|c)'/gi, "$1");
