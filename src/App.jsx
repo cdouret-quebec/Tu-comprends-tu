@@ -2950,7 +2950,11 @@ function TeacherMode({ onClose }) {
   const entries = Object.entries(cache);
   const filtered = entries
     .filter(([, v]) => filter === "all" || v.status === filter)
-    .filter(([, v]) => !rechercheTexte.trim() || JSON.stringify(v.data).toLowerCase().includes(rechercheTexte.trim().toLowerCase()));
+    .filter(([k, v]) => {
+      if (!rechercheTexte.trim()) return true;
+      const q = rechercheTexte.trim().toLowerCase();
+      return k.toLowerCase().includes(q) || JSON.stringify(v.data).toLowerCase().includes(q);
+    });
   const pendingCount = entries.filter(([, v]) => v.status === "pending").length;
 
   const LABEL = (key) => {
