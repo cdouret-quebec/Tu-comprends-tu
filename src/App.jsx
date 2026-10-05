@@ -404,7 +404,16 @@ function reponseAcceptee(saisie, trou) {
 
 // Mélange un tableau (Fisher-Yates) sans modifier l'original — utilisé pour randomiser l'ordre des choix de QCM
 const VOIX_QC = { F: "fr-CA-Chirp3-HD-Kore", M: "fr-CA-Chirp3-HD-Charon" };
-const VOIX_QC_PAR_GENRE = { F: ["fr-CA-Chirp3-HD-Kore", "fr-CA-Chirp3-HD-Aoede", "fr-CA-Chirp3-HD-Autonoe"], M: ["fr-CA-Chirp3-HD-Charon", "fr-CA-Chirp3-HD-Fenrir", "fr-CA-Chirp3-HD-Orus"] };
+const VOIX_QC_PAR_GENRE = { F: ["fr-CA-Chirp3-HD-Kore", "fr-CA-Chirp3-HD-Aoede", "fr-CA-Chirp3-HD-Autonoe"], M: ["fr-CA-Chirp3-HD-Charon", "fr-CA-Chirp3-HD-Fenrir", "fr-CA-Chirp3-HD-Orus"],
+  // Voix pour personnages âgés (FA = femme âgée, MA = homme âgé) — essais : Gacrux (mature) et Algenib (graveleuse)
+  FA: ["gemini:Gacrux:F"], MA: ["gemini:Algenib:M"] };
+
+// Voix "Gemini-TTS" (préfixe "gemini:") : acceptent une consigne de style en langage naturel, ce qui permet
+// de demander une voix de personne âgée. Si la requête échoue, on retombe sur la voix Chirp 3 du même nom.
+const CONSIGNES_AGE = {
+  F: "Parle comme une dame québécoise très âgée, d'environ 85 ans : voix fragile, légèrement chevrotante et rauque, débit lent et posé, avec de petites hésitations naturelles. Accent québécois authentique, ton doux.",
+  M: "Parle comme un monsieur québécois très âgé, d'environ 85 ans : voix grave, fatiguée et légèrement chevrotante, débit lent et posé. Accent québécois authentique, ton posé.",
+};
 
 // Ignore un suffixe entre parenthèses (ex: "Mario — contremaître (foreman)" -> "Mario — contremaître")
 // pour regrouper le même personnage même si l'IA n'a pas gardé un nom parfaitement identique partout.
@@ -415,11 +424,12 @@ function normaliserPersonnage(nom) {
 // Calcule la voix de chaque personnage : alterne entre les 2 voix disponibles pour son genre,
 // pour que deux personnages du même genre ne sonnent jamais identiques.
 function calculerVoixParPersonnage(persos, genreParPerso) {
-  const compteurs = { F: 0, M: 0 };
+  const compteurs = {};
   const voix = {};
   persos.forEach(p => {
-    const genre = genreParPerso[p] || "F";
+    const genre = VOIX_QC_PAR_GENRE[genreParPerso[p]] ? genreParPerso[p] : "F";
     const options = VOIX_QC_PAR_GENRE[genre];
+    compteurs[genre] = compteurs[genre] || 0;
     voix[p] = options[compteurs[genre] % options.length];
     compteurs[genre]++;
   });
@@ -510,17 +520,22 @@ function EcouterToutBouton({ dialogue, voixParPersonnage, color }) {
 
 // Petit contrôle pour choisir le genre (et donc la voix) de chaque personnage d'un dialogue
 function ChoixVoixPersonnages({ persos, genreParPerso, setGenreParPerso, color }) {
+  const btn = (actif, radius) => ({ border: "none", background: actif ? color : "#eee", color: actif ? "white" : "#999", borderRadius: radius, padding: "2px 8px", fontSize: 13, cursor: "pointer" });
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 10 }}>
-      {persos.map(perso => (
-        <div key={perso} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, color: "#666" }}>
-          <span style={{ fontWeight: 600 }}>{perso} :</span>
-          <button onClick={() => setGenreParPerso(g => ({ ...g, [perso]: "F" }))}
-            style={{ border: "none", background: genreParPerso[perso] === "F" ? color : "#eee", color: genreParPerso[perso] === "F" ? "white" : "#999", borderRadius: "6px 0 0 6px", padding: "2px 8px", fontSize: 13, cursor: "pointer" }}>♀</button>
-          <button onClick={() => setGenreParPerso(g => ({ ...g, [perso]: "M" }))}
-            style={{ border: "none", background: genreParPerso[perso] === "M" ? color : "#eee", color: genreParPerso[perso] === "M" ? "white" : "#999", borderRadius: "0 6px 6px 0", padding: "2px 8px", fontSize: 13, cursor: "pointer" }}>♂</button>
-        </div>
-      ))}
+      {persos.map(perso => {
+        const g = genreParPerso[perso] || "F";
+        const base = g[0];
+        const age = g.endsWith("A");
+        return (
+          <div key={perso} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, color: "#666" }}>
+            <span style={{ fontWeight: 600 }}>{perso} :</span>
+            <button onClick={() => setGenreParPerso(x => ({ ...x, [perso]: "F" + (age ? "A" : "") }))} style={btn(base === "F", "6px 0 0 6px")}>♀</button>
+            <button onClick={() => setGenreParPerso(x => ({ ...x, [perso]: "M" + (age ? "A" : "") }))} style={btn(base === "M", "0 6px 6px 0")}>♂</button>
+            <button onClick={() => setGenreParPerso(x => ({ ...x, [perso]: base + (age ? "" : "A") }))} title="Voix de personne âgée" style={{ ...btn(age, 6), marginLeft: 2 }}>🧓</button>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -614,16 +629,28 @@ async function synthetiserVoix(texte, voiceName = VOIX_QC_DEFAUT) {
   const cache = await getCached("audio", cleTexte, voiceName);
   if (cache?.data?.audioBase64) return cache.data.audioBase64;
   try {
+    const estGemini = voiceName.startsWith("gemini:");
+    const [, nomGemini, genreGemini] = estGemini ? voiceName.split(":") : [];
     const res = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_KEY}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+      body: JSON.stringify(estGemini ? {
+        input: { text: preparerTextePourVoix(texte), prompt: CONSIGNES_AGE[genreGemini] },
+        voice: { languageCode: "fr-CA", name: nomGemini, modelName: "gemini-2.5-flash-tts" },
+        audioConfig: { audioEncoding: "MP3" }
+      } : {
         input: { text: preparerTextePourVoix(texte) },
         voice: { languageCode: "fr-CA", name: voiceName },
         audioConfig: { audioEncoding: "MP3" }
       })
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      if (estGemini) {
+        console.warn("Gemini-TTS a échoué, retour à la voix Chirp 3 :", res.status, await res.text().catch(() => ""));
+        return synthetiserVoix(texte, `fr-CA-Chirp3-HD-${nomGemini}`);
+      }
+      return null;
+    }
     const json = await res.json();
     if (!json.audioContent) return null;
     await setCached("audio", cleTexte, { texte: texte.slice(0, 200), audioBase64: json.audioContent }, voiceName);
@@ -3548,7 +3575,12 @@ function DialogueCard({ data, color }) {
     const obj = {};
     persos.forEach((p, i) => {
       const cle = `${data.titre || ""}::${p}`;
-      obj[p] = sauvegarde[cle] || (i % 2 === 0 ? "F" : "M");
+      // Détecte un personnage âgé d'après son nom brut (ex: "Madame Tremblay — usagère (84 ans)")
+      const nomsBruts = data.dialogue.filter(l => normaliserPersonnage(l.personnage) === p).map(l => l.personnage).join(" ");
+      const ageMatch = nomsBruts.match(/(\d{2,3})\s*ans/);
+      const estAge = (ageMatch && parseInt(ageMatch[1], 10) >= 65) || /\b(aîné|aînée|âgé|âgée|retraité|retraitée)\b/i.test(nomsBruts);
+      const genreDefaut = i % 2 === 0 ? "F" : "M";
+      obj[p] = sauvegarde[cle] || (estAge ? genreDefaut + "A" : genreDefaut);
     });
     return obj;
   });
