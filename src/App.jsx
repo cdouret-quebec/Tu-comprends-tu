@@ -576,6 +576,8 @@ const PRONONCIATIONS_CORRIGEES = {
   "ayoye": "ayoy",
   "maudit": "maudi",
   "maudits": "maudi",
+  "piastre": "piasse",
+  "piastres": "piasses",
 };
 
 // Corrige le texte juste avant synthèse : acronymes prononcés comme un mot + apostrophes cohérentes
