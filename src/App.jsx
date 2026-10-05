@@ -574,6 +574,8 @@ const PRONONCIATIONS_CORRIGEES = {
   "pis": "pi",
   "s'ra": "sera",
   "ayoye": "ayoy",
+  "maudit": "maudi",
+  "maudits": "maudi",
 };
 
 // Corrige le texte juste avant synthèse : acronymes prononcés comme un mot + apostrophes cohérentes
