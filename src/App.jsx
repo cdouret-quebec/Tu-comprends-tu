@@ -2768,6 +2768,7 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
   }
 
   const isHG = context === "hg";
+  const isModule = context === "module";
 
   return (
     <div style={{ background: D.blanc, borderRadius: 12, padding: 24, border: `1px solid ${D.gris2}`, borderTop: `3px solid ${D.rouge}` }}>
@@ -2777,12 +2778,14 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
           🔒
         </div>
         <h3 style={{ margin: "0 0 6px", fontSize: 17, fontWeight: 500, color: D.noir, letterSpacing: -0.3 }}>
-          {isHG ? "Histoire & Grammaire complet" : "Contenu professionnel"}
+          {isHG ? "Histoire & Grammaire complet" : isModule ? "Débloque tout ce secteur" : "Contenu professionnel"}
         </h3>
         <p style={{ margin: 0, fontSize: 14, color: D.gris3, lineHeight: 1.6 }}>
           {isHG
             ? "Les 7 sections × 3 niveaux font partie de l'accès complet."
-            : "Les modules par secteur professionnel font partie de l'accès complet."}
+            : isModule
+              ? "« Comprendre l'oral » est gratuit dans chaque secteur. Les 4 autres modules (vocabulaire, registres, culture du milieu et quiz) font partie de l'accès complet."
+              : "Les modules par secteur professionnel font partie de l'accès complet."}
         </p>
       </div>
 
@@ -4181,6 +4184,13 @@ export default function App() {
   const [premiumState, setPremiumState] = useState(isPremium());
   const sessionCount = sessionStats.quizDone + sessionStats.modulesDone;
   const modColor = (mod) => mod?.id === "quiz" ? D.rouge : D.noir;
+  // Un seul module gratuit par secteur (aperçu) ; les autres demandent l'accès complet
+  const MODULES_GRATUITS = ["oral"];
+  const peutAcceder = (mod) => premiumState || MODULES_GRATUITS.includes(mod?.id);
+  function ouvrirModule(mod) {
+    if (peutAcceder(mod)) { loadModule(mod); return; }
+    setActiveModule(mod); setContent(null); setError(null); setLoading(false);
+  }
 
   if(screen==="progression") return <ProgressionScreen onClose={()=>setScreen(secteur?"app":"home")} />;
   if(screen==="smalltalk") return <SmallTalkScreen onBack={()=>setScreen("home")} />;
@@ -4259,7 +4269,7 @@ export default function App() {
                 onMouseEnter={e=>{ e.currentTarget.style.borderColor=D.noir; e.currentTarget.style.background=D.gris0; }}
                 onMouseLeave={e=>{ e.currentTarget.style.borderColor=s.brouillon ? "#F59E0B" : D.gris2; e.currentTarget.style.background=D.blanc; }}>
                 {s.brouillon && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 10, background: "#F59E0B", color: "white", borderRadius: 4, padding: "1px 5px", fontWeight: 700 }}>BROUILLON</span>}
-                {!s.brouillon && !premiumState && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 11 }}>🔒</span>}
+                {!s.brouillon && !premiumState && <span style={{ position: "absolute", top: 8, right: 8, fontSize: 10, color: D.gris3 }}>Aperçu gratuit</span>}
                 <div style={{ fontSize: 22, marginBottom: 6 }}>{s.icon}</div>
                 <div style={{ fontSize: 13, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{s.label}</div>
                 <div style={{ fontSize: 11, color: D.gris3, lineHeight: 1.4 }}>{s.desc}</div>
@@ -4310,11 +4320,11 @@ export default function App() {
               {MODULES.map(mod => {
                 const isActive = activeModule?.id === mod.id;
                 const mc = modColor(mod);
-                const count = history[`\${secteur.id}-\${mod.id}`]||0;
+                const count = history[`${secteur.id}-${mod.id}`]||0;
                 return (
-                  <button key={mod.id} onClick={()=>loadModule(mod)}
-                    style={{ padding: "11px 12px 9px", background: "none", border: "none", borderBottom: isActive ? `2px solid \${mc}` : "2px solid transparent", cursor: "pointer", fontSize: 12, fontWeight: isActive ? 500 : 400, color: isActive ? mc : D.gris3, whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.12s" }}>
-                    <span style={{ fontSize: 14 }}>{mod.icon}</span><span>{mod.label}</span>
+                  <button key={mod.id} onClick={()=>ouvrirModule(mod)}
+                    style={{ padding: "11px 12px 9px", background: "none", border: "none", borderBottom: isActive ? `2px solid ${mc}` : "2px solid transparent", cursor: "pointer", fontSize: 12, fontWeight: isActive ? 500 : 400, color: isActive ? mc : D.gris3, whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 4, transition: "all 0.12s" }}>
+                    <span style={{ fontSize: 14 }}>{mod.icon}</span><span>{mod.label}</span>{!peutAcceder(mod) && <span style={{ fontSize: 10 }}>🔒</span>}
                     {count>0 && <span style={{ background: isActive?mc:D.gris2, color: isActive?D.blanc:D.gris4, borderRadius: 8, fontSize: 10, padding: "1px 5px" }}>{count}</span>}
                   </button>
                 );
@@ -4323,27 +4333,26 @@ export default function App() {
           </div>
 
           <div style={{ maxWidth: 680, margin: "0 auto", padding: "18px 14px 60px" }}>
-            {!premiumState ? (
-              <PremiumWall context="secteur" onUnlock={() => setPremiumState(true)} />
-            ) : (
+            {(
               <>
                 {!activeModule && (
                   <div>
                     <div style={{ marginBottom: 16 }}>
                       <h2 style={{ margin: "0 0 2px", fontSize: 17, fontWeight: 500, color: D.noir }}>{secteur.icon} {secteur.label}</h2>
                       <p style={{ margin: 0, fontSize: 12, color: D.gris3 }}>Contenus générés spécifiquement pour ce milieu</p>
+                      {!premiumState && <p style={{ margin: "6px 0 0", fontSize: 12, color: D.rouge }}>🔓 « Comprendre l'oral » est gratuit — les autres modules font partie de l'accès complet.</p>}
                       <div style={{ height: 1, background: D.gris2, marginTop: 12 }} />
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                       {MODULES.map(mod => {
                         const mc = modColor(mod);
                         return (
-                          <button key={mod.id} onClick={()=>loadModule(mod)}
+                          <button key={mod.id} onClick={()=>ouvrirModule(mod)}
                             style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 10, padding: 14, cursor: "pointer", textAlign: "left", transition: "all 0.12s" }}
                             onMouseEnter={e=>{ e.currentTarget.style.borderColor=mc; e.currentTarget.style.background=D.gris0; }}
                             onMouseLeave={e=>{ e.currentTarget.style.borderColor=D.gris2; e.currentTarget.style.background=D.blanc; }}>
                             <div style={{ fontSize: 20, marginBottom: 5 }}>{mod.icon}</div>
-                            <div style={{ fontSize: 13, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{mod.label}</div>
+                            <div style={{ fontSize: 13, fontWeight: 500, color: D.noir, marginBottom: 2 }}>{mod.label} {!peutAcceder(mod) && "🔒"}</div>
                             <div style={{ fontSize: 11, color: D.gris3 }}>{mod.desc}</div>
                           </button>
                         );
@@ -4352,9 +4361,21 @@ export default function App() {
                   </div>
                 )}
 
-                {activeModule && (
+                {activeModule && !peutAcceder(activeModule) && (
                   <div ref={resultRef}>
-                    <div style={{ background: D.blanc, borderRadius: 10, padding: 16, border: `1px solid ${D.gris2}`, borderTop: `3px solid \${modColor(activeModule)}` }}>
+                    <PremiumWall context="module" onUnlock={() => setPremiumState(true)} />
+                    <div style={{ marginTop: 12 }}>
+                      <button onClick={()=>setActiveModule(null)}
+                        style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "5px 10px", cursor: "pointer", fontSize: 12, color: D.gris4 }}>
+                        ← Tous les modules
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeModule && peutAcceder(activeModule) && (
+                  <div ref={resultRef}>
+                    <div style={{ background: D.blanc, borderRadius: 10, padding: 16, border: `1px solid ${D.gris2}`, borderTop: `3px solid ${modColor(activeModule)}` }}>
                       {loading && <div style={{ textAlign: "center", padding: "20px 0" }}><LoadingDots color={D.noir}/><p style={{ color: D.gris3, fontSize: 13, marginTop: 8 }}>Génération en cours…</p></div>}
                       {error && !loading && <p style={{ fontSize: 14, color: D.rouge, textAlign: "center" }}>{error}</p>}
                       {!content && !loading && !error && (
@@ -4368,11 +4389,11 @@ export default function App() {
                     </div>
                     <div style={{ marginTop: 12, display: "flex", gap: 6, flexWrap: "wrap" }}>
                       {MODULES.filter(m=>m.id!==activeModule.id).map(m => (
-                        <button key={m.id} onClick={()=>loadModule(m)}
+                        <button key={m.id} onClick={()=>ouvrirModule(m)}
                           style={{ background: D.blanc, border: `1px solid ${D.gris2}`, borderRadius: 6, padding: "5px 10px", cursor: "pointer", fontSize: 12, color: D.gris4 }}
                           onMouseEnter={e=>e.currentTarget.style.borderColor=D.noir}
                           onMouseLeave={e=>e.currentTarget.style.borderColor=D.gris2}>
-                          {m.icon} {m.label}
+                          {m.icon} {m.label} {!peutAcceder(m) && "🔒"}
                         </button>
                       ))}
                     </div>
