@@ -2800,13 +2800,14 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
       <div style={{ background: D.gris0, borderRadius: 8, padding: 14, marginBottom: 20 }}>
         <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 500, color: D.gris3, textTransform: "uppercase", letterSpacing: 0.5 }}>Accès complet à 7,99 $ — une seule fois</p>
         {[
-          "6 secteurs professionnels (Construction, Finance, Santé, Éducation, Commerce, TI)",
+          "10 milieux de travail et services (Construction, Finance, Santé, Éducation, Commerce, TI, Manufacture, Agriculture, Hôtellerie, Soins aux personnes)",
           "5 modules par secteur : oral, vocabulaire, registres, culture, quiz",
+          "Audio avec voix québécoises pour les dialogues et les expressions",
           "Histoire & Grammaire — 7 sections × 3 niveaux (A2, B1-B2, C1-C2)",
           "Progression et suivi des résultats",
           "Accès illimité, sans abonnement",
         ].map((item, i) => (
-          <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < 4 ? 6 : 0 }}>
+          <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < 5 ? 6 : 0 }}>
             <span style={{ color: D.rouge, fontSize: 15, flexShrink: 0, marginTop: 1 }}>✓</span>
             <span style={{ fontSize: 14, color: D.gris4, lineHeight: 1.5 }}>{item}</span>
           </div>
