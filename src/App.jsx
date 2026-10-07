@@ -2792,7 +2792,7 @@ function PremiumWall({ onUnlock, context = "secteur" }) {
       {/* Message personnel */}
       <div style={{ background: D.gris0, borderRadius: 8, padding: "14px 16px", marginBottom: 20, borderLeft: `3px solid ${D.rouge}` }}>
         <p style={{ margin: 0, fontSize: 14, color: D.gris4, lineHeight: 1.6, fontStyle: "italic" }}>
-          Je suis Caroline, enseignante en français langue étrangère à Québec. J'ai créé cette section parce que mes élèves — même après avoir complété leurs cours de francisation — se retrouvaient perdus une fois en emploi : personne ne leur avait enseigné le vrai français parlé sur un chantier, dans une banque ou en santé. Ces quelques dollars m'aident à continuer à créer et améliorer ce contenu, pour eux et pour toi.
+          Je suis Caroline, enseignante en français langue étrangère à Québec. Mes élèves ont pour la plupart suivi des cours de francisation en arrivant ici. Cependant, chaque milieu a son propre vocabulaire, son rythme et ses codes non écrits, que ce soit sur un chantier, dans une banque, à l'hôpital ou dans une cuisine. Aucun cours général ne peut couvrir tout ça. J'ai donc créé cette application web pour que tu puisses entendre et comprendre ce que disent tes collègues le plus rapidement possible! Je l'ai pensée comme un complément à la francisation et à mes propres cours. Si tu souhaites contribuer à mon projet et m'aider à améliorer ce contenu, opte pour l'accès complet au site!
         </p>
       </div>
 
