@@ -1076,7 +1076,7 @@ function STReferencesCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 16 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 16, ...JUSTIFIE }}>{data.intro}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.references.map((r, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -1093,7 +1093,7 @@ function STReferencesCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 15, color: "#374151", margin: "10px 0 8px", lineHeight: 1.6 }}><AnnotatedText text={r.ce_quil_faut_savoir} annotations={ann} /></p>
+                <p lang="fr" style={{ fontSize: 15, color: "#374151", margin: "10px 0 8px", lineHeight: 1.6, ...JUSTIFIE }}><AnnotatedText text={r.ce_quil_faut_savoir} annotations={ann} /></p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   {r.phrases_utiles.map((p, j) => (
                     <div key={j} style={{ background: ST_BG, borderRadius: 8, padding: "7px 10px", fontSize: 15, color: ST_COLOR, fontStyle: "italic" }}>« <AnnotatedText text={p} annotations={ann} /> »</div>
@@ -1114,7 +1114,7 @@ function STEntreeSortieCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 16 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 16, ...JUSTIFIE }}>{data.intro}</p>
       {["entrees", "sorties"].map(type => (
         <div key={type} style={{ marginBottom: 20 }}>
           <h4 style={{ color: ST_COLOR, fontSize: 15, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10 }}>
@@ -1127,8 +1127,8 @@ function STEntreeSortieCard({ data }) {
                   <span style={{ flex: 1 }}>« <AnnotatedText text={e.formule} annotations={ann} /> »</span>
                   <LireBouton texte={e.formule} color={ST_COLOR} />
                 </div>
-                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#555" }}>📍 <AnnotatedText text={e.quand} annotations={ann} /></p>
-                <p style={{ margin: "0 0 4px", fontSize: 15, color: "#333" }}>🎯 <AnnotatedText text={e.effet} annotations={ann} /></p>
+                <p lang="fr" style={{ margin: "0 0 4px", fontSize: 15, color: "#555", ...JUSTIFIE }}>📍 <AnnotatedText text={e.quand} annotations={ann} /></p>
+                <p lang="fr" style={{ margin: "0 0 4px", fontSize: 15, color: "#333", ...JUSTIFIE }}>🎯 <AnnotatedText text={e.effet} annotations={ann} /></p>
                 {e.variante && (
                   <p style={{ margin: 0, fontSize: 14, color: "#888", fontStyle: "italic", display: "flex", alignItems: "flex-start", gap: 6 }}>
                     <span style={{ flex: 1 }}>Variante : « <AnnotatedText text={e.variante} annotations={ann} /> »</span>
@@ -1154,7 +1154,7 @@ function STRythmeCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 16 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 16, ...JUSTIFIE }}>{data.intro}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {data.situations.map((s, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -1197,7 +1197,7 @@ function STValeursCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6, ...JUSTIFIE }}>{data.intro}</p>
       {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {data.scenarios.map((s, i) => (
@@ -1218,25 +1218,25 @@ function STValeursCard({ data }) {
               <div style={{ borderTop: `1px solid ${ST_COLOR}10` }}>
                 <div style={{ padding: "12px 14px", background: "#F1EFE8", borderBottom: "1px solid #D3D1C7" }}>
                   <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#5F5E5A", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que fait l'immigrant</p>
-                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
+                  <p lang="fr" style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5, ...JUSTIFIE }}>
                     <AnnotatedText text={s.ce_que_fait_immigrant} annotations={ann} />
                   </p>
                 </div>
                 <div style={{ padding: "12px 14px", background: "#F5E9EA", borderBottom: "1px solid #D9AEB2" }}>
                   <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#470024", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce que pensent les Québécois (sans le dire)</p>
-                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5, fontStyle: "italic" }}>
+                  <p lang="fr" style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5, fontStyle: "italic", ...JUSTIFIE }}>
                     <AnnotatedText text={s.ce_que_pensent_les_quebecois} annotations={ann} />
                   </p>
                 </div>
                 <div style={{ padding: "12px 14px", background: "#EAF1F8", borderBottom: "1px solid #A9C6E0" }}>
                   <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: "#2C5784", textTransform: "uppercase", letterSpacing: 0.4 }}>Ce qui se passe vraiment</p>
-                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
+                  <p lang="fr" style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5, ...JUSTIFIE }}>
                     <AnnotatedText text={s.ce_qui_se_passe_vraiment} annotations={ann} />
                   </p>
                 </div>
                 <div style={{ padding: "12px 14px", background: ST_BG }}>
                   <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 700, color: ST_COLOR, textTransform: "uppercase", letterSpacing: 0.4 }}>Comment s'en sortir</p>
-                  <p style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
+                  <p lang="fr" style={{ margin: 0, fontSize: 15, color: "#374151", lineHeight: 1.5, ...JUSTIFIE }}>
                     <AnnotatedText text={s.comment_sen_sortir} annotations={ann} />
                   </p>
                 </div>
@@ -1275,7 +1275,7 @@ function STExpressionsCard({ data: rawData }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6, ...JUSTIFIE }}>{data.intro}</p>
       {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {data.expressions.map((e, i) => (
@@ -1286,7 +1286,7 @@ function STExpressionsCard({ data: rawData }) {
             </div>
             {/* Scénario */}
             <div style={{ padding: "12px 14px" }}>
-              <p style={{ margin: "0 0 10px", fontSize: 15, color: "#374151", lineHeight: 1.6 }}>
+              <p lang="fr" style={{ margin: "0 0 10px", fontSize: 15, color: "#374151", lineHeight: 1.6, ...JUSTIFIE }}>
                 <strong>📍 Scénario :</strong> <AnnotatedText text={e.scenario} annotations={ann} />
               </p>
               {/* Interprétation erronée — révélable */}
@@ -1428,7 +1428,7 @@ function STSacresCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 14, lineHeight: 1.6 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 14, lineHeight: 1.6, ...JUSTIFIE }}>{data.intro}</p>
       {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.sections.map((s, i) => (
@@ -1443,7 +1443,7 @@ function STSacresCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}>
+                <p lang="fr" style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px", ...JUSTIFIE }}>
                   <AnnotatedText text={s.contenu} annotations={ann} />
                 </p>
                 {s.exemples?.length > 0 && (
@@ -1488,7 +1488,7 @@ function STFauxAmisCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 14, lineHeight: 1.6 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 14, lineHeight: 1.6, ...JUSTIFIE }}>{data.intro}</p>
       {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 12, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur sens québécois</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {data.faux_amis.map((fa, i) => (
@@ -1501,7 +1501,7 @@ function STFauxAmisCard({ data }) {
             </div>
             <div style={{ padding: "12px 14px" }}>
               {/* Scénario */}
-              <p style={{ margin: "0 0 10px", fontSize: 15, color: "#374151", lineHeight: 1.6 }}>
+              <p lang="fr" style={{ margin: "0 0 10px", fontSize: 15, color: "#374151", lineHeight: 1.6, ...JUSTIFIE }}>
                 <strong>📍 Scénario :</strong> <AnnotatedText text={fa.scenario} annotations={ann} />
               </p>
               {/* Sens Québec */}
@@ -1636,7 +1636,7 @@ function SmallTalkScreen({ onBack, onUpdateProgression, initialModule }) {
           <div>
             <div style={{ background: "white", borderRadius: 14, padding: 18, marginBottom: 16, border: `1px solid ${ST_COLOR}20` }}>
               <p style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 600, color: ST_COLOR }}>Pourquoi c'est difficile ?</p>
-              <p style={{ margin: 0, fontSize: 15, color: "#666", lineHeight: 1.7 }}>
+              <p lang="fr" style={{ margin: 0, fontSize: 15, color: "#666", lineHeight: 1.7, ...JUSTIFIE }}>
                 Pause café, lunch, ascenseur, couloir… Ces petits moments du quotidien sont souvent les plus difficiles à naviguer en québécois. Le rythme est rapide, les références sont locales, et personne ne t'explique les règles. Ce module est là pour que tu ne sois jamais mal pris.
               </p>
             </div>
@@ -1729,7 +1729,7 @@ function STLunchCard({ data }) {
   return (
     <div>
       <h3 style={{ color: ST_COLOR, marginBottom: 4, fontSize: 17 }}>{data.titre}</h3>
-      <p style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6 }}>{data.intro}</p>
+      <p lang="fr" style={{ fontSize: 15, color: "#666", marginBottom: 16, lineHeight: 1.6, ...JUSTIFIE }}>{data.intro}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {data.sections.map((s, i) => (
           <div key={i} style={{ background: "white", border: `1px solid ${ST_COLOR}20`, borderRadius: 12, overflow: "hidden" }}>
@@ -1743,7 +1743,7 @@ function STLunchCard({ data }) {
             </button>
             {open[i] && (
               <div style={{ padding: "0 14px 14px", borderTop: `1px solid ${ST_COLOR}10` }}>
-                <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px" }}><AnnotatedText text={s.contenu} annotations={ann} /></p>
+                <p lang="fr" style={{ fontSize: 15, color: "#374151", lineHeight: 1.7, margin: "10px 0 12px", ...JUSTIFIE }}><AnnotatedText text={s.contenu} annotations={ann} /></p>
                 {s.expressions?.length > 0 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 10 }}>
                     {s.expressions.map((ex, j) => (
