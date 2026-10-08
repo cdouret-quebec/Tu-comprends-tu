@@ -4315,7 +4315,7 @@ export default function App() {
               </div>
             </div>
             <p style={{ margin: "0 0 14px", fontSize: 13, color: D.gris3, lineHeight: 1.7, fontStyle: "italic" }}>
-              « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas toujours mes collègues québécois !"</em> Cette application est pour eux. »
+              « Depuis des années, j'entends mes élèves me dire : <em>"Je comprends le français mais je ne comprends pas toujours mes collègues québécois !"</em> Cette application est pour eux et pour tous ceux qui ont osé, comme moi, tenter leur chance au Québec. »
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
               <p style={{ margin: 0, fontSize: 11, color: D.gris3 }}>Cours particuliers · Groupes · En ligne</p>
