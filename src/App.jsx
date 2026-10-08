@@ -237,6 +237,10 @@ const SUPABASE_URL = "https://phiqzfrybptqobbdgrbn.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoaXF6ZnJ5YnB0cW9iYmRncmJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc5MzgzMjQsImV4cCI6MjEwMzUxNDMyNH0.JHvSAJt4CvG-9qMO284Nwx1RXzhviA1JcAc5Oi2bxVQ";
 const GOOGLE_TTS_KEY = "AIzaSyDlsc50GdFD3lMRUCzJ1mGf2M7Res9c3WQ";
 
+// Texte justifié avec coupure de mots automatique (évite les grands espaces dans les colonnes étroites).
+// À utiliser avec lang="fr" sur l'élément pour que le navigateur coupe correctement les mots français.
+const JUSTIFIE = { textAlign: "justify", hyphens: "auto", WebkitHyphens: "auto" };
+
 async function sbGet(id) {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/cache_contenu?id=eq.${encodeURIComponent(id)}&select=*`, {
@@ -1779,7 +1783,7 @@ function LectureGrammaireCard({ data, color }) {
         </button>
         {showNotion && (
           <div style={{ marginTop: 10 }}>
-            <p style={{ margin: "0 0 10px", fontSize: 15, color: "#444", lineHeight: 1.6 }}>{data.notion_explication}</p>
+            <p lang="fr" style={{ margin: "0 0 10px", fontSize: 15, color: "#444", lineHeight: 1.6, ...JUSTIFIE }}>{data.notion_explication}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {data.notion_exemples.map((ex, i) => (
                 <div key={i} style={{ background: "white", borderRadius: 8, padding: "7px 10px", fontSize: 15, color, fontStyle: "italic" }}>« {ex} »</div>
@@ -1797,7 +1801,7 @@ function LectureGrammaireCard({ data, color }) {
             💡 Survole les mots <span style={{ borderBottom: "2px dotted " + color, paddingBottom: 1 }}>surlignés</span> pour voir leur définition
           </p>
         )}
-        <div style={{ fontSize: 14, lineHeight: 1.8, color: "#374151" }}>
+        <div lang="fr" style={{ fontSize: 14, lineHeight: 1.8, color: "#374151", ...JUSTIFIE }}>
           {(() => {
             // Support ancien format (string[]) et nouveau format ({terme, definition}[])
             const motsCles = (data.mots_cles || []).map(m =>
@@ -2026,7 +2030,7 @@ function TrousGrammaireCard({ data, color }) {
 
       <div style={{ background: HG_BG, border: `1px solid ${color}30`, borderRadius: 12, padding: 14, marginBottom: 16 }}>
         <p style={{ margin: "0 0 8px", fontWeight: 700, color, fontSize: 15 }}>✏️ Notion : {data.notion_titre}</p>
-        <p style={{ margin: 0, fontSize: 15, color: "#444", lineHeight: 1.6 }}>{data.notion_explication}</p>
+        <p lang="fr" style={{ margin: 0, fontSize: 15, color: "#444", lineHeight: 1.6, ...JUSTIFIE }}>{data.notion_explication}</p>
       </div>
 
       {/* Liste des mots à utiliser */}
@@ -3708,9 +3712,9 @@ function CultureCard({ data, color }) {
   return <div>
     <h3 style={{ marginBottom: 8, fontSize: 17 }}>{data.titre}</h3>
     {ann.length > 0 && <p style={{ fontSize: 13, color: "#999", marginBottom: 10, fontStyle: "italic" }}>💡 Survole les mots <span style={{ borderBottom: "2px dotted #D42B2B" }}>soulignés</span> pour voir leur définition</p>}
-    <div style={{ background: "#FFF5F5", borderLeft: `4px solid ${color}`, borderRadius: "0 10px 10px 0", padding: 12, marginBottom: 12 }}><p style={{ margin: 0, fontSize: 14, fontWeight: 600 }}>{data.concept}</p></div>
-    <p style={{ fontSize: 15, color: "#555", margin: "0 0 5px" }}><strong>😕 Pourquoi ça surprend :</strong> <AnnotatedText text={data.pourquoi_ca_surprend} annotations={ann} /></p>
-    <p style={{ fontSize: 15, color: "#333", margin: "0 0 14px" }}><strong>🎯 Comment ça marche :</strong> <AnnotatedText text={data.comment_ca_marche} annotations={ann} /></p>
+    <div style={{ background: "#FFF5F5", borderLeft: `4px solid ${color}`, borderRadius: "0 10px 10px 0", padding: 12, marginBottom: 12 }}><p lang="fr" style={{ margin: 0, fontSize: 14, fontWeight: 600, ...JUSTIFIE }}>{data.concept}</p></div>
+    <p lang="fr" style={{ fontSize: 15, color: "#555", margin: "0 0 5px", ...JUSTIFIE }}><strong>😕 Pourquoi ça surprend :</strong> <AnnotatedText text={data.pourquoi_ca_surprend} annotations={ann} /></p>
+    <p lang="fr" style={{ fontSize: 15, color: "#333", margin: "0 0 14px", ...JUSTIFIE }}><strong>🎯 Comment ça marche :</strong> <AnnotatedText text={data.comment_ca_marche} annotations={ann} /></p>
     <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
       {data.exemples.map((ex,i)=>(
         <div key={i} style={{ background: "#F8F8F8", borderRadius: 10, padding: 12 }}>
