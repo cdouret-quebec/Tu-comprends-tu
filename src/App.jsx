@@ -2622,6 +2622,28 @@ function AltPreview({ data, cacheKey }) {
     </div>
   );
 
+  // Simulation Small Talk (Martin) : scénarios avec une réplique, des choix et une bonne réponse
+  if (data.scenarios && data.scenarios[0]?.ce_que_dit_martin !== undefined) return (
+    <div>
+      {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
+      {data.scenarios.map((s, i) => {
+        const bonne = s.bonne_reponse || s["bonne_réponse"];
+        return (
+          <div key={i} style={{ marginBottom: 12 }}>
+            <p style={{ margin: "0 0 3px", fontWeight: 600, fontSize: 14 }}>🗣️ Martin : « {s.ce_que_dit_martin} »</p>
+            {s.contexte && <p style={{ margin: "0 0 3px", fontSize: 13, color: "#777", fontStyle: "italic" }}>📍 {s.contexte}</p>}
+            {(s.choix || []).map(ch => (
+              <p key={ch.lettre} style={{ margin: "0 0 2px", fontSize: 13, color: ch.lettre === bonne ? "#065F46" : "#555", fontWeight: ch.lettre === bonne ? 600 : 400 }}>
+                {ch.lettre === bonne ? "✅" : "▫️"} {ch.lettre}. {ch.texte}
+              </p>
+            ))}
+            {s.explication && <p style={{ margin: "3px 0 0", fontSize: 12, color: "#777" }}>💡 {s.explication}</p>}
+          </div>
+        );
+      })}
+    </div>
+  );
+
   if (data.scenarios) return (
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
