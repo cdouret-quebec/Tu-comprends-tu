@@ -2648,11 +2648,20 @@ function AltPreview({ data, cacheKey }) {
     <div>
       {data.titre && <p style={{ fontWeight: 700, marginBottom: 8 }}>{data.titre}</p>}
       {data.scenarios.map((s, i) => (
-        <div key={i} style={{ marginBottom: 10 }}>
-          <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 14 }}>📌 {s.situation}</p>
-          <p style={{ margin: "0 0 2px", fontSize: 13, color: "#DC2626" }}>❌ {s.ce_que_fait_immigrant}</p>
-          <p style={{ margin: 0, fontSize: 13, color: "#065F46" }}>✅ {s.comment_sen_sortir}</p>
-        </div>
+        s.situation !== undefined || s.ce_que_fait_immigrant !== undefined ? (
+          <div key={i} style={{ marginBottom: 10 }}>
+            <p style={{ margin: "0 0 4px", fontWeight: 600, fontSize: 14 }}>📌 {s.situation}</p>
+            <p style={{ margin: "0 0 2px", fontSize: 13, color: "#DC2626" }}>❌ {s.ce_que_fait_immigrant}</p>
+            <p style={{ margin: 0, fontSize: 13, color: "#065F46" }}>✅ {s.comment_sen_sortir}</p>
+          </div>
+        ) : (
+          // Structure inconnue : on affiche tous les champs tels quels pour que rien ne soit caché
+          <div key={i} style={{ marginBottom: 10, fontSize: 13, color: "#444" }}>
+            {Object.entries(s || {}).map(([cle, val]) => (
+              <p key={cle} style={{ margin: "0 0 2px" }}><strong>{cle} :</strong> {typeof val === "string" ? val : JSON.stringify(val)}</p>
+            ))}
+          </div>
+        )
       ))}
     </div>
   );
